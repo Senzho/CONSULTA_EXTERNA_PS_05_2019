@@ -1,5 +1,7 @@
 package LogicaNegocio;
 
+import java.util.Date;
+
 /**
  * @author Victor Javier
  * @version 1.0
@@ -10,7 +12,7 @@ public class Medico extends Personal {
 	public Medico(){
 
 	}
-
+        
 	public boolean registrar(){
 		return false;
 	}
@@ -24,7 +26,7 @@ public class Medico extends Personal {
 	 * @param hora
 	 * @param numeroConsultorio
 	 */
-	public boolean registrarEntrada(Time hora, String numeroConsultorio){
+	public boolean registrarEntrada(Date hora, String numeroConsultorio){
             return false;
 	}
 
@@ -32,7 +34,7 @@ public class Medico extends Personal {
 	 * 
 	 * @param hora
 	 */
-	public boolean registrarSalida(Time hora){
+	public boolean registrarSalida(Date hora){
             return false;
 	}
 

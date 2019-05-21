@@ -1,5 +1,7 @@
 package LogicaNegocio;
 
+import java.util.Date;
+
 /**
  * @author Victor Javier
  * @version 1.0
@@ -7,21 +9,62 @@ package LogicaNegocio;
  */
 public class Cita {
 
-	private int idCita;
-	private Time horaReserva;
-	private int estado;
-	public Consulta m_Consulta;
+    private int idCita;
+    private Date horaReserva;
+    private int estado;
+    private Paciente pacienteCita;
+    private Medico medicoCita;
 
-	public Cita(){
+    public Cita() {
 
-	}
+    }
 
-	/**
-	 * 
-	 * @param numeroSeguro
-	 * @param numeroPersonal
-	 */
-	public boolean registrar(String numeroSeguro, String numeroPersonal){
-            return false;
-	}
+    public int getIdCita() {
+        return idCita;
+    }
+
+    public void setIdCita(int idCita) {
+        this.idCita = idCita;
+    }
+
+    public Date getHoraReserva() {
+        return horaReserva;
+    }
+
+    public void setHoraReserva(Date horaReserva) {
+        this.horaReserva = horaReserva;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public Paciente getPacienteCita() {
+        return pacienteCita;
+    }
+
+    public void setPacienteCita(Paciente pacienteCita) {
+        this.pacienteCita = pacienteCita;
+    }
+
+    public Medico getMedicoCita() {
+        return medicoCita;
+    }
+
+    public void setMedicoCita(Medico medicoCita) {
+        this.medicoCita = medicoCita;
+    }
+
+    /**
+     *
+     * @param numeroSeguro
+     * @param numeroPersonal
+     */
+    public boolean registrar(String numeroSeguro, String numeroPersonal) {
+        return false;
+    }
 }//end Cita

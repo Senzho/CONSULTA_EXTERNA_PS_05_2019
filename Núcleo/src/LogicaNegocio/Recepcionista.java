@@ -10,56 +10,56 @@ import java.util.List;
  */
 public class Recepcionista extends Personal {
 
-	public Recepcionista(){
+    public Recepcionista() {
 
-	}
+    }
 
-	public boolean registrar(){
-            return false;
-	}
+    public boolean registrar() {
+        return false;
+    }
 
-	public boolean modificar(){
-            return false;
-	}
+    public boolean modificar() {
+        return false;
+    }
 
-	/**
-	 * 
-	 * @param hora
-	 * @param numeroConsultorio
-	 */
-	public boolean registrarEntrada(Time hora, String numeroConsultorio){
-            return false;
-	}
+    /**
+     *
+     * @param hora
+     * @param numeroConsultorio
+     */
+    public boolean registrarEntrada(Date hora, String numeroConsultorio) {
+        return false;
+    }
 
-	/**
-	 * 
-	 * @param hora
-	 */
-	public boolean registrarSalida(Time hora){
-            return false;
-	}
+    /**
+     *
+     * @param hora
+     */
+    public boolean registrarSalida(Date hora) {
+        return false;
+    }
 
-	/**
-	 * 
-	 * @param numeroSeguro
-	 */
-	public boolean agregarConsulta(String numeroSeguro){
-            return false;
-	}
+    /**
+     *
+     * @param numeroSeguro
+     */
+    public boolean agregarConsulta(String numeroSeguro) {
+        return false;
+    }
 
-	/**
-	 * 
-	 * @param estado
-	 */
-	public boolean cambiarEstado(boolean estado){
-            return false;
-	}
+    /**
+     *
+     * @param estado
+     */
+    public boolean cambiarEstado(boolean estado) {
+        return false;
+    }
 
-	/**
-	 * 
-	 * @param fecha
-	 */
-	public List obtenerCitas(Date fecha){
-            return null;
-	}
+    /**
+     *
+     * @param fecha
+     */
+    public List obtenerCitas(Date fecha) {
+        return null;
+    }
 }//end Recepcionista

@@ -7,29 +7,61 @@ package LogicaNegocio;
  */
 public class Usuario {
 
-	private int idUsuario;
-	private String nombreUsuario;
-	private String contraseña;
-	public Personal m_Personal;
+    private int idUsuario;
+    private String nombreUsuario;
+    private String contraseña;
+    private Personal personalUsuario;
 
-	public Usuario(){
+    public Usuario() {
 
-	}
+    }
 
-	public boolean registrarUsuario(){
-            return false;
-	}
+    public int getIdUsuario() {
+        return idUsuario;
+    }
 
-	public boolean modificar(){
-            return false;
-	}
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
 
-	/**
-	 * 
-	 * @param nombre
-	 * @param contraseña
-	 */
-	public int iniciarSesion(String nombre, String contraseña){
-            return 0;
-	}
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
+    }
+
+    public Personal getPersonalUsuario() {
+        return personalUsuario;
+    }
+
+    public void setPersonalUsuario(Personal personalUsuario) {
+        this.personalUsuario = personalUsuario;
+    }
+
+    public boolean registrarUsuario() {
+        return false;
+    }
+
+    public boolean modificar() {
+        return false;
+    }
+
+    /**
+     *
+     * @param nombre
+     * @param contraseña
+     */
+    public int iniciarSesion(String nombre, String contraseña) {
+        return 0;
+    }
 }//end Usuario

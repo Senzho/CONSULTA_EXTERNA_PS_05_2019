@@ -9,57 +9,121 @@ import java.util.Date;
  */
 public abstract class Personal {
 
-	private String rfc;
-	private String numeroTelefono;
-	private String numeroPersonal;
-	private String nombre;
-	private String apellido;
-	private Date fechaNacimiento;
-	private char sexo;
-	private String turno;
+    private String rfc;
+    private String numeroTelefono;
+    private String numeroPersonal;
+    private String nombre;
+    private String apellido;
+    private Date fechaNacimiento;
+    private char sexo;
+    private String turno;
 
-	public Personal(){
+    public Personal() {
 
-	}
+    }
 
-	public boolean registrar(){
-            return false;
-	}
+    public String getRfc() {
+        return rfc;
+    }
 
-	public boolean modificar(){
-            return false;
-	}
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
+    }
 
-	/**
-	 * 
-	 * @param hora
-	 * @param numeroConsultorio
-	 */
-	public boolean registrarEntrada(Time hora, String numeroConsultorio){
-            return false;
-	}
+    public String getNumeroTelefono() {
+        return numeroTelefono;
+    }
 
-	/**
-	 * 
-	 * @param hora
-	 */
-	public boolean registrarSalida(Time hora){
-            return false;
-	}
+    public void setNumeroTelefono(String numeroTelefono) {
+        this.numeroTelefono = numeroTelefono;
+    }
 
-	/**
-	 * 
-	 * @param estado
-	 */
-	public boolean cambiarEstado(boolean estado){
-            return false;
-	}
+    public String getNumeroPersonal() {
+        return numeroPersonal;
+    }
 
-	/**
-	 * 
-	 * @param idUsuario
-	 */
-	public Personal obtenerPersonal(int idUsuario){
-            return null;
-	}
+    public void setNumeroPersonal(String numeroPersonal) {
+        this.numeroPersonal = numeroPersonal;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public char getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(char sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
+
+    public boolean registrar() {
+        return false;
+    }
+
+    public boolean modificar() {
+        return false;
+    }
+
+    /**
+     *
+     * @param hora
+     * @param numeroConsultorio
+     */
+    public boolean registrarEntrada(Date hora, String numeroConsultorio) {
+        return false;
+    }
+
+    /**
+     *
+     * @param hora
+     */
+    public boolean registrarSalida(Date hora) {
+        return false;
+    }
+
+    /**
+     *
+     * @param estado
+     */
+    public boolean cambiarEstado(boolean estado) {
+        return false;
+    }
+
+    /**
+     *
+     * @param idUsuario
+     */
+    public Personal obtenerPersonal(int idUsuario) {
+        return null;
+    }
 }//end Personal

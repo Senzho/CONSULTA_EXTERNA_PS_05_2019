@@ -10,19 +10,52 @@ import java.util.List;
  */
 public class Medicamento {
 
-	private String codigo;
-	private String nombre;
-	private float gramaje;
-	private Date fechaCaducidad;
+    private String codigo;
+    private String nombre;
+    private float gramaje;
+    private Date fechaCaducidad;
 
-	public Medicamento(){
+    public Medicamento() {
 
-	}
+    }
 
-	public void finalize() throws Throwable {
+    public String getCodigo() {
+        return codigo;
+    }
 
-	}
-	public List obtenerMedicamentos(){
-		return null;
-	}
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public float getGramaje() {
+        return gramaje;
+    }
+
+    public void setGramaje(float gramaje) {
+        this.gramaje = gramaje;
+    }
+
+    public Date getFechaCaducidad() {
+        return fechaCaducidad;
+    }
+
+    public void setFechaCaducidad(Date fechaCaducidad) {
+        this.fechaCaducidad = fechaCaducidad;
+    }
+
+    public void finalize() throws Throwable {
+
+    }
+
+    public List obtenerMedicamentos() {
+        return null;
+    }
 }//end Medicamento
