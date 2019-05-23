@@ -14,11 +14,11 @@ import java.util.logging.Logger;
  *
  * @author Victor Javier
  */
-public class Prueba implements IPaciente{
+public class PacientePrueba implements IPaciente{
     private List<Paciente> pacientes;
     private Paciente paciente;
 
-    public Prueba() {
+    public PacientePrueba() {
         this.pacientes = new ArrayList<Paciente>();
         this.paciente = new Paciente();
         this.paciente.setAlergias("Paracetamol");
@@ -29,7 +29,7 @@ public class Prueba implements IPaciente{
         try {
             fechaNacimiento = formatoFecha.parse(fecha);
         } catch (ParseException ex) {
-            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PacientePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         this.paciente.setFechaNacimiento(fechaNacimiento);
@@ -38,6 +38,7 @@ public class Prueba implements IPaciente{
         this.paciente.setNumeroSeguro("5673937452542");
         this.paciente.setNumeroTelefono("2281927635");
         this.paciente.setSexo('M');
+        this.paciente.setiPaciente(this);
         this.pacientes.add(this.paciente);
     }
 
@@ -69,6 +70,19 @@ public class Prueba implements IPaciente{
 
     @Override
     public boolean modificarPaciente(Paciente paciente) {
-        return false;
+        boolean modificado = false;
+        for (Paciente pacienteLista : this.pacientes){
+            if (pacienteLista.getNumeroSeguro().equals(paciente.getNumeroSeguro())){
+                pacienteLista.setAlergias(paciente.getAlergias());
+                pacienteLista.setApellido(paciente.getApellido());
+                pacienteLista.setFechaNacimiento(paciente.getFechaNacimiento());
+                pacienteLista.setNombre(paciente.getNombre());
+                pacienteLista.setNumeroTelefono(paciente.getNumeroTelefono());
+                pacienteLista.setSexo(paciente.getSexo());
+                modificado = true;
+                break;
+            }
+        }
+        return modificado;
     }
 }

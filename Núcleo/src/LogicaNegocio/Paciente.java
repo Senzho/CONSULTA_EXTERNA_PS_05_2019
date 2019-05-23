@@ -136,8 +136,12 @@ public class Paciente {
         return registro;
     }
     
-    public boolean modificarPaciente() {
-        return false;
+    public DatosPaciente modificarPaciente() {
+        DatosPaciente modificacion = this.validarDatos();
+        if (modificacion == DatosPaciente.VALIDO){
+            modificacion = this.iPaciente.modificarPaciente(this) ? DatosPaciente.EXITO : DatosPaciente.ERROR_ALMACENAMIENTO;
+        }
+        return modificacion;
     }
 
     /**
