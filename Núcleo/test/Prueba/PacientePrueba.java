@@ -19,7 +19,7 @@ public class PacientePrueba implements IPaciente{
     private Paciente paciente;
 
     public PacientePrueba() {
-        this.pacientes = new ArrayList<Paciente>();
+        this.pacientes = new ArrayList<>();
         this.paciente = new Paciente();
         this.paciente.setAlergias("Paracetamol");
         
@@ -64,8 +64,7 @@ public class PacientePrueba implements IPaciente{
 
     @Override
     public boolean registrarPaciente(Paciente paciente) {
-        this.pacientes.add(paciente);
-        return true;
+        return this.pacientes.add(paciente);
     }
 
     @Override

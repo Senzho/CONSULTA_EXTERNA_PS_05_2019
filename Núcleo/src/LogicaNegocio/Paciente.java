@@ -147,6 +147,7 @@ public class Paciente {
     /**
      *
      * @param numeroSeguro
+     * @return 
      */
     public Paciente obtenerPaciente(String numeroSeguro) {
         return iPaciente.obtenerPaciente(numeroSeguro);
