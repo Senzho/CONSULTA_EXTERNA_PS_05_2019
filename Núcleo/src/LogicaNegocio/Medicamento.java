@@ -14,9 +14,14 @@ public class Medicamento {
     private String nombre;
     private float gramaje;
     private Date fechaCaducidad;
+    private IMedicamento iMedicamento;
 
     public Medicamento() {
 
+    }
+
+    public Medicamento(IMedicamento iMedicamento) {
+        this.iMedicamento = iMedicamento;
     }
 
     public String getCodigo() {
@@ -51,11 +56,15 @@ public class Medicamento {
         this.fechaCaducidad = fechaCaducidad;
     }
 
-    public void finalize() throws Throwable {
-
+    public IMedicamento getiMedicamento() {
+        return iMedicamento;
     }
 
-    public List obtenerMedicamentos() {
-        return null;
+    public void setiMedicamento(IMedicamento iMedicamento) {
+        this.iMedicamento = iMedicamento;
+    }
+
+    public List<Medicamento> obtenerMedicamentos() {
+        return this.iMedicamento.obtenerMedicamentos();
     }
 }//end Medicamento

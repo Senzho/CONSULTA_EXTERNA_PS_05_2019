@@ -14,6 +14,7 @@ public class Cita {
     private int estado;
     private Paciente pacienteCita;
     private Medico medicoCita;
+    private ICita iCita;
 
     public Cita() {
 
@@ -59,12 +60,20 @@ public class Cita {
         this.medicoCita = medicoCita;
     }
 
+    public ICita getiCita() {
+        return iCita;
+    }
+
+    public void setiCita(ICita iCita) {
+        this.iCita = iCita;
+    }
+ 
     /**
      *
      * @param numeroSeguro
      * @param numeroPersonal
      */
-    public boolean registrar(String numeroSeguro, String numeroPersonal) {
-        return false;
+    public boolean registrar(String numeroSeguro, String numeroPersonal, Date horaReserva) {
+        return this.iCita.registrar(numeroSeguro, numeroPersonal, horaReserva);
     }
 }//end Cita

@@ -9,14 +9,14 @@ import java.util.Date;
  */
 public abstract class Personal {
 
-    private String rfc;
-    private String numeroTelefono;
-    private String numeroPersonal;
-    private String nombre;
-    private String apellido;
-    private Date fechaNacimiento;
-    private char sexo;
-    private String turno;
+    protected String rfc;
+    protected String numeroTelefono;
+    protected String numeroPersonal;
+    protected String nombre;
+    protected String apellido;
+    protected Date fechaNacimiento;
+    protected char sexo;
+    protected String turno;
 
     public Personal() {
 
