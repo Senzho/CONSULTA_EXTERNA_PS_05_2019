@@ -1,5 +1,6 @@
 package LogicaNegocio;
 
+import Recursos.DatosConsulta;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +23,41 @@ public class Consulta {
     private Paciente pacienteConsulta;
     private Medico medicoConsulta;
     private Receta recetaConsulta;
+    private IConsulta iConsulta;
 
     public Consulta() {
-
+        this.iConsulta = null;
+    }
+    private DatosConsulta validarDatosConsulta(){
+        DatosConsulta consultaValida = DatosConsulta.VALIDO;
+        if(this.fecha.toString().trim().equals("") || this.fecha == null){
+            consultaValida = DatosConsulta.FECHA_VACIA;
+        }else if(this.horaInicio.toString().trim().equals("") || this.horaInicio == null){
+            consultaValida = DatosConsulta.HORA_INICIO_VACIA;
+        }else if(this.horaFin.toString().trim().equals("") || this.horaFin == null){
+            consultaValida = DatosConsulta.HORA_FIN_VACIA;
+        }else if(this.diagnostico.length() > 70){
+            consultaValida = DatosConsulta.DIAGNOSTICO_LARGO;
+        }else if(this.diagnostico.length() == 0 || this.diagnostico == null){
+            consultaValida = DatosConsulta.DIAGNOSTICO_VACIO;
+        }else if(this.temperatura == 0.0){
+            consultaValida = DatosConsulta.TEMPERATURA_VACIA;
+        }else if(this.peso == 0.0){
+            consultaValida = DatosConsulta.TEMPERATURA_VACIA;
+        }else if(this.peso == 0.0){
+            consultaValida = DatosConsulta.PESO_VACIO;
+        }else if(this.presion == 0.0){
+            consultaValida = DatosConsulta.PRESION_VACIA;
+        }else if(this.estatura == 0.0){
+            consultaValida = DatosConsulta.ESTATURA_VACIA;
+        }else if(this.idConsulta == 0){
+            consultaValida = DatosConsulta.IDCONSULTA_VACIO;
+        }else if(this.pacienteConsulta == null){
+            consultaValida = DatosConsulta.PACIENTECONSULTA_VACIO;
+        }else if(this.recetaConsulta == null){
+            consultaValida = DatosConsulta.RECETACONSULTA_VACIO;
+        }
+        return consultaValida;
     }
 
     public Date getFecha() {
@@ -122,14 +155,22 @@ public class Consulta {
     public void setRecetaConsulta(Receta recetaConsulta) {
         this.recetaConsulta = recetaConsulta;
     }
-
+    public void setIConsulta(IConsulta iConsulta){
+        this.iConsulta = iConsulta;
+    }
+    
     /**
      *
      * @param numeroSeguro
      * @param numeroPersonal
      */
     public boolean registrar(String numeroSeguro, String numeroPersonal) {
-        return false;
+        DatosConsulta datosConsulta = this.validarDatosConsulta();
+        boolean consultaRegistrada = false;
+        if(datosConsulta == DatosConsulta.VALIDO){
+            consultaRegistrada = this.iConsulta.registrar(numeroSeguro, numeroPersonal);
+        }
+        return consultaRegistrada;
     }
 
     /**
@@ -137,10 +178,10 @@ public class Consulta {
      * @param numeroSeguro
      */
     public List obtenerHistorialClinico(String numeroSeguro) {
-        return null;
+        return iConsulta.obtenerHistorialClinico(numeroSeguro);
     }
 
     public List obtenerHistorialBiometrico() {
-        return null;
+        return iConsulta.obtenerHistorialBiometrico(this.pacienteConsulta.getNumeroSeguro());
     }
 }//end Consulta
