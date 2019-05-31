@@ -143,4 +143,24 @@ public class Recepcionista extends Personal {
     public Recepcionista obtenerRecepcionista(String numeroPersonal){
         return iRecepcionista.obtenerRecepcionista(numeroPersonal);
     }
+
+    @Override
+    public boolean registrarEntrada(String numeroConsultorio) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean registrarSalida() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean eliminar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Personal obtenerPersonal(String numeroPersonal) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }//end Recepcionista

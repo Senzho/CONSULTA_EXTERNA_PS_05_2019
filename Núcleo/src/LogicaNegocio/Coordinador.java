@@ -115,12 +115,36 @@ public class Coordinador extends Personal {
      * @param estado
      * @return 
      */
-    @Override
+    //@Override
     public boolean cambiarEstado(boolean estado) {
         return iCoordinador.cambiarEstado(estado);
     }
     
     public Coordinador obtenerCoordinador(String numeroPersonal){
         return iCoordinador.obtenerCoordinador(numeroPersonal);
+    }
+
+    @Override
+    public boolean registrarEntrada(String numeroConsultorio) {
+        boolean entradaRegistrada = false;
+        if(hora != null){
+            entradaRegistrada = this.iCoordinador.registrarEntrada(hora);
+        }
+        return entradaRegistrada;      
+    }
+
+    @Override
+    public boolean registrarSalida() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean eliminar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Personal obtenerPersonal(String numeroPersonal) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }//end Coordinador

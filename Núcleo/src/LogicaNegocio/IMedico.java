@@ -12,10 +12,10 @@ import java.util.Date;
  * @author CrizUP
  */
 public interface IMedico {
-    public Medico obtenerMedico(String numeroPersonal);
-    public boolean registrarMedico(Medico medico);
-    public boolean modificarMedico(Medico medico);
-    public boolean registrarEntrada( String numeroConsultorio, String numPersonal);
-    public boolean registrarSalida();
-    public boolean cambiarEstado(boolean estado);
+    public boolean registrar(Medico coordinador);
+    public boolean modificar(Medico coordinador);
+    public boolean registrarEntrada(String numeroPersonal, String numeroConsultorio);
+    public boolean registrarSalida(String numeroPersonal);
+    public boolean eliminar();
+    public Medico obtenerMedico(String numeroPersonal);    
 }

@@ -14,8 +14,8 @@ import java.util.Date;
 public interface ICoordinador {
     public boolean registrar(Coordinador coordinador);
     public boolean modificar(Coordinador coordinador);
-    public boolean registrarEntrada(Date hora);
-    public boolean registrarSalida(Date hora);
-    public boolean cambiarEstado(boolean estado);
+    public boolean registrarEntrada(String numeroPersonal, String numeroConsultorio);
+    public boolean registrarSalida(String numeroPersonal);
+    public boolean eliminar();
     public Coordinador obtenerCoordinador(String numeroPersonal);    
 }

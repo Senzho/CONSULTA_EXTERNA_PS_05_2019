@@ -28,5 +28,5 @@ public enum DatosPersonal {
     TURNO_VACIO,
     VALIDO,
     ERROR_ALMACENAMIENTO,
-    EXITO
+    EXITO, FECHA_NACIMIENTO_VACIA
 }

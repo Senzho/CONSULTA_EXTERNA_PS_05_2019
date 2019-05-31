@@ -2,6 +2,7 @@ package LogicaNegocio;
 
 import Recursos.DatosMedico;
 import Recursos.DatosPaciente;
+import Recursos.DatosPersonal;
 import java.util.Date;
 
 /**
@@ -28,54 +29,54 @@ public class Medico extends Personal {
     public void setiMedico(IMedico iMedico) {
         this.iMedico = iMedico;
     }
-     private DatosMedico validarDatos(){
-        DatosMedico datosMedico = DatosMedico.VALIDO;
+    private DatosPersonal validarDatos(){
+        DatosPersonal datosMedico = DatosPersonal.VALIDO;
         if (this.nombre == null || this.nombre.trim().equals("")){
-            datosMedico = DatosMedico.NOMBRE_VACIO;
+            datosMedico = DatosPersonal.NOMBRE_VACIO;
         } else if (this.nombre.trim().length() > 70){
-            datosMedico = DatosMedico.NOMBRE_LARGO;
+            datosMedico = DatosPersonal.NOMBRE_LARGO;
         } else if (this.apellido.trim().equals("") || this.apellido == null){
-            datosMedico = DatosMedico.APELLIDO_VACIO;
+            datosMedico = DatosPersonal.APELLIDO_VACIO;
         } else if (this.apellido.trim().length() > 70){
-            datosMedico = DatosMedico.APELLIDO_LARGO;
+            datosMedico = DatosPersonal.APELLIDO_LARGO;
         } else if (this.rfc.trim().equals("")){
-            datosMedico = DatosMedico.RFC_VACIO;
+            datosMedico = DatosPersonal.RFC_VACIO;
         } else if (this.fechaNacimiento == null){
-            datosMedico = DatosMedico.FECHA_NACIMIENTO_VACIA;
+            datosMedico = DatosPersonal.FECHA_NACIMIENTO_VACIA;
         } else if (this.sexo == ' '){
-            datosMedico = DatosMedico.SEXO_VACIO;
+            datosMedico = DatosPersonal.SEXO_VACIO;
         } else if (this.numeroTelefono.trim().equals("") || this.numeroTelefono == null){
-            datosMedico = DatosMedico.NUMERO_TELEFONO_VACIO;
+            datosMedico = DatosPersonal.NUMERO_TELEFONO_VACIO;
         } else if (this.numeroTelefono.trim().length() > 12){
-            datosMedico = DatosMedico.NUMERO_TELEFONO_LARGO;
+            datosMedico = DatosPersonal.NUMERO_TELEFONO_LARGO;
         } else if(this.numeroTelefono.trim().length() < 10){
-            datosMedico = DatosMedico.NUMERO_TELEFONO_CORTO;
+            datosMedico = DatosPersonal.NUMERO_TELEFONO_CORTO;
         } else if (this.numeroPersonal.trim().equals("") || this.numeroPersonal == null){
-            datosMedico = DatosMedico.NUMERO_PERSONAL_VACIO;
+            datosMedico = DatosPersonal.NUMERO_PERSONAL_VACIO;
         } else if(this.turno.trim().equals("") || this.turno == null){
-            datosMedico = DatosMedico.TURNO_VACIO;
+            datosMedico = DatosPersonal.TURNO_VACIO;
         }
         return datosMedico;
     }
     
-    public DatosMedico registrarMedico() {
-        DatosMedico registro = this.validarDatos();
-        if (registro == DatosMedico.VALIDO){
+    /*public DatosPaciente registrarMedico() {
+        DatosPaciente registro = this.validarDatos();
+        if (registro == DatosPaciente.VALIDO){
             if (this.obtenerMedico(this.numeroPersonal) == null){
-                registro = this.iMedico.registrarMedico(this) ? DatosMedico.EXITO : DatosMedico.ERROR_ALMACENAMIENTO;
+                registro = this.iMedico.registrarMedico(this) ? DatosPaciente.EXITO : DatosPaciente.ERROR_ALMACENAMIENTO;
             }
         }
         return registro;
-    }
+    }*/
 
-    public DatosMedico modificarMedico() {
-        DatosMedico registro = this.validarDatos();
-        if (registro == DatosMedico.VALIDO){
-                registro = this.iMedico.modificarMedico(this) ? DatosMedico.EXITO : DatosMedico.ERROR_ALMACENAMIENTO;
+    /*public DatosPaciente modificarMedico() {
+        DatosPaciente registro = this.validarDatos();
+        if (registro == DatosPaciente.VALIDO){
+                registro = this.iMedico.modificarMedico(this) ? DatosPaciente.EXITO : DatosPaciente.ERROR_ALMACENAMIENTO;
             
         }
         return registro;
-    }
+    }*/
 
     public Medico obtenerMedico(String numeroPersonal) {
         return iMedico.obtenerMedico(numeroPersonal);
@@ -86,6 +87,7 @@ public class Medico extends Personal {
      * @param numeroConsultorio
      * @return 
      */
+    @Override
     public boolean registrarEntrada(String numeroConsultorio) {
         boolean respuesta = false;
         if (!numeroConsultorio.trim().equals("") || numeroConsultorio != null ) {
@@ -98,17 +100,39 @@ public class Medico extends Personal {
      *
      * @return 
      */
+    @Override
     public boolean registrarSalida() {
-        return iMedico.registrarSalida();
+        return iMedico.registrarSalida(numeroPersonal);
     }
 
-    /**
-     *
-     * @param estado
-     * @return 
-     */
     @Override
-    public boolean cambiarEstado(boolean estado) {
-        return false;
+    public DatosPersonal registrar() {
+        DatosPersonal registro = this.validarDatos();
+        if (registro == DatosPersonal.VALIDO){
+            if (this.obtenerMedico(this.numeroPersonal) == null){
+                registro = this.iMedico.registrar(this) ? DatosPersonal.EXITO : DatosPersonal.ERROR_ALMACENAMIENTO;
+            }
+        }
+        return registro;
+    }
+
+    @Override
+    public DatosPersonal modificar() {
+        DatosPersonal registro = this.validarDatos();
+        if (registro == DatosPersonal.VALIDO){
+                registro = this.iMedico.modificar(this) ? DatosPersonal.EXITO : DatosPersonal.ERROR_ALMACENAMIENTO;
+            
+        }
+        return registro;
+    }
+
+    @Override
+    public boolean eliminar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Personal obtenerPersonal(String numeroPersonal) {
+        return iMedico.obtenerMedico(numeroPersonal);
     }
 }//end Medico

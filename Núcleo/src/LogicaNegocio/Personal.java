@@ -87,44 +87,32 @@ public abstract class Personal {
         this.turno = turno;
     }
 
-    public DatosPersonal registrar() {
-        return DatosPersonal.VALIDO;
-    }
+   public abstract DatosPersonal registrar();
 
-    public DatosPersonal modificar() {
-        return DatosPersonal.VALIDO;
-    }
+    public abstract DatosPersonal modificar();
 
     /**
      *
      * @param hora
      * @param numeroConsultorio
      */
-    public boolean registrarEntrada(Date hora, String numeroConsultorio) {
-        return false;
-    }
+    public abstract boolean registrarEntrada(String numeroConsultorio);
 
     /**
      *
      * @param hora
      */
-    public boolean registrarSalida(Date hora) {
-        return false;
-    }
+    public abstract boolean registrarSalida();
 
     /**
      *
      * @param estado
      */
-    public boolean cambiarEstado(boolean estado) {
-        return false;
-    }
+    public abstract boolean eliminar();
 
     /**
      *
      * @param idUsuario
      */
-    public Personal obtenerPersonal(int idUsuario) {
-        return null;
-    }
+    public abstract Personal obtenerPersonal(String numeroPersonal);
 }//end Personal

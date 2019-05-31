@@ -13,12 +13,13 @@ import java.util.List;
  * @author mariolpz
  */
 public interface IRecepcionista {
+    
     public boolean registrar(Recepcionista recepcionista);
     public boolean modificar(Recepcionista recepcionista);
-    public boolean registrarEntrada(Date hora, String numeroConsultorio);
-    public boolean registrarSalida(Date hora);
+    public boolean registrarEntrada(String numeroPersonal, String numeroConsultorio);
+    public boolean registrarSalida(String numeroPersonal);
+    public boolean eliminar();
     public boolean agregarConsulta(Consulta consulta);
-    public boolean cambiarEstado(boolean estado);
     public List obtenerCitas(Date fecha);
     public Recepcionista obtenerRecepcionista(String numeroPersonal);
 }
