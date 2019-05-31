@@ -1,5 +1,6 @@
 package LogicaNegocio;
 
+import Recursos.DatosPersonal;
 import java.util.Date;
 
 /**
@@ -86,12 +87,12 @@ public abstract class Personal {
         this.turno = turno;
     }
 
-    public boolean registrar() {
-        return false;
+    public DatosPersonal registrar() {
+        return DatosPersonal.VALIDO;
     }
 
-    public boolean modificar() {
-        return false;
+    public DatosPersonal modificar() {
+        return DatosPersonal.VALIDO;
     }
 
     /**

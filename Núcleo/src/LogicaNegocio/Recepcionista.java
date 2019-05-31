@@ -61,6 +61,8 @@ public class Recepcionista extends Personal {
     public void setiRecepcionista(IRecepcionista iRecepcionista){
         this.iRecepcionista = iRecepcionista;
     }
+    
+    @Override
     public DatosPersonal registrar() {
         DatosPersonal datosRecepcionista = this.validarDatosRecepcionista();
         if(datosRecepcionista == DatosPersonal.VALIDO){
@@ -71,6 +73,7 @@ public class Recepcionista extends Personal {
         return datosRecepcionista;
     }
 
+    @Override
     public DatosPersonal modificar() {
         DatosPersonal modificar = this.validarDatosRecepcionista();
         if(modificar == DatosPersonal.VALIDO){
@@ -83,7 +86,9 @@ public class Recepcionista extends Personal {
      *
      * @param hora
      * @param numeroConsultorio
+     * @return 
      */
+    @Override
     public boolean registrarEntrada(Date hora, String numeroConsultorio) {
         boolean entradaRegistrada = false;
         if(hora != null){
@@ -97,7 +102,9 @@ public class Recepcionista extends Personal {
     /**
      *
      * @param hora
+     * @return 
      */
+    @Override
     public boolean registrarSalida(Date hora) {
         boolean salidaRegistrada = false;
         if(hora != null){
@@ -108,7 +115,8 @@ public class Recepcionista extends Personal {
 
     /**agregarConsulta
      *
-     * @param numeroSeguro
+     * @param consulta
+     * @return 
      *///modificado, recibia numeroSeguro
     public boolean agregarConsulta(Consulta consulta) {
         return this.iRecepcionista.agregarConsulta(consulta);
@@ -117,7 +125,9 @@ public class Recepcionista extends Personal {
     /**
      *
      * @param estado
+     * @return 
      */
+    @Override
     public boolean cambiarEstado(boolean estado) {
         return this.iRecepcionista.cambiarEstado(estado);
     }
@@ -125,6 +135,7 @@ public class Recepcionista extends Personal {
     /**
      *
      * @param fecha
+     * @return 
      */
     public List obtenerCitas(Date fecha) {
         return this.iRecepcionista.obtenerCitas(fecha);

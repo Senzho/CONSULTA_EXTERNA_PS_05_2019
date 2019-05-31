@@ -84,6 +84,7 @@ public class Medico extends Personal {
     /**
      *
      * @param numeroConsultorio
+     * @return 
      */
     public boolean registrarEntrada(String numeroConsultorio) {
         boolean respuesta = false;
@@ -95,6 +96,7 @@ public class Medico extends Personal {
 
     /**
      *
+     * @return 
      */
     public boolean registrarSalida() {
         return iMedico.registrarSalida();
@@ -103,7 +105,9 @@ public class Medico extends Personal {
     /**
      *
      * @param estado
+     * @return 
      */
+    @Override
     public boolean cambiarEstado(boolean estado) {
         return false;
     }

@@ -63,6 +63,7 @@ public class Coordinador extends Personal {
         return datosCoordinador;
     }
   
+    @Override
     public DatosPersonal registrar() {
        DatosPersonal registrar = this.validarDatosCoordinador();
        if(registrar == DatosPersonal.VALIDO){
@@ -73,6 +74,7 @@ public class Coordinador extends Personal {
        return registrar;
     }
 
+    @Override
     public DatosPersonal modificar() {
         DatosPersonal modificar = this.validarDatosCoordinador();
         if(modificar == DatosPersonal.VALIDO){
@@ -97,7 +99,9 @@ public class Coordinador extends Personal {
     /**
      *
      * @param hora
+     * @return 
      */
+    @Override
     public boolean registrarSalida(Date hora) {
         boolean salidaRegistrada = false;
         if(hora != null){
@@ -109,7 +113,9 @@ public class Coordinador extends Personal {
     /**
      *
      * @param estado
+     * @return 
      */
+    @Override
     public boolean cambiarEstado(boolean estado) {
         return iCoordinador.cambiarEstado(estado);
     }
