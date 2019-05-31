@@ -4,14 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/src/LogicaNegocio/Medico.java</file>
-            <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/src/LogicaNegocio/IMedico.java</file>
+            <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/src/LogicaNegocio/Cita.java</file>
+            <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/test/Prueba/CitaPersistenciaPrueba.java</file>
             <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/test/LogicaNegocio/MedicoTest.java</file>
-            <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/src/LogicaNegocio/IPaciente.java</file>
             <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/test/Prueba/MedicoPersistenciaPrueba.java</file>
+            <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/test/LogicaNegocio/CitaTest.java</file>
             <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/test/LogicaNegocio/PacienteTest.java</file>
-            <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/src/LogicaNegocio/Paciente.java</file>
             <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/test/Prueba/PacientePrueba.java</file>
-            <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/src/Recursos/DatosPaciente.java</file>
+            <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/src/LogicaNegocio/Paciente.java</file>
+            <file>file:/C:/Users/Cristian/Documents/GItHub%20projects/CONSULTA_EXTERNA_PS_05_2019/Núcleo/src/LogicaNegocio/ICita.java</file>
         </group>
     </open-files>
 </project-private>
