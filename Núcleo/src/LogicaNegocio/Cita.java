@@ -72,6 +72,8 @@ public class Cita {
      *
      * @param numeroSeguro
      * @param numeroPersonal
+     * #Podría no recibir ningún parámetro, los números los puede sacar del médico y el paciente, y la fecha la tiene como atributo#
+     * #La interfaz podría enviar la propia cita (this)#
      */
     public boolean registrar(String numeroSeguro, String numeroPersonal, Date horaReserva) {
         return this.iCita.registrar(numeroSeguro, numeroPersonal, horaReserva);

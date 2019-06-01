@@ -1,6 +1,7 @@
 package WS;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -24,6 +25,16 @@ public class ServicioRecepcionista {
         
     }
     
+    @DELETE
+    @Path("eliminar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    /**
+     * @param idRecepcionista: recibe el identificador del recepcionista.
+     */
+    public String cambiarEstado(@PathParam("id") int idRecepcionista) {
+        return null;
+    }
+    
     @GET
     @Path("obtener/{numero}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -31,7 +42,7 @@ public class ServicioRecepcionista {
      * @param numeroPersonal: recibe el número de personal.
      */
     public String obtener(@PathParam("numero") String numeroPersonal) {
-        return numeroPersonal;
+        return null;
     }
     
     @POST
@@ -42,30 +53,28 @@ public class ServicioRecepcionista {
      * @param contenido: recibe el recepcionista en JSON.
      */
     public String registrar(String contenido) {
-        return contenido;
+        return null;
     }
     
     @POST
-    @Path("registrarentrada/{fecha}/{numero}/{id}")
+    @Path("registrarentrada/{numero}/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
-     * @param fecha: recibe la fecha.
      * @param numeroConsultorio: recibe el número de consultorio.
      * @param idRecepcionista: recibe el identificador del recepcionista.
      */
-    public String registrarEntrada(@PathParam("fecha") String fecha, @PathParam("numero") String numeroConsultorio, @PathParam("id") int idRecepcionista) {
-        return fecha + numeroConsultorio + idRecepcionista;
+    public String registrarEntrada(@PathParam("numero") String numeroConsultorio, @PathParam("id") int idRecepcionista) {
+        return null;
     }
     
     @POST
-    @Path("registrarsalida/{fecha}/{id}")
+    @Path("registrarsalida/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
-     * @param fecha: recibe la fecha.
      * @param idRecepcionista: recibe el identificador del recepcionista.
      */
-    public String registrarSalida(@PathParam("fecha") String fecha, @PathParam("id") int idRecepcionista) {
-        return fecha + idRecepcionista;
+    public String registrarSalida(@PathParam("id") int idRecepcionista) {
+        return null;
     }
     
     @PUT
@@ -76,17 +85,6 @@ public class ServicioRecepcionista {
      * @param contenido: recibe el recepcionista en JSON.
      */
     public String modificar(String contenido) {
-        return contenido;
-    }
-    
-    @PUT
-    @Path("cambiarestado/{estado}/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    /**
-     * @param estado: recibe el estado del recepcionista.
-     * @param idRecepcionista: recibe el identificador del recepcionista.
-     */
-    public String cambiarEstado(@PathParam("estado") boolean estado, @PathParam("id") int idRecepcionista) {
-        return estado ? "activo" : "inactivo" + idRecepcionista;
+        return null;
     }
 }

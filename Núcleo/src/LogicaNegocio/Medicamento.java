@@ -64,6 +64,9 @@ public class Medicamento {
         this.iMedicamento = iMedicamento;
     }
 
+    /**
+     * @return 
+     */
     public List<Medicamento> obtenerMedicamentos() {
         return this.iMedicamento.obtenerMedicamentos();
     }

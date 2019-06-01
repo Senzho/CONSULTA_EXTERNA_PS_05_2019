@@ -1,6 +1,7 @@
 package WS;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -24,6 +25,16 @@ public class ServicioCoordinador {
         
     }
     
+    @DELETE
+    @Path("eliminar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    /**
+     * @param idCoordinador: recibe el identificador del coordinador.
+     */
+    public String eliminar(@PathParam("id") int idCoordinador) {
+        return null;
+    }
+    
     @GET
     @Path("obtener/{numero}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -31,7 +42,7 @@ public class ServicioCoordinador {
      * @param numeroPersonal: recibe el número de personal.
      */
     public String obtener(@PathParam("numero") String numeroPersonal) {
-        return numeroPersonal;
+        return null;
     }
     
     @POST
@@ -42,29 +53,28 @@ public class ServicioCoordinador {
      * @param contenido: recibe el coordinador en JSON.
      */
     public String registrar(String contenido) {
-        return contenido;
+        return null;
     }
     
     @POST
-    @Path("registrarentrada/{fecha}/{id}")
+    @Path("registrarentrada/{numero}/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
-     * @param fecha: recibe la fecha.
+     * @param numero: recibe el número de consultorio.
      * @param idCoordinador: recibe el identificador del coordinador.
      */
-    public String registrarEntrada(@PathParam("fecha") String fecha, @PathParam("id") int idCoordinador) {
-        return fecha + idCoordinador;
+    public String registrarEntrada(@PathParam("numero") String numeroConsultorio, @PathParam("id") int idCoordinador) {
+        return null;
     }
     
     @POST
-    @Path("registrarsalida/{fecha}/{id}")
+    @Path("registrarsalida/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
-     * @param fecha: recibe la fecha.
      * @param idCoordinador: recibe el identificador del coordinador.
      */
-    public String registrarSalida(@PathParam("fecha") String fecha, @PathParam("id") int idCoordinador) {
-        return fecha + idCoordinador;
+    public String registrarSalida(@PathParam("id") int idCoordinador) {
+        return null;
     }
     
     @PUT
@@ -75,17 +85,6 @@ public class ServicioCoordinador {
      * @param contenido: recibe el coordinador en JSON.
      */
     public String modificar(String contenido) {
-        return contenido;
-    }
-    
-    @PUT
-    @Path("cambiarestado/{estado}/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    /**
-     * @param estado: recibe el estado del coordinador.
-     * @param idCoordinador: recibe el identificador del coordinador.
-     */
-    public String cambiarEstado(@PathParam("estado") boolean estado, @PathParam("id") int idCoordinador) {
-        return estado ? "activo" : "inactivo" + idCoordinador;
+        return null;
     }
 }

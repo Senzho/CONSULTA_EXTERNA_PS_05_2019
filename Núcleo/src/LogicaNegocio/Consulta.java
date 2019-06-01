@@ -163,6 +163,8 @@ public class Consulta {
      *
      * @param numeroSeguro
      * @param numeroPersonal
+     * #Podría no recibir nada, ambos parámetros puede sacarlos del médico y del paciente#
+     * #En la interfaz (this.iConsulta.registrar()) falta enviar propiamente la consulta (this)#
      */
     public boolean registrar(String numeroSeguro, String numeroPersonal) {
         DatosConsulta datosConsulta = this.validarDatosConsulta();
@@ -176,6 +178,7 @@ public class Consulta {
     /**
      *
      * @param numeroSeguro
+     * #Podría no recibir el numero, lo puede sacar del paciente#
      */
     public List obtenerHistorialClinico(String numeroSeguro) {
         return iConsulta.obtenerHistorialClinico(numeroSeguro);

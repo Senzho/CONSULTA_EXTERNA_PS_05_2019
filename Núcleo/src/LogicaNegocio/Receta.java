@@ -93,7 +93,14 @@ public class Receta {
         return validacion;
     }
 
-    public List<Medicamento> obtenerMedicamentosRecetados() {
+    /**
+     * #Recuerdo que esto es para el reporte, se obtendrían de algun periodo en especial?#
+     * @param fechaMenor: recibe la fecha desde la cual se desea el histórico.
+     * @param fechaMayor: recibe la fecha hasta la cual se desea el histórico.
+     * @return 
+     */
+    //Agregadas fechas, no recibía nada.
+    public List<Medicamento> obtenerMedicamentosRecetados(Date fechaMenor, Date fechaMayor) {
         return this.iReceta.obtenerMedicamentosRecetados();
     }
 }//end Receta

@@ -1,6 +1,7 @@
 package WS;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -24,6 +25,16 @@ public class ServicioMedico {
         
     }
     
+    @DELETE
+    @Path("eliminar/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    /**
+     * @param idMedico: recibe el identificador del medico.
+     */
+    public String cambiarEstado(@PathParam("id") int idMedico) {
+        return null;
+    }
+    
     @GET
     @Path("obtener/{numero}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -31,7 +42,7 @@ public class ServicioMedico {
      * @param numeroPersonal: recibe el número de personal.
      */
     public String obtener(@PathParam("numero") String numeroPersonal) {
-        return numeroPersonal;
+        return null;
     }
     
     @POST
@@ -42,7 +53,7 @@ public class ServicioMedico {
      * @param contenido: recibe el medico en JSON.
      */
     public String registrar(String contenido) {
-        return contenido;
+        return null;
     }
     
     @POST
@@ -53,18 +64,17 @@ public class ServicioMedico {
      * @param idMedico: recibe el identificador del medico.
      */
     public String registrarEntrada(@PathParam("numero") String numeroConsultorio, @PathParam("id") int idMedico) {
-        return numeroConsultorio + idMedico;
+        return null;
     }
     
     @POST
-    @Path("registrarsalida/{fecha}/{id}")
+    @Path("registrarsalida/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
-     * @param fecha: recibe la fecha.
      * @param idMedico: recibe el identificador del medico.
      */
-    public String registrarSalida(@PathParam("fecha") String fecha, @PathParam("id") int idMedico) {
-        return fecha + idMedico;
+    public String registrarSalida(@PathParam("id") int idMedico) {
+        return null;
     }
     
     @PUT
@@ -75,17 +85,6 @@ public class ServicioMedico {
      * @param contenido: recibe el medico en JSON.
      */
     public String modificar(String contenido) {
-        return contenido;
-    }
-    
-    @PUT
-    @Path("cambiarestado/{estado}/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    /**
-     * @param estado: recibe el estado del medico.
-     * @param idMedico: recibe el identificador del medico.
-     */
-    public String cambiarEstado(@PathParam("estado") boolean estado, @PathParam("id") int idMedico) {
-        return estado ? "activo" : "inactivo" + idMedico;
+        return null;
     }
 }
