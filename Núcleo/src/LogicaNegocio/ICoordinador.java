@@ -16,6 +16,6 @@ public interface ICoordinador {
     public boolean modificar(Coordinador coordinador);
     public boolean registrarEntrada(String numeroPersonal, String numeroConsultorio);
     public boolean registrarSalida(String numeroPersonal);
-    public boolean eliminar();
+    public boolean eliminar(String numeroPersonal);
     public Coordinador obtenerCoordinador(String numeroPersonal);    
 }

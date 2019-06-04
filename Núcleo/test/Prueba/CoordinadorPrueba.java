@@ -43,6 +43,7 @@ public class CoordinadorPrueba implements ICoordinador{
         this.coordinador.setICoordinador(this);
         this.coordinadores.add(this.coordinador);
     }
+
     @Override
     public boolean registrar(Coordinador coordinador) {
         return this.coordinadores.add(coordinador);
@@ -64,17 +65,17 @@ public class CoordinadorPrueba implements ICoordinador{
     }
 
     @Override
-    public boolean registrarEntrada(Date hora) {
+    public boolean registrarEntrada(String numeroPersonal, String numeroConsultorio) {
         return true;
     }
 
     @Override
-    public boolean registrarSalida(Date hora) {
+    public boolean registrarSalida(String numeroPersonal) {
         return true;
     }
 
     @Override
-    public boolean cambiarEstado(boolean estado) {
+    public boolean eliminar(String numeroPersonal) {
         return true;
     }
 
@@ -90,5 +91,6 @@ public class CoordinadorPrueba implements ICoordinador{
         }
         return coordinadorRegistro;
     }
+    
     
 }

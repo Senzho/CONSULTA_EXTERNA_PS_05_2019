@@ -70,18 +70,18 @@ public class RecepcionistaTest {
     }
     @Test
     public void registrarEntradaTest(){
-        assertTrue(recepcionista.registrarEntrada(new Date(), "12"));
+        assertTrue(recepcionista.registrarEntrada("12"));
     }
     @Test
     public void registrarSalidaTest(){
-        assertTrue(recepcionista.registrarSalida(new Date()));
+        assertTrue(recepcionista.registrarSalida());
     }
     public void registrarConsultaTest(){
         Consulta consulta = new Consulta();
         assertTrue(recepcionista.agregarConsulta(consulta));
     }
     public void cambiarEstadoTest(){
-        assertTrue(this.recepcionista.cambiarEstado(true));
+        assertTrue(this.recepcionista.eliminar());
     }
     @Test
     public void obtenerCitasTest(){

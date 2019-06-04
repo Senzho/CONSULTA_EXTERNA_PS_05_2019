@@ -71,24 +71,26 @@ public class CoordinadorTest {
         assertNotEquals(this.coordinador.modificar(), DatosPersonal.EXITO);
         this.coordinador.setNombre("Abril");   
     }
+    //por que un coordinador tendria que registrar su entrada en un numero de consultorio?
     @Test
     public void registrarEntradaTest(){
-        assertTrue(this.coordinador.registrarEntrada(new Date()));
+        assertTrue(this.coordinador.registrarEntrada("12"));
     }
      @Test
     public void registrarSalidaTest(){
-        assertTrue(this.coordinador.registrarSalida(new Date()));
+        assertTrue(this.coordinador.registrarSalida());
     }
     @Test
     public void cambiarEstadoTest(){
-        assertTrue(this.coordinador.cambiarEstado(true));
+        assertTrue(this.coordinador.eliminar());
     }
     @Test
     public void obtenerCoordinadorTest(){
-        assertNotNull(this.coordinador.obtenerCoordinador("2017"));
+        this.coordinador.registrar();
+        assertNotNull(this.coordinador.obtenerPersonal(this.coordinador.getNumeroPersonal()));
     }
      @Test
     public void obtenerCoordinadorInvalidoTest(){
-        assertNull(this.coordinador.obtenerCoordinador("2015"));
+        assertNull(this.coordinador.obtenerPersonal("2015"));
     }
 }

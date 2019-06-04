@@ -16,9 +16,9 @@ public interface IRecepcionista {
     
     public boolean registrar(Recepcionista recepcionista);
     public boolean modificar(Recepcionista recepcionista);
-    public boolean registrarEntrada(String numeroPersonal, String numeroConsultorio);
+    public boolean registrarEntrada(String numeroConsultorio, String numeroPersonal);
     public boolean registrarSalida(String numeroPersonal);
-    public boolean eliminar();
+    public boolean eliminar(String numeroPersonal);
     public boolean agregarConsulta(Consulta consulta);
     public List obtenerCitas(Date fecha);
     public Recepcionista obtenerRecepcionista(String numeroPersonal);

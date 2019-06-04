@@ -61,106 +61,60 @@ public class Recepcionista extends Personal {
     public void setiRecepcionista(IRecepcionista iRecepcionista){
         this.iRecepcionista = iRecepcionista;
     }
-    
+
     @Override
     public DatosPersonal registrar() {
-        DatosPersonal datosRecepcionista = this.validarDatosRecepcionista();
-        if(datosRecepcionista == DatosPersonal.VALIDO){
-           if(this.obtenerRecepcionista(this.getNumeroPersonal()) == null){
-               datosRecepcionista = this.iRecepcionista.registrar(this)? DatosPersonal.EXITO : DatosPersonal.ERROR_ALMACENAMIENTO;
-           }
+        DatosPersonal datosPersonal = this.validarDatosRecepcionista();
+        if(datosPersonal == DatosPersonal.VALIDO){
+            if(this.obtenerPersonal(this.getNumeroPersonal())== null){
+                datosPersonal = this.iRecepcionista.registrar(this)? 
+                        DatosPersonal.EXITO : DatosPersonal.ERROR_ALMACENAMIENTO;
+            }
         }
-        return datosRecepcionista;
+        return datosPersonal;
     }
 
     @Override
     public DatosPersonal modificar() {
         DatosPersonal modificar = this.validarDatosRecepcionista();
         if(modificar == DatosPersonal.VALIDO){
-            modificar = this.iRecepcionista.modificar(this)? DatosPersonal.EXITO : DatosPersonal.ERROR_ALMACENAMIENTO;
+            modificar = this.iRecepcionista.modificar(this)?
+                   DatosPersonal.EXITO : DatosPersonal.ERROR_ALMACENAMIENTO;
         }
         return modificar;
     }
 
-    /**
-     *
-     * @param hora
-     * @param numeroConsultorio
-     * @return 
-     */
-    @Override
-    public boolean registrarEntrada(Date hora, String numeroConsultorio) {
-        boolean entradaRegistrada = false;
-        if(hora != null){
-            if(numeroConsultorio != null || !numeroConsultorio.trim().equals("")){
-                entradaRegistrada = this.iRecepcionista.registrarEntrada(hora, numeroConsultorio);
-            }
-        }
-        return entradaRegistrada;        
-    }
-
-    /**
-     *
-     * @param hora
-     * @return 
-     */
-    @Override
-    public boolean registrarSalida(Date hora) {
-        boolean salidaRegistrada = false;
-        if(hora != null){
-            salidaRegistrada = this.iRecepcionista.registrarSalida(hora);
-        }
-        return salidaRegistrada;
-    }
-
-    /**agregarConsulta
-     *
-     * @param consulta
-     * @return 
-     *///modificado, recibia numeroSeguro
-    public boolean agregarConsulta(Consulta consulta) {
-        return this.iRecepcionista.agregarConsulta(consulta);
-    }
-
-    /**
-     *
-     * @param estado
-     * @return 
-     */
-    @Override
-    public boolean cambiarEstado(boolean estado) {
-        return this.iRecepcionista.cambiarEstado(estado);
-    }
-
-    /**
-     *
-     * @param fecha
-     * @return 
-     */
-    public List obtenerCitas(Date fecha) {
-        return this.iRecepcionista.obtenerCitas(fecha);
-    }
-    public Recepcionista obtenerRecepcionista(String numeroPersonal){
-        return iRecepcionista.obtenerRecepcionista(numeroPersonal);
-    }
-
     @Override
     public boolean registrarEntrada(String numeroConsultorio) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean entradaRegistrada = false;
+        if(!numeroConsultorio.trim().equals("")){
+            entradaRegistrada = this.iRecepcionista.registrarEntrada(numeroConsultorio, this.getNumeroPersonal());
+        }
+        
+        return entradaRegistrada; 
     }
 
     @Override
     public boolean registrarSalida() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.iRecepcionista.registrarSalida(this.getNumeroPersonal());
     }
 
     @Override
     public boolean eliminar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return this.iRecepcionista.eliminar(this.getNumeroPersonal());
     }
 
     @Override
     public Personal obtenerPersonal(String numeroPersonal) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return iRecepcionista.obtenerRecepcionista(numeroPersonal);
     }
+
+    public boolean agregarConsulta(Consulta consulta) {
+        return this.iRecepcionista.agregarConsulta(consulta);
+    }
+
+    public List obtenerCitas(Date fecha) {
+        return this.iRecepcionista.obtenerCitas(fecha);
+    }
+    
 }//end Recepcionista

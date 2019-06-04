@@ -56,7 +56,7 @@ public class RecepcionistaPrueba implements IRecepcionista {
 
     @Override
     public boolean registrar(Recepcionista recepcionista) {
-        return this.recepcionistas.add(recepcionista);
+       return this.recepcionistas.add(recepcionista);
     }
 
     @Override
@@ -75,13 +75,18 @@ public class RecepcionistaPrueba implements IRecepcionista {
     }
 
     @Override
-    public boolean registrarEntrada(Date hora, String numeroConsultorio) {
+    public boolean registrarEntrada(String numeroConsultorio, String numeroPersonal) {
+       return true;
+    }
+
+    @Override
+    public boolean registrarSalida(String numeroPersonal) {
         return true;
     }
 
     @Override
-    public boolean registrarSalida(Date hora) {
-        return true;
+    public boolean eliminar(String numeroPersonal) {
+       return true;
     }
 
     @Override
@@ -89,11 +94,6 @@ public class RecepcionistaPrueba implements IRecepcionista {
         return this.consultas.add(consulta);
     }
 
-    @Override
-    public boolean cambiarEstado(boolean estado) {
-        return true;
-    }
-    // tengo una duda: obtienes las citas del dia?
     @Override
     public List obtenerCitas(Date fecha) {
         this.citas.add(new Cita());
@@ -111,5 +111,7 @@ public class RecepcionistaPrueba implements IRecepcionista {
         }
         return recepcionista;
     }
+
+    
     
 }

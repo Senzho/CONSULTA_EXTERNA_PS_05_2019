@@ -62,89 +62,48 @@ public class Coordinador extends Personal {
         }
         return datosCoordinador;
     }
-  
+
     @Override
     public DatosPersonal registrar() {
-       DatosPersonal registrar = this.validarDatosCoordinador();
-       if(registrar == DatosPersonal.VALIDO){
-           if(this.obtenerCoordinador(this.getNumeroPersonal()) == null){
-               registrar = this.iCoordinador.registrar(this)?DatosPersonal.EXITO:DatosPersonal.ERROR_ALMACENAMIENTO;
-           }
-       }
-       return registrar;
+        DatosPersonal coordinadorRegistrado = this.validarDatosCoordinador();
+        if(coordinadorRegistrado == DatosPersonal.VALIDO){
+            if(this.obtenerPersonal(this.getNumeroPersonal())== null){
+                coordinadorRegistrado = this.iCoordinador.registrar(this)?
+                        DatosPersonal.EXITO : DatosPersonal.ERROR_ALMACENAMIENTO;
+            }
+        }
+        return coordinadorRegistrado;
     }
 
     @Override
     public DatosPersonal modificar() {
-        DatosPersonal modificar = this.validarDatosCoordinador();
-        if(modificar == DatosPersonal.VALIDO){
-            modificar = this.iCoordinador.modificar(this)?DatosPersonal.EXITO:DatosPersonal.ERROR_ALMACENAMIENTO;
+        DatosPersonal coordinadorModificado = this.validarDatosCoordinador();
+        if(coordinadorModificado == DatosPersonal.VALIDO){
+            coordinadorModificado = this.iCoordinador.modificar(this)?
+                    DatosPersonal.EXITO : DatosPersonal.ERROR_ALMACENAMIENTO;
         }
-        return modificar;
-    }
-
-    /**
-     *
-     * @param hora
-     * @param numeroConsultorio
-     *///borre numero de consultorio, registra la entrada de el o la de alguien más?
-    public boolean registrarEntrada(Date hora) {
-        boolean entradaRegistrada = false;
-        if(hora != null){
-            entradaRegistrada = this.iCoordinador.registrarEntrada(hora);
-        }
-        return entradaRegistrada;       
-    }
-
-    /**
-     *
-     * @param hora
-     * @return 
-     */
-    @Override
-    public boolean registrarSalida(Date hora) {
-        boolean salidaRegistrada = false;
-        if(hora != null){
-            salidaRegistrada = this.iCoordinador.registrarSalida(hora);
-        }
-        return salidaRegistrada;
-    }
-
-    /**
-     *
-     * @param estado
-     * @return 
-     */
-    //@Override
-    public boolean cambiarEstado(boolean estado) {
-        return iCoordinador.cambiarEstado(estado);
-    }
-    
-    public Coordinador obtenerCoordinador(String numeroPersonal){
-        return iCoordinador.obtenerCoordinador(numeroPersonal);
+        return coordinadorModificado;
     }
 
     @Override
     public boolean registrarEntrada(String numeroConsultorio) {
-        boolean entradaRegistrada = false;
-        if(hora != null){
-            entradaRegistrada = this.iCoordinador.registrarEntrada(hora);
-        }
-        return entradaRegistrada;      
+         return this.iCoordinador.registrarEntrada(this.getNumeroPersonal(), numeroConsultorio);
     }
 
     @Override
     public boolean registrarSalida() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.iCoordinador.registrarSalida(this.getNumeroPersonal());
+       
     }
 
     @Override
     public boolean eliminar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.iCoordinador.eliminar(this.getNumeroPersonal());
     }
 
     @Override
     public Personal obtenerPersonal(String numeroPersonal) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.iCoordinador.obtenerCoordinador(numeroPersonal);
     }
+  
 }//end Coordinador
