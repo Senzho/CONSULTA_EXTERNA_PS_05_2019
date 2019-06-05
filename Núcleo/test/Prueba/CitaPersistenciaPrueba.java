@@ -67,7 +67,7 @@ public class CitaPersistenciaPrueba implements ICita{
     
     public boolean registrar(String numeroSeguro, String numeroPersonal, Date horaReserva) {
         boolean registrado = false;
-        if(this.medicos.getMedico().obtenerMedico(numeroSeguro) != null && this.pacientes.getPaciente().obtenerPaciente(numeroPersonal) != null){
+        if(this.medicos.getMedico().obtenerMedico(numeroPersonal) != null && this.pacientes.getPaciente().obtenerPaciente(numeroSeguro) != null){
             boolean existe = false;
             for (Cita pacienteLista : this.citas){
                 if (pacienteLista.getHoraReserva().equals(horaReserva)){

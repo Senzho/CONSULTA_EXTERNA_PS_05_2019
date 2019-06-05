@@ -71,9 +71,18 @@ public class MedicoPersistenciaPrueba implements IMedico{
         return medico;
     }
 
+    /**
+     * lo siguientes metodos actuarián en una tabla  de registros en la bd 
+     * por lo que no importa 
+     */
     @Override
-    public boolean registrarMedico(Medico medico) {
-        boolean registrado = false;
+    public boolean registrarEntrada(String numeroConsultorio, String numPersonal) {
+        return true;
+    }
+
+    @Override
+    public boolean registrar(Medico medico) {
+         boolean registrado = false;
         if(obtenerMedico(medico.getNumeroPersonal()) == null){
             registrado = this.medicos.add(medico);
         } 
@@ -81,7 +90,7 @@ public class MedicoPersistenciaPrueba implements IMedico{
     }
 
     @Override
-    public boolean modificarMedico(Medico medico) {
+    public boolean modificar(Medico medico) {
          boolean modificado = false;
         for (Medico pacienteLista : this.medicos){
             if (pacienteLista.getNumeroPersonal().equals(medico.getNumeroPersonal())){
@@ -100,23 +109,14 @@ public class MedicoPersistenciaPrueba implements IMedico{
         return modificado;
     }
 
-    /**
-     * lo siguientes metodos actuarián en una tabla  de registros en la bd 
-     * por lo que no importa 
-     */
     @Override
-    public boolean registrarEntrada(String numeroConsultorio, String numPersonal) {
-        return true;
+    public boolean registrarSalida(String numeroPersonal) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean registrarSalida() {
-        return true;
-    }
-
-    @Override
-    public boolean cambiarEstado(boolean estado) {
-        return true;
+    public boolean eliminar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

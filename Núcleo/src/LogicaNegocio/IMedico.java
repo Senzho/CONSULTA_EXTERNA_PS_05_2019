@@ -12,8 +12,8 @@ import java.util.Date;
  * @author CrizUP
  */
 public interface IMedico {
-    public boolean registrar(Medico coordinador);
-    public boolean modificar(Medico coordinador);
+    public boolean registrar(Medico medico);
+    public boolean modificar(Medico medico);
     public boolean registrarEntrada(String numeroPersonal, String numeroConsultorio);
     public boolean registrarSalida(String numeroPersonal);
     public boolean eliminar();

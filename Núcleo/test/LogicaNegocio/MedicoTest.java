@@ -59,13 +59,13 @@ public class MedicoTest {
     }
     @Test
     public void registrarExitoTest() {
-        assertEquals(this.medico.registrarMedico(), DatosMedico.EXITO);
+        assertEquals(this.medico.registrar(), DatosMedico.EXITO);
     }
 
     @Test
     public void registrarNoExitoTest() {
         this.medico.setApellido("");
-        assertNotEquals(this.medico.registrarMedico(), DatosMedico.EXITO);
+        assertNotEquals(this.medico.registrar(), DatosMedico.EXITO);
         this.medico.setApellido("Ubaldo sangabriel");
     }
     
@@ -73,14 +73,14 @@ public class MedicoTest {
     public void testModificar() {
         Medico medicoModificado = this.prueba.getMedico();
         medicoModificado.setNumeroTelefono("2283818245");
-        assertEquals(medicoModificado.modificarMedico(), DatosMedico.EXITO);
+        assertEquals(medicoModificado.modificar(), DatosMedico.EXITO);
     }
 
     @Test
     public void testModificarFallo() {
         Medico medicoModificado = this.prueba.getMedico();
         medicoModificado.setNumeroTelefono("");
-        assertNotEquals(medicoModificado.modificarMedico(), DatosMedico.EXITO);
+        assertNotEquals(medicoModificado.modificar(), DatosMedico.EXITO);
     }
     
 }
