@@ -13,7 +13,7 @@ import javax.ws.rs.core.UriInfo;
  * @author Victor Javier
  */
 @Path("Medicamento")
-public class ServicioMedicamento {
+public class ServicioMedicamento extends ServicioSeguro {
     @Context
     private UriInfo contexto;
     
@@ -22,20 +22,30 @@ public class ServicioMedicamento {
     }
     
     @GET
-    @Path("obtener")
+    @Path("obtener/{token}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String obtener() {
+    /**
+     * @param token: recibe el token de sesión.
+     */
+    public String obtener(@PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
     
     @GET
-    @Path("obtenerrecetados/{desde}/{hasta}")
+    @Path("obtenerrecetados/{desde}/{hasta}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param fechaMenor: recibe la fecha desde la cual se quiere el histórico.
      * @param fechaMayor: recibe la fecha hasta la cual se requiere el histórico.
+     * @param token: recibe el token de sesión.
      */
-    public String obtenerRecetados(@PathParam("desde") String fechaMenor, @PathParam("hasta") String fechaMayor) {
+    public String obtenerRecetados(@PathParam("desde") String fechaMenor, @PathParam("hasta") String fechaMayor, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
 }

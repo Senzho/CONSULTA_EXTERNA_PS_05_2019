@@ -16,7 +16,7 @@ import javax.ws.rs.core.UriInfo;
  * @author Victor Javier
  */
 @Path("Paciente")
-public class ServicioPaciente {
+public class ServicioPaciente extends ServicioSeguro {
     @Context
     private UriInfo contexto;
     
@@ -25,34 +25,46 @@ public class ServicioPaciente {
     }
     
     @GET
-    @Path("obtener/{numero}")
+    @Path("obtener/{numero}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param numeroSeguro: recibe el número de seguro.
+     * @param token: recibe el token de sesión.
      */
-    public String obtener(@PathParam("numero") String numeroSeguro) {
+    public String obtener(@PathParam("numero") String numeroSeguro, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
     
     @POST
-    @Path("registrar")
+    @Path("registrar/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param contenido: recibe el paciente en JSON.
+     * @param token: recibe el token de sesión.
      */
-    public String registrar(String contenido) {
+    public String registrar(String contenido, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
     
     @PUT
-    @Path("modificar")
+    @Path("modificar/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param contenido: recibe el paciente en JSON.
+     * @param token: recibe el token de sesión.
      */
-    public String modificar(String contenido) {
+    public String modificar(String contenido, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
 }

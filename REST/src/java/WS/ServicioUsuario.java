@@ -16,7 +16,7 @@ import javax.ws.rs.core.UriInfo;
  * @author Victor Javier
  */
 @Path("Usuario")
-public class ServicioUsuario {
+public class ServicioUsuario extends ServicioSeguro {
     @Context
     private UriInfo contexto;
     
@@ -25,35 +25,47 @@ public class ServicioUsuario {
     }
     
     @GET
-    @Path("obtener/{nombre}/{contraseña}")
+    @Path("obtener/{nombre}/{contraseña}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param numeroUsuario: recibe el nombre de usuario.
      * @param contraseña: recibe la contraseña del usuario.
+     * @param token: recibe el token de sesión.
      */
-    public String obtener(@PathParam("nombre") String nombreUsuario, @PathParam("contraseña") String contraseña) {
+    public String obtener(@PathParam("nombre") String nombreUsuario, @PathParam("contraseña") String contraseña, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
     
     @POST
-    @Path("registrar")
+    @Path("registrar/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param contenido: recibe el usuario en JSON.
+     * @param token: recibe el token de sesión.
      */
-    public String registrar(String contenido) {
+    public String registrar(String contenido, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
     
     @PUT
-    @Path("modificar")
+    @Path("modificar/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param contenido: recibe el usuario en JSON.
+     * @param token: recibe el token de sesión.
      */
-    public String modificar(String contenido) {
+    public String modificar(String contenido, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
 }

@@ -17,7 +17,7 @@ import javax.ws.rs.core.UriInfo;
  * @author Victor Javier
  */
 @Path("Recepcionista")
-public class ServicioRecepcionista {
+public class ServicioRecepcionista extends ServicioSeguro {
     @Context
     private UriInfo contexto;
     
@@ -26,65 +26,89 @@ public class ServicioRecepcionista {
     }
     
     @DELETE
-    @Path("eliminar/{id}")
+    @Path("eliminar/{id}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param idRecepcionista: recibe el identificador del recepcionista.
+     * @param token: recibe el token de sesión.
      */
-    public String cambiarEstado(@PathParam("id") int idRecepcionista) {
+    public String cambiarEstado(@PathParam("id") int idRecepcionista, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
     
     @GET
-    @Path("obtener/{numero}")
+    @Path("obtener/{numero}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param numeroPersonal: recibe el número de personal.
+     * @param token: recibe el token de sesión.
      */
-    public String obtener(@PathParam("numero") String numeroPersonal) {
+    public String obtener(@PathParam("numero") String numeroPersonal, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
     
     @POST
-    @Path("registrar")
+    @Path("registrar/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param contenido: recibe el recepcionista en JSON.
+     * @param token: recibe el token de sesión.
      */
-    public String registrar(String contenido) {
+    public String registrar(String contenido, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
     
     @POST
-    @Path("registrarentrada/{numero}/{id}")
+    @Path("registrarentrada/{numero}/{id}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param numeroConsultorio: recibe el número de consultorio.
      * @param idRecepcionista: recibe el identificador del recepcionista.
+     * @param token: recibe el token de sesión.
      */
-    public String registrarEntrada(@PathParam("numero") String numeroConsultorio, @PathParam("id") int idRecepcionista) {
+    public String registrarEntrada(@PathParam("numero") String numeroConsultorio, @PathParam("id") int idRecepcionista, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
     
     @POST
-    @Path("registrarsalida/{id}")
+    @Path("registrarsalida/{id}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param idRecepcionista: recibe el identificador del recepcionista.
+     * @param token: recibe el token de sesión.
      */
-    public String registrarSalida(@PathParam("id") int idRecepcionista) {
+    public String registrarSalida(@PathParam("id") int idRecepcionista, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
     
     @PUT
-    @Path("modificar")
+    @Path("modificar/{token}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param contenido: recibe el recepcionista en JSON.
+     * @param token: recibe el token de sesión.
      */
-    public String modificar(String contenido) {
+    public String modificar(String contenido, @PathParam("token") String token) {
+        if (this.tokenValido(token)) {
+            
+        }
         return null;
     }
 }
