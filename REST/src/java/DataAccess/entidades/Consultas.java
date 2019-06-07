@@ -9,8 +9,10 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -31,23 +33,24 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "consultas")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Consulta.findAll", query = "SELECT c FROM Consulta c")
-    , @NamedQuery(name = "Consulta.findByConId", query = "SELECT c FROM Consulta c WHERE c.consultaPK.conId = :conId")
-    , @NamedQuery(name = "Consulta.findByConEstatura", query = "SELECT c FROM Consulta c WHERE c.conEstatura = :conEstatura")
-    , @NamedQuery(name = "Consulta.findByConFecha", query = "SELECT c FROM Consulta c WHERE c.conFecha = :conFecha")
-    , @NamedQuery(name = "Consulta.findByConHoraFin", query = "SELECT c FROM Consulta c WHERE c.conHoraFin = :conHoraFin")
-    , @NamedQuery(name = "Consulta.findByConHoraInicio", query = "SELECT c FROM Consulta c WHERE c.conHoraInicio = :conHoraInicio")
-    , @NamedQuery(name = "Consulta.findByConPeso", query = "SELECT c FROM Consulta c WHERE c.conPeso = :conPeso")
-    , @NamedQuery(name = "Consulta.findByConPresion", query = "SELECT c FROM Consulta c WHERE c.conPresion = :conPresion")
-    , @NamedQuery(name = "Consulta.findByConTemperatura", query = "SELECT c FROM Consulta c WHERE c.conTemperatura = :conTemperatura")
-    , @NamedQuery(name = "Consulta.findByConFolioReceta", query = "SELECT c FROM Consulta c WHERE c.consultaPK.conFolioReceta = :conFolioReceta")
-    , @NamedQuery(name = "Consulta.findByConIdPersonal", query = "SELECT c FROM Consulta c WHERE c.consultaPK.conIdPersonal = :conIdPersonal")
-    , @NamedQuery(name = "Consulta.findByConSeguroPaciente", query = "SELECT c FROM Consulta c WHERE c.consultaPK.conSeguroPaciente = :conSeguroPaciente")})
-public class Consulta implements Serializable {
+    @NamedQuery(name = "Consultas.findAll", query = "SELECT c FROM Consultas c")
+    , @NamedQuery(name = "Consultas.findByConId", query = "SELECT c FROM Consultas c WHERE c.conId = :conId")
+    , @NamedQuery(name = "Consultas.findByConEstatura", query = "SELECT c FROM Consultas c WHERE c.conEstatura = :conEstatura")
+    , @NamedQuery(name = "Consultas.findByConFecha", query = "SELECT c FROM Consultas c WHERE c.conFecha = :conFecha")
+    , @NamedQuery(name = "Consultas.findByConHoraFin", query = "SELECT c FROM Consultas c WHERE c.conHoraFin = :conHoraFin")
+    , @NamedQuery(name = "Consultas.findByConHoraInicio", query = "SELECT c FROM Consultas c WHERE c.conHoraInicio = :conHoraInicio")
+    , @NamedQuery(name = "Consultas.findByConPeso", query = "SELECT c FROM Consultas c WHERE c.conPeso = :conPeso")
+    , @NamedQuery(name = "Consultas.findByConPresion", query = "SELECT c FROM Consultas c WHERE c.conPresion = :conPresion")
+    , @NamedQuery(name = "Consultas.findByConTemperatura", query = "SELECT c FROM Consultas c WHERE c.conTemperatura = :conTemperatura")
+    , @NamedQuery(name = "Consultas.findByConIdPersonal", query = "SELECT c FROM Consultas c WHERE c.conIdPersonal = :conIdPersonal")})
+public class Consultas implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ConsultaPK consultaPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "con_id")
+    private Integer conId;
     @Basic(optional = false)
     @NotNull
     @Lob
@@ -86,25 +89,26 @@ public class Consulta implements Serializable {
     @NotNull
     @Column(name = "con_temperatura")
     private float conTemperatura;
-    @JoinColumn(name = "con_seguro_paciente", referencedColumnName = "pac_num_seguro", insertable = false, updatable = false)
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "con_id_personal")
+    private int conIdPersonal;
+    @JoinColumn(name = "con_seguro_paciente", referencedColumnName = "pac_num_seguro")
     @ManyToOne(optional = false)
-    private Paciente paciente;
-    @JoinColumn(name = "con_id_personal", referencedColumnName = "per_id", insertable = false, updatable = false)
+    private Pacientes conSeguroPaciente;
+    @JoinColumn(name = "con_folio_receta", referencedColumnName = "rec_folio")
     @ManyToOne(optional = false)
-    private Personal personal;
-    @JoinColumn(name = "con_folio_receta", referencedColumnName = "rec_folio", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
-    private Receta receta;
+    private Recetas conFolioReceta;
 
-    public Consulta() {
+    public Consultas() {
     }
 
-    public Consulta(ConsultaPK consultaPK) {
-        this.consultaPK = consultaPK;
+    public Consultas(Integer conId) {
+        this.conId = conId;
     }
 
-    public Consulta(ConsultaPK consultaPK, String conDiagnostico, float conEstatura, Date conFecha, Date conHoraFin, Date conHoraInicio, float conPeso, String conPresion, float conTemperatura) {
-        this.consultaPK = consultaPK;
+    public Consultas(Integer conId, String conDiagnostico, float conEstatura, Date conFecha, Date conHoraFin, Date conHoraInicio, float conPeso, String conPresion, float conTemperatura, int conIdPersonal) {
+        this.conId = conId;
         this.conDiagnostico = conDiagnostico;
         this.conEstatura = conEstatura;
         this.conFecha = conFecha;
@@ -113,18 +117,15 @@ public class Consulta implements Serializable {
         this.conPeso = conPeso;
         this.conPresion = conPresion;
         this.conTemperatura = conTemperatura;
+        this.conIdPersonal = conIdPersonal;
     }
 
-    public Consulta(int conId, int conFolioReceta, int conIdPersonal, int conSeguroPaciente) {
-        this.consultaPK = new ConsultaPK(conId, conFolioReceta, conIdPersonal, conSeguroPaciente);
+    public Integer getConId() {
+        return conId;
     }
 
-    public ConsultaPK getConsultaPK() {
-        return consultaPK;
-    }
-
-    public void setConsultaPK(ConsultaPK consultaPK) {
-        this.consultaPK = consultaPK;
+    public void setConId(Integer conId) {
+        this.conId = conId;
     }
 
     public String getConDiagnostico() {
@@ -191,45 +192,45 @@ public class Consulta implements Serializable {
         this.conTemperatura = conTemperatura;
     }
 
-    public Paciente getPaciente() {
-        return paciente;
+    public int getConIdPersonal() {
+        return conIdPersonal;
     }
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
+    public void setConIdPersonal(int conIdPersonal) {
+        this.conIdPersonal = conIdPersonal;
     }
 
-    public Personal getPersonal() {
-        return personal;
+    public Pacientes getConSeguroPaciente() {
+        return conSeguroPaciente;
     }
 
-    public void setPersonal(Personal personal) {
-        this.personal = personal;
+    public void setConSeguroPaciente(Pacientes conSeguroPaciente) {
+        this.conSeguroPaciente = conSeguroPaciente;
     }
 
-    public Receta getReceta() {
-        return receta;
+    public Recetas getConFolioReceta() {
+        return conFolioReceta;
     }
 
-    public void setReceta(Receta receta) {
-        this.receta = receta;
+    public void setConFolioReceta(Recetas conFolioReceta) {
+        this.conFolioReceta = conFolioReceta;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (consultaPK != null ? consultaPK.hashCode() : 0);
+        hash += (conId != null ? conId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Consulta)) {
+        if (!(object instanceof Consultas)) {
             return false;
         }
-        Consulta other = (Consulta) object;
-        if ((this.consultaPK == null && other.consultaPK != null) || (this.consultaPK != null && !this.consultaPK.equals(other.consultaPK))) {
+        Consultas other = (Consultas) object;
+        if ((this.conId == null && other.conId != null) || (this.conId != null && !this.conId.equals(other.conId))) {
             return false;
         }
         return true;
@@ -237,7 +238,7 @@ public class Consulta implements Serializable {
 
     @Override
     public String toString() {
-        return "DataAccess.Consulta[ consultaPK=" + consultaPK + " ]";
+        return "DataAccess.entidades.Consultas[ conId=" + conId + " ]";
     }
     
 }

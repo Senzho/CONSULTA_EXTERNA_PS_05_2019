@@ -35,14 +35,14 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "pacientes")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Paciente.findAll", query = "SELECT p FROM Paciente p")
-    , @NamedQuery(name = "Paciente.findByPacNumSeguro", query = "SELECT p FROM Paciente p WHERE p.pacNumSeguro = :pacNumSeguro")
-    , @NamedQuery(name = "Paciente.findByPacNombres", query = "SELECT p FROM Paciente p WHERE p.pacNombres = :pacNombres")
-    , @NamedQuery(name = "Paciente.findByPacApellidos", query = "SELECT p FROM Paciente p WHERE p.pacApellidos = :pacApellidos")
-    , @NamedQuery(name = "Paciente.findByPacFechaNac", query = "SELECT p FROM Paciente p WHERE p.pacFechaNac = :pacFechaNac")
-    , @NamedQuery(name = "Paciente.findByPacSexo", query = "SELECT p FROM Paciente p WHERE p.pacSexo = :pacSexo")
-    , @NamedQuery(name = "Paciente.findByPacNumTelefono", query = "SELECT p FROM Paciente p WHERE p.pacNumTelefono = :pacNumTelefono")})
-public class Paciente implements Serializable {
+    @NamedQuery(name = "Pacientes.findAll", query = "SELECT p FROM Pacientes p")
+    , @NamedQuery(name = "Pacientes.findByPacNumSeguro", query = "SELECT p FROM Pacientes p WHERE p.pacNumSeguro = :pacNumSeguro")
+    , @NamedQuery(name = "Pacientes.findByPacNombres", query = "SELECT p FROM Pacientes p WHERE p.pacNombres = :pacNombres")
+    , @NamedQuery(name = "Pacientes.findByPacApellidos", query = "SELECT p FROM Pacientes p WHERE p.pacApellidos = :pacApellidos")
+    , @NamedQuery(name = "Pacientes.findByPacFechaNac", query = "SELECT p FROM Pacientes p WHERE p.pacFechaNac = :pacFechaNac")
+    , @NamedQuery(name = "Pacientes.findByPacSexo", query = "SELECT p FROM Pacientes p WHERE p.pacSexo = :pacSexo")
+    , @NamedQuery(name = "Pacientes.findByPacNumTelefono", query = "SELECT p FROM Pacientes p WHERE p.pacNumTelefono = :pacNumTelefono")})
+public class Pacientes implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -75,28 +75,31 @@ public class Paciente implements Serializable {
     @NotNull
     @Column(name = "pac_sexo")
     private Character pacSexo;
-    @Size(max = 15)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 15)
     @Column(name = "pac_num_telefono")
     private String pacNumTelefono;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paciente")
-    private Collection<Cita> citaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paciente")
-    private Collection<Consulta> consultaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "citNumSeguroPaciente")
+    private Collection<Citas> citasCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conSeguroPaciente")
+    private Collection<Consultas> consultasCollection;
 
-    public Paciente() {
+    public Pacientes() {
     }
 
-    public Paciente(Integer pacNumSeguro) {
+    public Pacientes(Integer pacNumSeguro) {
         this.pacNumSeguro = pacNumSeguro;
     }
 
-    public Paciente(Integer pacNumSeguro, String pacNombres, String pacApellidos, Date pacFechaNac, String pacAlergias, Character pacSexo) {
+    public Pacientes(Integer pacNumSeguro, String pacNombres, String pacApellidos, Date pacFechaNac, String pacAlergias, Character pacSexo, String pacNumTelefono) {
         this.pacNumSeguro = pacNumSeguro;
         this.pacNombres = pacNombres;
         this.pacApellidos = pacApellidos;
         this.pacFechaNac = pacFechaNac;
         this.pacAlergias = pacAlergias;
         this.pacSexo = pacSexo;
+        this.pacNumTelefono = pacNumTelefono;
     }
 
     public Integer getPacNumSeguro() {
@@ -156,21 +159,21 @@ public class Paciente implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Cita> getCitaCollection() {
-        return citaCollection;
+    public Collection<Citas> getCitasCollection() {
+        return citasCollection;
     }
 
-    public void setCitaCollection(Collection<Cita> citaCollection) {
-        this.citaCollection = citaCollection;
+    public void setCitasCollection(Collection<Citas> citasCollection) {
+        this.citasCollection = citasCollection;
     }
 
     @XmlTransient
-    public Collection<Consulta> getConsultaCollection() {
-        return consultaCollection;
+    public Collection<Consultas> getConsultasCollection() {
+        return consultasCollection;
     }
 
-    public void setConsultaCollection(Collection<Consulta> consultaCollection) {
-        this.consultaCollection = consultaCollection;
+    public void setConsultasCollection(Collection<Consultas> consultasCollection) {
+        this.consultasCollection = consultasCollection;
     }
 
     @Override
@@ -183,10 +186,10 @@ public class Paciente implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Paciente)) {
+        if (!(object instanceof Pacientes)) {
             return false;
         }
-        Paciente other = (Paciente) object;
+        Pacientes other = (Pacientes) object;
         if ((this.pacNumSeguro == null && other.pacNumSeguro != null) || (this.pacNumSeguro != null && !this.pacNumSeguro.equals(other.pacNumSeguro))) {
             return false;
         }
@@ -195,7 +198,7 @@ public class Paciente implements Serializable {
 
     @Override
     public String toString() {
-        return "DataAccess.Paciente[ pacNumSeguro=" + pacNumSeguro + " ]";
+        return "DataAccess.entidades.Pacientes[ pacNumSeguro=" + pacNumSeguro + " ]";
     }
     
 }

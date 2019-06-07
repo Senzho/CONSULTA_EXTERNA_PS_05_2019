@@ -36,11 +36,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "recetas")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Receta.findAll", query = "SELECT r FROM Receta r")
-    , @NamedQuery(name = "Receta.findByRecFolio", query = "SELECT r FROM Receta r WHERE r.recFolio = :recFolio")
-    , @NamedQuery(name = "Receta.findByRecFechaVencimiento", query = "SELECT r FROM Receta r WHERE r.recFechaVencimiento = :recFechaVencimiento")
-    , @NamedQuery(name = "Receta.findByRecFechaCreacion", query = "SELECT r FROM Receta r WHERE r.recFechaCreacion = :recFechaCreacion")})
-public class Receta implements Serializable {
+    @NamedQuery(name = "Recetas.findAll", query = "SELECT r FROM Recetas r")
+    , @NamedQuery(name = "Recetas.findByRecFolio", query = "SELECT r FROM Recetas r WHERE r.recFolio = :recFolio")
+    , @NamedQuery(name = "Recetas.findByRecFechaVencimiento", query = "SELECT r FROM Recetas r WHERE r.recFechaVencimiento = :recFechaVencimiento")
+    , @NamedQuery(name = "Recetas.findByRecFechaCreacion", query = "SELECT r FROM Recetas r WHERE r.recFechaCreacion = :recFechaCreacion")})
+public class Recetas implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -64,19 +64,19 @@ public class Receta implements Serializable {
     @Size(min = 1, max = 65535)
     @Column(name = "rec_instrucciones")
     private String recInstrucciones;
-    @ManyToMany(mappedBy = "recetaCollection")
+    @ManyToMany(mappedBy = "recetasCollection")
     private Collection<Medicamento> medicamentoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "receta")
-    private Collection<Consulta> consultaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conFolioReceta")
+    private Collection<Consultas> consultasCollection;
 
-    public Receta() {
+    public Recetas() {
     }
 
-    public Receta(Integer recFolio) {
+    public Recetas(Integer recFolio) {
         this.recFolio = recFolio;
     }
 
-    public Receta(Integer recFolio, Date recFechaVencimiento, Date recFechaCreacion, String recInstrucciones) {
+    public Recetas(Integer recFolio, Date recFechaVencimiento, Date recFechaCreacion, String recInstrucciones) {
         this.recFolio = recFolio;
         this.recFechaVencimiento = recFechaVencimiento;
         this.recFechaCreacion = recFechaCreacion;
@@ -125,12 +125,12 @@ public class Receta implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Consulta> getConsultaCollection() {
-        return consultaCollection;
+    public Collection<Consultas> getConsultasCollection() {
+        return consultasCollection;
     }
 
-    public void setConsultaCollection(Collection<Consulta> consultaCollection) {
-        this.consultaCollection = consultaCollection;
+    public void setConsultasCollection(Collection<Consultas> consultasCollection) {
+        this.consultasCollection = consultasCollection;
     }
 
     @Override
@@ -143,10 +143,10 @@ public class Receta implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Receta)) {
+        if (!(object instanceof Recetas)) {
             return false;
         }
-        Receta other = (Receta) object;
+        Recetas other = (Recetas) object;
         if ((this.recFolio == null && other.recFolio != null) || (this.recFolio != null && !this.recFolio.equals(other.recFolio))) {
             return false;
         }
@@ -155,7 +155,7 @@ public class Receta implements Serializable {
 
     @Override
     public String toString() {
-        return "DataAccess.Receta[ recFolio=" + recFolio + " ]";
+        return "DataAccess.entidades.Recetas[ recFolio=" + recFolio + " ]";
     }
     
 }

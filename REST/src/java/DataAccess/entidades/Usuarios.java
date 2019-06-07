@@ -31,12 +31,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "usuarios")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-    , @NamedQuery(name = "Usuario.findByUsuId", query = "SELECT u FROM Usuario u WHERE u.usuId = :usuId")
-    , @NamedQuery(name = "Usuario.findByUsuNombre", query = "SELECT u FROM Usuario u WHERE u.usuNombre = :usuNombre")
-    , @NamedQuery(name = "Usuario.findByUsuContraseA", query = "SELECT u FROM Usuario u WHERE u.usuContraseA = :usuContraseA")
-    , @NamedQuery(name = "Usuario.findByUsuRol", query = "SELECT u FROM Usuario u WHERE u.usuRol = :usuRol")})
-public class Usuario implements Serializable {
+    @NamedQuery(name = "Usuarios.findAll", query = "SELECT u FROM Usuarios u")
+    , @NamedQuery(name = "Usuarios.findByUsuId", query = "SELECT u FROM Usuarios u WHERE u.usuId = :usuId")
+    , @NamedQuery(name = "Usuarios.findByUsuNombre", query = "SELECT u FROM Usuarios u WHERE u.usuNombre = :usuNombre")
+    , @NamedQuery(name = "Usuarios.findByUsuContrasena", query = "SELECT u FROM Usuarios u WHERE u.usuContrasena = :usuContrasena")
+    , @NamedQuery(name = "Usuarios.findByUsuRol", query = "SELECT u FROM Usuarios u WHERE u.usuRol = :usuRol")
+    , @NamedQuery(name = "Usuarios.findByUsuNombreAndUsuContrasena", query = "SELECT u FROM Usuarios u WHERE u.usuNombre = :usuNombre AND u.usuContrasena = :usuContrasena")})
+public class Usuarios implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,27 +53,27 @@ public class Usuario implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 64)
-    @Column(name = "usu_contrase\u251c\u2592a")
-    private String usuContraseA;
+    @Column(name = "usu_contrasena")
+    private String usuContrasena;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "usu_rol")
     private String usuRol;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuario")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usuariosUsuId")
     private Collection<Personal> personalCollection;
 
-    public Usuario() {
+    public Usuarios() {
     }
 
-    public Usuario(Integer usuId) {
+    public Usuarios(Integer usuId) {
         this.usuId = usuId;
     }
 
-    public Usuario(Integer usuId, String usuNombre, String usuContraseA, String usuRol) {
+    public Usuarios(Integer usuId, String usuNombre, String usuContrasena, String usuRol) {
         this.usuId = usuId;
         this.usuNombre = usuNombre;
-        this.usuContraseA = usuContraseA;
+        this.usuContrasena = usuContrasena;
         this.usuRol = usuRol;
     }
 
@@ -92,12 +93,12 @@ public class Usuario implements Serializable {
         this.usuNombre = usuNombre;
     }
 
-    public String getUsuContraseA() {
-        return usuContraseA;
+    public String getUsuContrasena() {
+        return usuContrasena;
     }
 
-    public void setUsuContraseA(String usuContraseA) {
-        this.usuContraseA = usuContraseA;
+    public void setUsuContrasena(String usuContrasena) {
+        this.usuContrasena = usuContrasena;
     }
 
     public String getUsuRol() {
@@ -127,10 +128,10 @@ public class Usuario implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Usuario)) {
+        if (!(object instanceof Usuarios)) {
             return false;
         }
-        Usuario other = (Usuario) object;
+        Usuarios other = (Usuarios) object;
         if ((this.usuId == null && other.usuId != null) || (this.usuId != null && !this.usuId.equals(other.usuId))) {
             return false;
         }
@@ -139,7 +140,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "DataAccess.Usuario[ usuId=" + usuId + " ]";
+        return "DataAccess.entidades.Usuarios[ usuId=" + usuId + " ]";
     }
     
 }

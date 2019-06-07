@@ -11,8 +11,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -35,7 +35,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Personal.findAll", query = "SELECT p FROM Personal p")
-    , @NamedQuery(name = "Personal.findByPerId", query = "SELECT p FROM Personal p WHERE p.personalPK.perId = :perId")
     , @NamedQuery(name = "Personal.findByPerNombres", query = "SELECT p FROM Personal p WHERE p.perNombres = :perNombres")
     , @NamedQuery(name = "Personal.findByPerApellidos", query = "SELECT p FROM Personal p WHERE p.perApellidos = :perApellidos")
     , @NamedQuery(name = "Personal.findByPerFechaNac", query = "SELECT p FROM Personal p WHERE p.perFechaNac = :perFechaNac")
@@ -44,13 +43,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Personal.findByPerSexo", query = "SELECT p FROM Personal p WHERE p.perSexo = :perSexo")
     , @NamedQuery(name = "Personal.findByPrRfc", query = "SELECT p FROM Personal p WHERE p.prRfc = :prRfc")
     , @NamedQuery(name = "Personal.findByPerTurno", query = "SELECT p FROM Personal p WHERE p.perTurno = :perTurno")
-    , @NamedQuery(name = "Personal.findByUsuariosUsuId", query = "SELECT p FROM Personal p WHERE p.personalPK.usuariosUsuId = :usuariosUsuId")
     , @NamedQuery(name = "Personal.findByPerEstado", query = "SELECT p FROM Personal p WHERE p.perEstado = :perEstado")})
 public class Personal implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected PersonalPK personalPK;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
@@ -71,13 +67,16 @@ public class Personal implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "per_num_personal")
     private String perNumPersonal;
-    @Size(max = 15)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 15)
     @Column(name = "per_num_telefono")
     private String perNumTelefono;
     @Basic(optional = false)
     @NotNull
     @Column(name = "per_sexo")
     private Character perSexo;
+    @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 13)
@@ -92,45 +91,29 @@ public class Personal implements Serializable {
     @NotNull
     @Column(name = "per_estado")
     private short perEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personal")
-    private Collection<Cita> citaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personal")
-    private Collection<Consulta> consultaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personal")
-    private Collection<Registro> registroCollection;
-    @JoinColumn(name = "usuarios_usu_id", referencedColumnName = "usu_id", insertable = false, updatable = false)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personalUsuariosUsuId")
+    private Collection<Registros> registrosCollection;
+    @JoinColumn(name = "usuarios_usu_id", referencedColumnName = "usu_id")
     @ManyToOne(optional = false)
-    private Usuario usuario;
+    private Usuarios usuariosUsuId;
 
     public Personal() {
     }
 
-    public Personal(PersonalPK personalPK) {
-        this.personalPK = personalPK;
+    public Personal(String prRfc) {
+        this.prRfc = prRfc;
     }
 
-    public Personal(PersonalPK personalPK, String perNombres, String perApellidos, Date perFechaNac, String perNumPersonal, Character perSexo, String prRfc, String perTurno, short perEstado) {
-        this.personalPK = personalPK;
+    public Personal(String prRfc, String perNombres, String perApellidos, Date perFechaNac, String perNumPersonal, String perNumTelefono, Character perSexo, String perTurno, short perEstado) {
+        this.prRfc = prRfc;
         this.perNombres = perNombres;
         this.perApellidos = perApellidos;
         this.perFechaNac = perFechaNac;
         this.perNumPersonal = perNumPersonal;
+        this.perNumTelefono = perNumTelefono;
         this.perSexo = perSexo;
-        this.prRfc = prRfc;
         this.perTurno = perTurno;
         this.perEstado = perEstado;
-    }
-
-    public Personal(int perId, int usuariosUsuId) {
-        this.personalPK = new PersonalPK(perId, usuariosUsuId);
-    }
-
-    public PersonalPK getPersonalPK() {
-        return personalPK;
-    }
-
-    public void setPersonalPK(PersonalPK personalPK) {
-        this.personalPK = personalPK;
     }
 
     public String getPerNombres() {
@@ -206,44 +189,26 @@ public class Personal implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Cita> getCitaCollection() {
-        return citaCollection;
+    public Collection<Registros> getRegistrosCollection() {
+        return registrosCollection;
     }
 
-    public void setCitaCollection(Collection<Cita> citaCollection) {
-        this.citaCollection = citaCollection;
+    public void setRegistrosCollection(Collection<Registros> registrosCollection) {
+        this.registrosCollection = registrosCollection;
     }
 
-    @XmlTransient
-    public Collection<Consulta> getConsultaCollection() {
-        return consultaCollection;
+    public Usuarios getUsuariosUsuId() {
+        return usuariosUsuId;
     }
 
-    public void setConsultaCollection(Collection<Consulta> consultaCollection) {
-        this.consultaCollection = consultaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Registro> getRegistroCollection() {
-        return registroCollection;
-    }
-
-    public void setRegistroCollection(Collection<Registro> registroCollection) {
-        this.registroCollection = registroCollection;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuariosUsuId(Usuarios usuariosUsuId) {
+        this.usuariosUsuId = usuariosUsuId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (personalPK != null ? personalPK.hashCode() : 0);
+        hash += (prRfc != null ? prRfc.hashCode() : 0);
         return hash;
     }
 
@@ -254,7 +219,7 @@ public class Personal implements Serializable {
             return false;
         }
         Personal other = (Personal) object;
-        if ((this.personalPK == null && other.personalPK != null) || (this.personalPK != null && !this.personalPK.equals(other.personalPK))) {
+        if ((this.prRfc == null && other.prRfc != null) || (this.prRfc != null && !this.prRfc.equals(other.prRfc))) {
             return false;
         }
         return true;
@@ -262,7 +227,7 @@ public class Personal implements Serializable {
 
     @Override
     public String toString() {
-        return "DataAccess.Personal[ personalPK=" + personalPK + " ]";
+        return "DataAccess.entidades.Personal[ prRfc=" + prRfc + " ]";
     }
     
 }

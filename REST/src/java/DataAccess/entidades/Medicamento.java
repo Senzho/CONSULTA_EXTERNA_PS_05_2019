@@ -22,6 +22,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -47,26 +48,38 @@ public class Medicamento implements Serializable {
     @Basic(optional = false)
     @Column(name = "med_codigo")
     private Integer medCodigo;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "med_fecha_caducidad")
     @Temporal(TemporalType.DATE)
     private Date medFechaCaducidad;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "med_gramaje")
-    private Float medGramaje;
-    @Size(max = 70)
+    private float medGramaje;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 70)
     @Column(name = "med_nombre")
     private String medNombre;
     @JoinTable(name = "recetas_medicamentos", joinColumns = {
         @JoinColumn(name = "recmed_codigo", referencedColumnName = "med_codigo")}, inverseJoinColumns = {
         @JoinColumn(name = "recmed_folio", referencedColumnName = "rec_folio")})
     @ManyToMany
-    private Collection<Receta> recetaCollection;
+    private Collection<Recetas> recetasCollection;
 
     public Medicamento() {
     }
 
     public Medicamento(Integer medCodigo) {
         this.medCodigo = medCodigo;
+    }
+
+    public Medicamento(Integer medCodigo, Date medFechaCaducidad, float medGramaje, String medNombre) {
+        this.medCodigo = medCodigo;
+        this.medFechaCaducidad = medFechaCaducidad;
+        this.medGramaje = medGramaje;
+        this.medNombre = medNombre;
     }
 
     public Integer getMedCodigo() {
@@ -85,11 +98,11 @@ public class Medicamento implements Serializable {
         this.medFechaCaducidad = medFechaCaducidad;
     }
 
-    public Float getMedGramaje() {
+    public float getMedGramaje() {
         return medGramaje;
     }
 
-    public void setMedGramaje(Float medGramaje) {
+    public void setMedGramaje(float medGramaje) {
         this.medGramaje = medGramaje;
     }
 
@@ -102,12 +115,12 @@ public class Medicamento implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Receta> getRecetaCollection() {
-        return recetaCollection;
+    public Collection<Recetas> getRecetasCollection() {
+        return recetasCollection;
     }
 
-    public void setRecetaCollection(Collection<Receta> recetaCollection) {
-        this.recetaCollection = recetaCollection;
+    public void setRecetasCollection(Collection<Recetas> recetasCollection) {
+        this.recetasCollection = recetasCollection;
     }
 
     @Override
@@ -132,7 +145,7 @@ public class Medicamento implements Serializable {
 
     @Override
     public String toString() {
-        return "DataAccess.Medicamento[ medCodigo=" + medCodigo + " ]";
+        return "DataAccess.entidades.Medicamento[ medCodigo=" + medCodigo + " ]";
     }
     
 }
