@@ -22,6 +22,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -75,6 +77,17 @@ public class Usuarios implements Serializable {
         this.usuNombre = usuNombre;
         this.usuContrasena = usuContrasena;
         this.usuRol = usuRol;
+    }
+    
+    public Usuarios(JSONObject jObjeto) throws JSONException {
+        try {
+            this.usuId = jObjeto.getInt("usuId");
+        } catch(JSONException excepcion) {
+            //Logger
+        }
+        this.usuNombre = jObjeto.getString("usuNombre");
+        this.usuContrasena = jObjeto.getString("usuContrasena");
+        this.usuRol = jObjeto.getString("usuRol");
     }
 
     public Integer getUsuId() {
