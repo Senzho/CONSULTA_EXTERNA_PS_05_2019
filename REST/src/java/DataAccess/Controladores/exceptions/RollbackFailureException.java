@@ -1,4 +1,4 @@
-package DataAccess.Controladores.exceptions;
+package DataAccess.controladores.exceptions;
 
 public class RollbackFailureException extends Exception {
     public RollbackFailureException(String message, Throwable cause) {

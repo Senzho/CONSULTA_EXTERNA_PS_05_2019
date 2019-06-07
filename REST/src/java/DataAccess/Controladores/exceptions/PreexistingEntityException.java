@@ -1,4 +1,4 @@
-package DataAccess.Controladores.exceptions;
+package DataAccess.controladores.exceptions;
 
 public class PreexistingEntityException extends Exception {
     public PreexistingEntityException(String message, Throwable cause) {

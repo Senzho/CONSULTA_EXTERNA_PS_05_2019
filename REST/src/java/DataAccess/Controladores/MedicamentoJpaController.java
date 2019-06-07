@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package DataAccess.Controladores;
+package DataAccess.controladores;
 
-import DataAccess.Controladores.exceptions.NonexistentEntityException;
-import DataAccess.Controladores.exceptions.RollbackFailureException;
+import DataAccess.controladores.exceptions.NonexistentEntityException;
+import DataAccess.controladores.exceptions.RollbackFailureException;
 import DataAccess.entidades.Medicamento;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import DataAccess.entidades.Receta;
+import DataAccess.entidades.Recetas;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -39,23 +39,23 @@ public class MedicamentoJpaController implements Serializable {
     }
 
     public void create(Medicamento medicamento) throws RollbackFailureException, Exception {
-        if (medicamento.getRecetaCollection() == null) {
-            medicamento.setRecetaCollection(new ArrayList<Receta>());
+        if (medicamento.getRecetasCollection() == null) {
+            medicamento.setRecetasCollection(new ArrayList<Recetas>());
         }
         EntityManager em = null;
         try {
             utx.begin();
             em = getEntityManager();
-            Collection<Receta> attachedRecetaCollection = new ArrayList<Receta>();
-            for (Receta recetaCollectionRecetaToAttach : medicamento.getRecetaCollection()) {
-                recetaCollectionRecetaToAttach = em.getReference(recetaCollectionRecetaToAttach.getClass(), recetaCollectionRecetaToAttach.getRecFolio());
-                attachedRecetaCollection.add(recetaCollectionRecetaToAttach);
+            Collection<Recetas> attachedRecetasCollection = new ArrayList<Recetas>();
+            for (Recetas recetasCollectionRecetasToAttach : medicamento.getRecetasCollection()) {
+                recetasCollectionRecetasToAttach = em.getReference(recetasCollectionRecetasToAttach.getClass(), recetasCollectionRecetasToAttach.getRecFolio());
+                attachedRecetasCollection.add(recetasCollectionRecetasToAttach);
             }
-            medicamento.setRecetaCollection(attachedRecetaCollection);
+            medicamento.setRecetasCollection(attachedRecetasCollection);
             em.persist(medicamento);
-            for (Receta recetaCollectionReceta : medicamento.getRecetaCollection()) {
-                recetaCollectionReceta.getMedicamentoCollection().add(medicamento);
-                recetaCollectionReceta = em.merge(recetaCollectionReceta);
+            for (Recetas recetasCollectionRecetas : medicamento.getRecetasCollection()) {
+                recetasCollectionRecetas.getMedicamentoCollection().add(medicamento);
+                recetasCollectionRecetas = em.merge(recetasCollectionRecetas);
             }
             utx.commit();
         } catch (Exception ex) {
@@ -78,26 +78,26 @@ public class MedicamentoJpaController implements Serializable {
             utx.begin();
             em = getEntityManager();
             Medicamento persistentMedicamento = em.find(Medicamento.class, medicamento.getMedCodigo());
-            Collection<Receta> recetaCollectionOld = persistentMedicamento.getRecetaCollection();
-            Collection<Receta> recetaCollectionNew = medicamento.getRecetaCollection();
-            Collection<Receta> attachedRecetaCollectionNew = new ArrayList<Receta>();
-            for (Receta recetaCollectionNewRecetaToAttach : recetaCollectionNew) {
-                recetaCollectionNewRecetaToAttach = em.getReference(recetaCollectionNewRecetaToAttach.getClass(), recetaCollectionNewRecetaToAttach.getRecFolio());
-                attachedRecetaCollectionNew.add(recetaCollectionNewRecetaToAttach);
+            Collection<Recetas> recetasCollectionOld = persistentMedicamento.getRecetasCollection();
+            Collection<Recetas> recetasCollectionNew = medicamento.getRecetasCollection();
+            Collection<Recetas> attachedRecetasCollectionNew = new ArrayList<Recetas>();
+            for (Recetas recetasCollectionNewRecetasToAttach : recetasCollectionNew) {
+                recetasCollectionNewRecetasToAttach = em.getReference(recetasCollectionNewRecetasToAttach.getClass(), recetasCollectionNewRecetasToAttach.getRecFolio());
+                attachedRecetasCollectionNew.add(recetasCollectionNewRecetasToAttach);
             }
-            recetaCollectionNew = attachedRecetaCollectionNew;
-            medicamento.setRecetaCollection(recetaCollectionNew);
+            recetasCollectionNew = attachedRecetasCollectionNew;
+            medicamento.setRecetasCollection(recetasCollectionNew);
             medicamento = em.merge(medicamento);
-            for (Receta recetaCollectionOldReceta : recetaCollectionOld) {
-                if (!recetaCollectionNew.contains(recetaCollectionOldReceta)) {
-                    recetaCollectionOldReceta.getMedicamentoCollection().remove(medicamento);
-                    recetaCollectionOldReceta = em.merge(recetaCollectionOldReceta);
+            for (Recetas recetasCollectionOldRecetas : recetasCollectionOld) {
+                if (!recetasCollectionNew.contains(recetasCollectionOldRecetas)) {
+                    recetasCollectionOldRecetas.getMedicamentoCollection().remove(medicamento);
+                    recetasCollectionOldRecetas = em.merge(recetasCollectionOldRecetas);
                 }
             }
-            for (Receta recetaCollectionNewReceta : recetaCollectionNew) {
-                if (!recetaCollectionOld.contains(recetaCollectionNewReceta)) {
-                    recetaCollectionNewReceta.getMedicamentoCollection().add(medicamento);
-                    recetaCollectionNewReceta = em.merge(recetaCollectionNewReceta);
+            for (Recetas recetasCollectionNewRecetas : recetasCollectionNew) {
+                if (!recetasCollectionOld.contains(recetasCollectionNewRecetas)) {
+                    recetasCollectionNewRecetas.getMedicamentoCollection().add(medicamento);
+                    recetasCollectionNewRecetas = em.merge(recetasCollectionNewRecetas);
                 }
             }
             utx.commit();
@@ -134,10 +134,10 @@ public class MedicamentoJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The medicamento with id " + id + " no longer exists.", enfe);
             }
-            Collection<Receta> recetaCollection = medicamento.getRecetaCollection();
-            for (Receta recetaCollectionReceta : recetaCollection) {
-                recetaCollectionReceta.getMedicamentoCollection().remove(medicamento);
-                recetaCollectionReceta = em.merge(recetaCollectionReceta);
+            Collection<Recetas> recetasCollection = medicamento.getRecetasCollection();
+            for (Recetas recetasCollectionRecetas : recetasCollection) {
+                recetasCollectionRecetas.getMedicamentoCollection().remove(medicamento);
+                recetasCollectionRecetas = em.merge(recetasCollectionRecetas);
             }
             em.remove(medicamento);
             utx.commit();
