@@ -4,3 +4,5 @@ Núcleo/nbproject/private/private\.properties
 *.class
 
 Núcleo/nbproject/private/private\.xml
+
+servidorConsultaExterna/index\.php

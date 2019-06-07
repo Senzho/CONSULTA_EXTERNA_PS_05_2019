@@ -97,7 +97,7 @@ switch (ENVIRONMENT)
  * This variable must contain the name of your "system" directory.
  * Set the path if it is not in the same directory as this file.
  */
-	$system_path = '/home/mariolpz/Documentos/8vo semestre/Programacion segura/Proyecto final/archivos sistema consulta externa/system';
+	$system_path = "C:\Users\Cristian\Documents\GItHub projects\CONSULTA_EXTERNA_PS_05_2019\Nucleo servidor web\system";
 
 /*
  *---------------------------------------------------------------
@@ -114,7 +114,7 @@ switch (ENVIRONMENT)
  *
  * NO TRAILING SLASH!
  */
-	$application_folder = '/home/mariolpz/Documentos/8vo semestre/Programacion segura/Proyecto final/archivos sistema consulta externa/application';
+	$application_folder = "C:\Users\Cristian\Documents\GItHub projects\CONSULTA_EXTERNA_PS_05_2019\Nucleo servidor web\application";
 
 /*
  *---------------------------------------------------------------
