@@ -154,6 +154,20 @@ public class UsuariosJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public Usuarios obtenerPorCredenciales(String nombreUsuario, String contraseña) {
+        Usuarios usuario;
+        EntityManager em = getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("Usuarios.findByUsuNombreAndUsuContrasena");
+            consulta.setParameter("usuNombre", nombreUsuario);
+            consulta.setParameter("usuContrasena", contraseña);
+            usuario = (Usuarios) consulta.getSingleResult();
+        } finally {
+            em.close();
+        }
+        return usuario;
+    }
 
     public int getUsuariosCount() {
         EntityManager em = getEntityManager();

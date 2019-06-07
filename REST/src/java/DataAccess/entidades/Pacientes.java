@@ -26,6 +26,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -46,7 +48,6 @@ public class Pacientes implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "pac_num_seguro")
     private Integer pacNumSeguro;
@@ -100,6 +101,16 @@ public class Pacientes implements Serializable {
         this.pacAlergias = pacAlergias;
         this.pacSexo = pacSexo;
         this.pacNumTelefono = pacNumTelefono;
+    }
+    
+    public Pacientes(JSONObject jObjeto) throws JSONException {
+        this.pacNumSeguro = jObjeto.getInt("pacNumSeguro");
+        this.pacAlergias = jObjeto.getString("pacAlergias");
+        this.pacApellidos = jObjeto.getString("pacApellidos");
+        this.pacFechaNac = new Date();
+        this.pacNombres = jObjeto.getString("pacNombres");
+        this.pacNumTelefono = jObjeto.getString("pacNumTelefono");
+        this.pacSexo = jObjeto.getString("pacSexo").charAt(0);
     }
 
     public Integer getPacNumSeguro() {
