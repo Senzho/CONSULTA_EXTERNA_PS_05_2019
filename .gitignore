@@ -1,4 +1,4 @@
-
+﻿
 Núcleo/nbproject/private/private\.properties
 
 *.class
@@ -6,3 +6,4 @@ Núcleo/nbproject/private/private\.properties
 Núcleo/nbproject/private/private\.xml
 
 servidorConsultaExterna/index\.php
+Nucleo servidor web/sessions/

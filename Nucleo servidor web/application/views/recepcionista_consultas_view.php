@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Registro y consultas de pacinetes</title>
   <link rel="stylesheet" href="<?=base_url('estilos/recepcionistaConsultas.css');?>">
-  <link rel="stylesheet" href="<?=base_url('estilos/bootstrap.min.css');?>">
-  <link rel="stylesheet" href="<?=base_url('estilos/bootstrap-grid.min.css');?>">
-  <link rel="stylesheet" href="<?=base_url('estilos/bootstrap-reboot.min.css');?>">
+  <link rel="stylesheet" href="<?=base_url('estilos/bootstrap/bootstrap.min.css');?>">
+  <link rel="stylesheet" href="<?=base_url('estilos/bootstrap/bootstrap-grid.min.css');?>">
+  <link rel="stylesheet" href="<?=base_url('estilos/bootstrap/bootstrap-reboot.min.css');?>">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script src="<?=base_url('scripts/jquery-3.3.1.min.js');?>"></script>
+  <!-- <script src="<?=base_url('scripts/jquery-3.3.1.min.js');?>"></script> -->
   <script type="text/javascript">
   var base_url = "<?php echo site_url(); ?>";
   </script>
@@ -27,21 +27,44 @@
   </nav>
   <div id="recepContenidorRegistro" class="container m-4 mx-auto">
     <div class="row">
-      <div class="col">
-        <a href="#"><img src="<?=base_url('estilos/imagenes/icons8-calendario.svg');?>" alt="botón para agendar cita" height="70" width="70"></a>
-        <a href="#"><span></span><img src="<?=base_url('estilos/imagenes/icons8-grupos.png');?>" alt="" height="70" width="70"></a>
+      <div class="col d-inline-flex centralizado">
+        <div class="d-inline">
+          <div class="px-4 center-cont">
+            <a class="d-block" href="#">
+              <img src="<?=base_url('estilos/imagenes/icons8-home.svg');?>" alt="" height="70" width="70">
+            </a>
+            <span class="btn d-block">Registro y consultas</span>
+          </div>
+        </div>
+        <div class="d-inline">
+          <div class="px-4 center-cont">
+            <a class="d-block mx-auto" href="#">
+              <img src="<?=base_url('estilos/imagenes/icons8-calendario.svg');?>" alt="botón para agendar cita" height="70" width="70">
+            </a>
+            <span class="btn d-block ">Agendar citas</span>
+          </div>
+        </div>
+        <div class="d-inline">
+          <div class="px-4 center-cont">
+            <a class="d-block" href="#">
+              <img src="<?=base_url('estilos/imagenes/icons8-grupos.png');?>" alt="" height="70" width="70">
+            </a>
+            <span class="btn d-block">Actualización</span>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="separator"></div>
     <div class="row">
-      <div class="col">
+      <div class="col-sm">
         <h1>Consultas</h1>
       </div>
-      <div class="col">
+      <div class="col-sm">
         <h1 class="mb-1">Registro</h1>
       </div>
     </div>
     <div class="row">
-      <div class="col">
+      <div class="col-sm">
         <div class="scrollable">
           <div id="listaConsultas" class="list-group">
             <a class="list-group-item list-group-item-action" > Nombre paciente</a>
@@ -63,7 +86,7 @@
           </div>
         </div>
       </div>
-      <div class="col">
+      <div class="col-sm">
         <form id="formRegistro" action="" method="post">
           <div class="form-group">
             <label for="nombre">Nombre</label>
@@ -79,14 +102,14 @@
           </div>
           <div class="form-group">
             <label for="alergias">Alergias</label>
-            <textarea class="form-control" id="txtAlergias" rows="4" name="alergias"></textarea>
+            <textarea class="form-control" id="txtAlergias" rows="5" name="alergias"></textarea>
           </div>
           <button type="submit" class="btn btn-primary">Registrar</button>
         </form>
       </div>
     </div>
     <div class="row">
-      <div class="col-6">
+      <div class="col-sm-6">
         <form class="">
           <div class="card-body row no-gutters align-items-center">
             <div class="col-auto">
@@ -99,14 +122,15 @@
             <!--end of col-->
             <div class="col-auto">
               <button class="btn btn-primary" type="submit">Buscar</button>
-              <a class="btn" href="#" role="button">
-                <img src="<?=base_url('estilos/imagenes/icons8-más.svg');?>" height="30" alt=""></a>
+              <a class="btn p-0" href="#" role="button">
+                <img src="<?=base_url('estilos/imagenes/icons8-más3.svg');?>" alt="btn" height="50" width="50">
+              </a>
             </div>
             <!--end of col-->
           </div>
         </form>
       </div>
-      <div class="col-6">
+      <div class="col-sm-6">
 
       </div>
     </div>

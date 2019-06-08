@@ -22,7 +22,7 @@ nav.navbar{
 }
 .scrollable{
   overflow-y: scroll;
-  max-height: 500px;
+  max-height: 450px;
 }
 .scrollable::-webkit-scrollbar {
   width: 12px;
@@ -64,9 +64,11 @@ nav.navbar{
 }
 .separator{
   height: 6px;
-  border-radius: 44px 44px 44px 44px;
-  -moz-border-radius: 44px 44px 44px 44px;
-  -webkit-border-radius: 44px 44px 44px 44px;
-  border: 0px solid transparent;
   background-image: linear-gradient(to right, #d16ba5, #c777b9, #ba83ca, #aa8fd8, #9a9ae1, #8aa7ec, #79b3f4, #69bff8, #52cffe, #41dfff, #46eefa, #5ffbf1);
+}
+
+.datepicker td, .datepicker th {
+  width: 2em;
+  height: 2em;
+  font-size: 0.8em;
 }
