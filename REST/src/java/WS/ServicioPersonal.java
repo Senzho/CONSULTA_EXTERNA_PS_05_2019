@@ -1,9 +1,13 @@
 package WS;
 
 import DataAccess.controladores.PersonalJpaController;
+import DataAccess.controladores.RegistrosJpaController;
 import DataAccess.controladores.UsuariosJpaController;
 import DataAccess.entidades.Personal;
+import DataAccess.entidades.Registros;
 import DataAccess.entidades.Usuarios;
+import java.util.Date;
+import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.ws.rs.Consumes;
@@ -17,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -101,8 +106,34 @@ public class ServicioPersonal extends ServicioSeguro {
                 JSONObject jObjeto = new JSONObject(personal);
                 respuesta.getJson().put("personal", jObjeto);
             } catch(Exception excepcion) {
-                System.out.println(excepcion.getMessage());
                 respuesta.getJson().put("personal", new JSONObject("{'prRfc': ''}"));
+            }
+        }
+        return respuesta.toString();
+    }
+    
+    @GET
+    @Path("obtenerrol/{rol}/{token}")
+    @Produces(MediaType.APPLICATION_JSON)
+    /**
+     * @param rol: recibe el rol.
+     * @param token: recibe el token de sesión.
+     */
+    public String obtenerRol(@PathParam("rol") String rol, @PathParam("token") String token) {
+        boolean resultadoToken = this.tokenValido(token);
+        Respuesta respuesta = new Respuesta(resultadoToken);
+        if (resultadoToken) {
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
+            PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
+            try {
+                List<Personal> roles = personalJpaController.obtenerPorRol(rol);
+                JSONArray jArreglo = new JSONArray();
+                roles.forEach((personal) -> {
+                    jArreglo.put(new JSONObject(personal));
+                });
+                respuesta.getJson().put("personales", jArreglo);
+            } catch(Exception exception) {
+                respuesta.getJson().put("personales", new JSONArray("{}"));
             }
         }
         return respuesta.toString();
@@ -113,7 +144,7 @@ public class ServicioPersonal extends ServicioSeguro {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     /**
-     * @param contenido: recibe el recepcionista en JSON.
+     * @param contenido: recibe el personal en JSON.
      * @param idUsuario: recibe el identificador del usuario.
      * @param token: recibe el token de sesión.
      */
@@ -138,32 +169,69 @@ public class ServicioPersonal extends ServicioSeguro {
     }
     
     @POST
-    @Path("registrarentrada/{numero}/{id}/{token}")
+    @Path("registrarentrada/{numero}/{rfc}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
      * @param numeroConsultorio: recibe el número de consultorio.
-     * @param idRecepcionista: recibe el identificador del recepcionista.
+     * @param rfc: recibe el rfc del recepcionista.
      * @param token: recibe el token de sesión.
      */
-    public String registrarEntrada(@PathParam("numero") String numeroConsultorio, @PathParam("id") int idRecepcionista, @PathParam("token") String token) {
-        if (this.tokenValido(token)) {
-            
+    public String registrarEntrada(@PathParam("numero") String numeroConsultorio, @PathParam("rfc") String rfc, @PathParam("token") String token) {
+        boolean resultadoToken = this.tokenValido(token);
+        Respuesta respuesta = new Respuesta(resultadoToken);
+        if (resultadoToken) {
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
+            Registros registros = new Registros();
+            registros.setRegHoraEntrada(new Date());
+            registros.setRegLugarEstadia(numeroConsultorio);
+            PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
+            registros.setPersonalPrRfc(personalJpaController.findPersonal(rfc));
+            RegistrosJpaController registrosJpaController = new RegistrosJpaController(entityManagerFactory);
+            try {
+                if (!registrosJpaController.existeSalidaNula(rfc)) {
+                    registrosJpaController.create(registros);
+                    respuesta.getJson().put("registrada", true);
+                } else {
+                    respuesta.getJson().put("registrada", false);
+                    respuesta.getJson().put("error", "noSalida");
+                }
+            } catch(Exception excepcion) {
+                respuesta.getJson().put("registrada", false);
+                respuesta.getJson().put("error", "registro");
+            }
         }
-        return null;
+        return respuesta.toString();
     }
     
     @POST
-    @Path("registrarsalida/{id}/{token}")
+    @Path("registrarsalida/{rfc}/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
-     * @param idRecepcionista: recibe el identificador del recepcionista.
+     * @param rfc: recibe el rfc del recepcionista.
      * @param token: recibe el token de sesión.
      */
-    public String registrarSalida(@PathParam("id") int idRecepcionista, @PathParam("token") String token) {
-        if (this.tokenValido(token)) {
-            
+    public String registrarSalida(@PathParam("rfc") String rfc, @PathParam("token") String token) {
+        boolean resultadoToken = this.tokenValido(token);
+        Respuesta respuesta = new Respuesta(resultadoToken);
+        if (resultadoToken) {
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
+            RegistrosJpaController registrosJpaController = new RegistrosJpaController(entityManagerFactory);
+            try {
+                if (!registrosJpaController.existeSalidaNula(rfc)) {
+                    respuesta.getJson().put("registrada", false);
+                    respuesta.getJson().put("error", "noEntrada");
+                } else {
+                    Registros registros = registrosJpaController.obtenerSalidaNula(rfc);
+                    registros.setRegHoraSalida(new Date());
+                    registrosJpaController.registrarSalida(registros);
+                    respuesta.getJson().put("registrada", true);
+                }
+            } catch(Exception excepcion) {
+                respuesta.getJson().put("registrada", false);
+                respuesta.getJson().put("error", "registro");
+            }
         }
-        return null;
+        return respuesta.toString();
     }
     
     @PUT

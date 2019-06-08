@@ -17,7 +17,7 @@ import DataAccess.entidades.Registros;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.transaction.UserTransaction;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -25,11 +25,10 @@ import javax.transaction.UserTransaction;
  */
 public class RegistrosJpaController implements Serializable {
 
-    public RegistrosJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
+    public RegistrosJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    private UserTransaction utx = null;
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -37,24 +36,14 @@ public class RegistrosJpaController implements Serializable {
     }
 
     public void create(Registros registros) throws RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
-            Personal personalUsuariosUsuId = registros.getPersonalUsuariosUsuId();
-            if (personalUsuariosUsuId != null) {
-                personalUsuariosUsuId = em.getReference(personalUsuariosUsuId.getClass(), personalUsuariosUsuId.getPrRfc());
-                registros.setPersonalUsuariosUsuId(personalUsuariosUsuId);
-            }
+            em.getTransaction().begin();
             em.persist(registros);
-            if (personalUsuariosUsuId != null) {
-                personalUsuariosUsuId.getRegistrosCollection().add(registros);
-                personalUsuariosUsuId = em.merge(personalUsuariosUsuId);
-            }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -67,30 +56,44 @@ public class RegistrosJpaController implements Serializable {
     }
 
     public void edit(Registros registros) throws NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
-            Registros persistentRegistros = em.find(Registros.class, registros.getRegId());
-            Personal personalUsuariosUsuIdOld = persistentRegistros.getPersonalUsuariosUsuId();
-            Personal personalUsuariosUsuIdNew = registros.getPersonalUsuariosUsuId();
-            if (personalUsuariosUsuIdNew != null) {
-                personalUsuariosUsuIdNew = em.getReference(personalUsuariosUsuIdNew.getClass(), personalUsuariosUsuIdNew.getPrRfc());
-                registros.setPersonalUsuariosUsuId(personalUsuariosUsuIdNew);
-            }
+            em.getTransaction().begin();
             registros = em.merge(registros);
-            if (personalUsuariosUsuIdOld != null && !personalUsuariosUsuIdOld.equals(personalUsuariosUsuIdNew)) {
-                personalUsuariosUsuIdOld.getRegistrosCollection().remove(registros);
-                personalUsuariosUsuIdOld = em.merge(personalUsuariosUsuIdOld);
-            }
-            if (personalUsuariosUsuIdNew != null && !personalUsuariosUsuIdNew.equals(personalUsuariosUsuIdOld)) {
-                personalUsuariosUsuIdNew.getRegistrosCollection().add(registros);
-                personalUsuariosUsuIdNew = em.merge(personalUsuariosUsuIdNew);
-            }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
+            } catch (Exception re) {
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                Integer id = registros.getRegId();
+                if (findRegistros(id) == null) {
+                    throw new NonexistentEntityException("The registros with id " + id + " no longer exists.");
+                }
+            }
+            throw ex;
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    
+    public void registrarSalida(Registros registros) throws NonexistentEntityException, RollbackFailureException, Exception {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Query consulta = em.createNamedQuery("Registros.salida");
+            consulta.setParameter("regHoraSalida", registros.getRegHoraSalida());
+            consulta.setParameter("regId", registros.getRegId());
+            consulta.executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            try {
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -110,10 +113,9 @@ public class RegistrosJpaController implements Serializable {
     }
 
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
+            em.getTransaction().begin();
             Registros registros;
             try {
                 registros = em.getReference(Registros.class, id);
@@ -121,16 +123,16 @@ public class RegistrosJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The registros with id " + id + " no longer exists.", enfe);
             }
-            Personal personalUsuariosUsuId = registros.getPersonalUsuariosUsuId();
-            if (personalUsuariosUsuId != null) {
-                personalUsuariosUsuId.getRegistrosCollection().remove(registros);
-                personalUsuariosUsuId = em.merge(personalUsuariosUsuId);
+            Personal personalPrRfc = registros.getPersonalPrRfc();
+            if (personalPrRfc != null) {
+                personalPrRfc.getRegistrosCollection().remove(registros);
+                personalPrRfc = em.merge(personalPrRfc);
             }
             em.remove(registros);
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -173,6 +175,34 @@ public class RegistrosJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    public Registros obtenerSalidaNula(String rfc) {
+        Registros registros;
+        EntityManager em = getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("Registros.findBySalidaNula");
+            consulta.setParameter("prRfc", rfc);
+            registros = (Registros) consulta.getSingleResult();
+        } finally {
+            em.close();
+        }
+        return registros;
+    }
+    
+    public boolean existeSalidaNula(String rfc) {
+        boolean existe = true;
+        EntityManager em = getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("Registros.findBySalidaNula");
+            consulta.setParameter("prRfc", rfc);
+            consulta.getSingleResult();
+        } catch(NoResultException exception) {
+            existe = false;
+        } finally {
+            em.close();
+        }
+        return existe;
     }
 
     public int getRegistrosCount() {

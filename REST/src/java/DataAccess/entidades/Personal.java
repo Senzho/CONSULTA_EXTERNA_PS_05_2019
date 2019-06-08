@@ -52,7 +52,8 @@ import org.json.JSONObject;
     , @NamedQuery(name = "Personal.findByPerEstado", query = "SELECT p FROM Personal p WHERE p.perEstado = :perEstado")
     , @NamedQuery(name = "Personal.actualizar", query = "UPDATE Personal p SET p.prRfc = :prRfc, p.perApellidos = :perApellidos, p.perEstado = :perEstado, p.perNombres = :perNombres, p.perNumPersonal = :perNumPersonal, p.perNumTelefono = :perNumTelefono, p.perSexo = :perSexo, p.perTurno = :perTurno, p.perFechaNac = :perFechaNac WHERE p.prRfc = :prRfc ")
     , @NamedQuery(name = "Personal.estado", query = "UPDATE Personal p SET p.perEstado = :perEstado WHERE p.prRfc = :prRfc ")
-    , @NamedQuery(name = "Personal.findByUsuariosUsuId", query = "SELECT p FROM Personal p WHERE p.usuariosUsuId.usuId = :usuId")})
+    , @NamedQuery(name = "Personal.findByUsuariosUsuId", query = "SELECT p FROM Personal p WHERE p.usuariosUsuId.usuId = :usuId")
+    , @NamedQuery(name = "Personal.findByUsuRol", query = "SELECT p FROM Personal p WHERE p.usuariosUsuId.usuRol = :usuRol")})
 public class Personal implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -100,7 +101,7 @@ public class Personal implements Serializable {
     @NotNull
     @Column(name = "per_estado")
     private short perEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personalUsuariosUsuId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personalPrRfc")
     private Collection<Registros> registrosCollection;
     @JoinColumn(name = "usuarios_usu_id", referencedColumnName = "usu_id")
     @ManyToOne(optional = false)

@@ -20,11 +20,8 @@ import DataAccess.entidades.Registros;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.validation.ConstraintViolationException;
 
 /**
  *
@@ -229,6 +226,22 @@ public class PersonalJpaController implements Serializable {
             em.close();
         }
         return personal;
+    }
+    
+    public List<Personal> obtenerPorRol(String rol) {
+        List<Personal> personales;
+        EntityManager em = getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("Personal.findByUsuRol");
+            consulta.setParameter("usuRol", rol);
+            personales = consulta.getResultList();
+            personales.forEach((personal) -> {
+                personal.setUsuariosUsuId(null);
+            });
+        } finally {
+            em.close();
+        }
+        return personales;
     }
 
     public int getPersonalCount() {
