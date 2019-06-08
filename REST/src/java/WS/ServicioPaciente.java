@@ -47,7 +47,6 @@ public class ServicioPaciente extends ServicioSeguro {
                 JSONObject jObjeto = new JSONObject(paciente);
                 respuesta.getJson().put("paciente", jObjeto);
             } catch(Exception excepcion) {
-                System.out.println(excepcion.getMessage());
                 respuesta.getJson().put("paciente", new JSONObject("{'pacNumSeguro': '0'}"));
             }
         }

@@ -20,9 +20,11 @@ import DataAccess.entidades.Registros;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.transaction.UserTransaction;
+import javax.validation.ConstraintViolationException;
 
 /**
  *
@@ -30,11 +32,10 @@ import javax.transaction.UserTransaction;
  */
 public class PersonalJpaController implements Serializable {
 
-    public PersonalJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
+    public PersonalJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    private UserTransaction utx = null;
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -42,42 +43,14 @@ public class PersonalJpaController implements Serializable {
     }
 
     public void create(Personal personal) throws PreexistingEntityException, RollbackFailureException, Exception {
-        if (personal.getRegistrosCollection() == null) {
-            personal.setRegistrosCollection(new ArrayList<Registros>());
-        }
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
-            Usuarios usuariosUsuId = personal.getUsuariosUsuId();
-            if (usuariosUsuId != null) {
-                usuariosUsuId = em.getReference(usuariosUsuId.getClass(), usuariosUsuId.getUsuId());
-                personal.setUsuariosUsuId(usuariosUsuId);
-            }
-            Collection<Registros> attachedRegistrosCollection = new ArrayList<Registros>();
-            for (Registros registrosCollectionRegistrosToAttach : personal.getRegistrosCollection()) {
-                registrosCollectionRegistrosToAttach = em.getReference(registrosCollectionRegistrosToAttach.getClass(), registrosCollectionRegistrosToAttach.getRegId());
-                attachedRegistrosCollection.add(registrosCollectionRegistrosToAttach);
-            }
-            personal.setRegistrosCollection(attachedRegistrosCollection);
+            em.getTransaction().begin();
             em.persist(personal);
-            if (usuariosUsuId != null) {
-                usuariosUsuId.getPersonalCollection().add(personal);
-                usuariosUsuId = em.merge(usuariosUsuId);
-            }
-            for (Registros registrosCollectionRegistros : personal.getRegistrosCollection()) {
-                Personal oldPersonalUsuariosUsuIdOfRegistrosCollectionRegistros = registrosCollectionRegistros.getPersonalUsuariosUsuId();
-                registrosCollectionRegistros.setPersonalUsuariosUsuId(personal);
-                registrosCollectionRegistros = em.merge(registrosCollectionRegistros);
-                if (oldPersonalUsuariosUsuIdOfRegistrosCollectionRegistros != null) {
-                    oldPersonalUsuariosUsuIdOfRegistrosCollectionRegistros.getRegistrosCollection().remove(registrosCollectionRegistros);
-                    oldPersonalUsuariosUsuIdOfRegistrosCollectionRegistros = em.merge(oldPersonalUsuariosUsuIdOfRegistrosCollectionRegistros);
-                }
-            }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -92,63 +65,26 @@ public class PersonalJpaController implements Serializable {
         }
     }
 
-    public void edit(Personal personal) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+    public boolean edit(Personal personal) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+        boolean editado = false;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
-            Personal persistentPersonal = em.find(Personal.class, personal.getPrRfc());
-            Usuarios usuariosUsuIdOld = persistentPersonal.getUsuariosUsuId();
-            Usuarios usuariosUsuIdNew = personal.getUsuariosUsuId();
-            Collection<Registros> registrosCollectionOld = persistentPersonal.getRegistrosCollection();
-            Collection<Registros> registrosCollectionNew = personal.getRegistrosCollection();
-            List<String> illegalOrphanMessages = null;
-            for (Registros registrosCollectionOldRegistros : registrosCollectionOld) {
-                if (!registrosCollectionNew.contains(registrosCollectionOldRegistros)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Registros " + registrosCollectionOldRegistros + " since its personalUsuariosUsuId field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            if (usuariosUsuIdNew != null) {
-                usuariosUsuIdNew = em.getReference(usuariosUsuIdNew.getClass(), usuariosUsuIdNew.getUsuId());
-                personal.setUsuariosUsuId(usuariosUsuIdNew);
-            }
-            Collection<Registros> attachedRegistrosCollectionNew = new ArrayList<Registros>();
-            for (Registros registrosCollectionNewRegistrosToAttach : registrosCollectionNew) {
-                registrosCollectionNewRegistrosToAttach = em.getReference(registrosCollectionNewRegistrosToAttach.getClass(), registrosCollectionNewRegistrosToAttach.getRegId());
-                attachedRegistrosCollectionNew.add(registrosCollectionNewRegistrosToAttach);
-            }
-            registrosCollectionNew = attachedRegistrosCollectionNew;
-            personal.setRegistrosCollection(registrosCollectionNew);
-            personal = em.merge(personal);
-            if (usuariosUsuIdOld != null && !usuariosUsuIdOld.equals(usuariosUsuIdNew)) {
-                usuariosUsuIdOld.getPersonalCollection().remove(personal);
-                usuariosUsuIdOld = em.merge(usuariosUsuIdOld);
-            }
-            if (usuariosUsuIdNew != null && !usuariosUsuIdNew.equals(usuariosUsuIdOld)) {
-                usuariosUsuIdNew.getPersonalCollection().add(personal);
-                usuariosUsuIdNew = em.merge(usuariosUsuIdNew);
-            }
-            for (Registros registrosCollectionNewRegistros : registrosCollectionNew) {
-                if (!registrosCollectionOld.contains(registrosCollectionNewRegistros)) {
-                    Personal oldPersonalUsuariosUsuIdOfRegistrosCollectionNewRegistros = registrosCollectionNewRegistros.getPersonalUsuariosUsuId();
-                    registrosCollectionNewRegistros.setPersonalUsuariosUsuId(personal);
-                    registrosCollectionNewRegistros = em.merge(registrosCollectionNewRegistros);
-                    if (oldPersonalUsuariosUsuIdOfRegistrosCollectionNewRegistros != null && !oldPersonalUsuariosUsuIdOfRegistrosCollectionNewRegistros.equals(personal)) {
-                        oldPersonalUsuariosUsuIdOfRegistrosCollectionNewRegistros.getRegistrosCollection().remove(registrosCollectionNewRegistros);
-                        oldPersonalUsuariosUsuIdOfRegistrosCollectionNewRegistros = em.merge(oldPersonalUsuariosUsuIdOfRegistrosCollectionNewRegistros);
-                    }
-                }
-            }
-            utx.commit();
+            em.getTransaction().begin();
+            Query consulta = em.createNamedQuery("Personal.actualizar");
+            consulta.setParameter("prRfc", personal.getPrRfc());
+            consulta.setParameter("perApellidos", personal.getPerApellidos());
+            consulta.setParameter("perEstado", personal.getPerEstado());
+            consulta.setParameter("perNombres", personal.getPerNombres());
+            consulta.setParameter("perNumPersonal", personal.getPerNumPersonal());
+            consulta.setParameter("perNumTelefono", personal.getPerNumTelefono());
+            consulta.setParameter("perSexo", personal.getPerSexo());
+            consulta.setParameter("perTurno", personal.getPerTurno());
+            consulta.setParameter("perFechaNac", personal.getPerFechaNac());
+            editado = consulta.executeUpdate() == 1;
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -161,17 +97,45 @@ public class PersonalJpaController implements Serializable {
             }
             throw ex;
         } finally {
-            if (em != null) {
-                em.close();
-            }
+            em.close();
         }
+        return editado;
+    }
+    
+    public boolean cambiarEstado(Personal personal) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
+        boolean cambiado = false;
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            Query consulta = em.createNamedQuery("Personal.estado");
+            consulta.setParameter("perEstado", 0);
+            consulta.setParameter("prRfc", personal.getPrRfc());
+            cambiado = consulta.executeUpdate() == 1;
+            em.getTransaction().commit();
+        } catch (Exception ex) {
+            try {
+                em.getTransaction().rollback();
+            } catch (Exception re) {
+                throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
+            }
+            String msg = ex.getLocalizedMessage();
+            if (msg == null || msg.length() == 0) {
+                String id = personal.getPrRfc();
+                if (findPersonal(id) == null) {
+                    throw new NonexistentEntityException("The personal with id " + id + " no longer exists.");
+                }
+            }
+            throw ex;
+        } finally {
+            em.close();
+        }
+        return cambiado;
     }
 
     public void destroy(String id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
+            em.getTransaction().begin();
             Personal personal;
             try {
                 personal = em.getReference(Personal.class, id);
@@ -190,16 +154,11 @@ public class PersonalJpaController implements Serializable {
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            Usuarios usuariosUsuId = personal.getUsuariosUsuId();
-            if (usuariosUsuId != null) {
-                usuariosUsuId.getPersonalCollection().remove(personal);
-                usuariosUsuId = em.merge(usuariosUsuId);
-            }
             em.remove(personal);
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -242,6 +201,34 @@ public class PersonalJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    public Personal obtenerPorRfc(String rfc) {
+        Personal personal;
+        EntityManager em = getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("Personal.findByPrRfc");
+            consulta.setParameter("prRfc", rfc);
+            personal = (Personal) consulta.getSingleResult();
+            personal.setUsuariosUsuId(null);
+        } finally {
+            em.close();
+        }
+        return personal;
+    }
+    
+    public Personal obtenerPorIdUsuario(Usuarios usuario) {
+        Personal personal;
+        EntityManager em = getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("Personal.findByUsuariosUsuId");
+            consulta.setParameter("usuId", usuario.getUsuId());
+            personal = (Personal) consulta.getSingleResult();
+            personal.setUsuariosUsuId(null);
+        } finally {
+            em.close();
+        }
+        return personal;
     }
 
     public int getPersonalCount() {
