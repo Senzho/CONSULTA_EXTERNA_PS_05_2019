@@ -6,8 +6,12 @@
 package DataAccess.entidades;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,6 +29,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -43,7 +49,11 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Personal.findByPerSexo", query = "SELECT p FROM Personal p WHERE p.perSexo = :perSexo")
     , @NamedQuery(name = "Personal.findByPrRfc", query = "SELECT p FROM Personal p WHERE p.prRfc = :prRfc")
     , @NamedQuery(name = "Personal.findByPerTurno", query = "SELECT p FROM Personal p WHERE p.perTurno = :perTurno")
-    , @NamedQuery(name = "Personal.findByPerEstado", query = "SELECT p FROM Personal p WHERE p.perEstado = :perEstado")})
+    , @NamedQuery(name = "Personal.findByPerEstado", query = "SELECT p FROM Personal p WHERE p.perEstado = :perEstado")
+    , @NamedQuery(name = "Personal.actualizar", query = "UPDATE Personal p SET p.prRfc = :prRfc, p.perApellidos = :perApellidos, p.perEstado = :perEstado, p.perNombres = :perNombres, p.perNumPersonal = :perNumPersonal, p.perNumTelefono = :perNumTelefono, p.perSexo = :perSexo, p.perTurno = :perTurno, p.perFechaNac = :perFechaNac WHERE p.prRfc = :prRfc ")
+    , @NamedQuery(name = "Personal.estado", query = "UPDATE Personal p SET p.perEstado = :perEstado WHERE p.prRfc = :prRfc ")
+    , @NamedQuery(name = "Personal.findByUsuariosUsuId", query = "SELECT p FROM Personal p WHERE p.usuariosUsuId.usuId = :usuId")
+    , @NamedQuery(name = "Personal.findByUsuRol", query = "SELECT p FROM Personal p WHERE p.usuariosUsuId.usuRol = :usuRol")})
 public class Personal implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -91,7 +101,7 @@ public class Personal implements Serializable {
     @NotNull
     @Column(name = "per_estado")
     private short perEstado;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personalUsuariosUsuId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "personalPrRfc")
     private Collection<Registros> registrosCollection;
     @JoinColumn(name = "usuarios_usu_id", referencedColumnName = "usu_id")
     @ManyToOne(optional = false)
@@ -114,6 +124,22 @@ public class Personal implements Serializable {
         this.perSexo = perSexo;
         this.perTurno = perTurno;
         this.perEstado = perEstado;
+    }
+    
+    public Personal(JSONObject jObjeto) throws JSONException {
+        this.prRfc = jObjeto.getString("prRfc");
+        this.perApellidos = jObjeto.getString("perApellidos");
+        this.perEstado = (short) jObjeto.getInt("perEstado");
+        this.perNombres = jObjeto.getString("perNombres");
+        this.perNumPersonal = jObjeto.getString("perNumPersonal");
+        this.perNumTelefono = jObjeto.getString("perNumTelefono");
+        this.perSexo = jObjeto.getString("perSexo").charAt(0);
+        this.perTurno = jObjeto.getString("perTurno");
+        try {
+            this.perFechaNac = new SimpleDateFormat("dd-MM-yyy").parse(jObjeto.getString("perFechaNac"));
+        } catch (ParseException ex) {
+            Logger.getLogger(Personal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public String getPerNombres() {

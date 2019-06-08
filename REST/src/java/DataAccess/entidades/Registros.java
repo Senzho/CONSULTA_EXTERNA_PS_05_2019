@@ -37,7 +37,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Registros.findByRegHoraEntrada", query = "SELECT r FROM Registros r WHERE r.regHoraEntrada = :regHoraEntrada")
     , @NamedQuery(name = "Registros.findByRegHoraSalida", query = "SELECT r FROM Registros r WHERE r.regHoraSalida = :regHoraSalida")
     , @NamedQuery(name = "Registros.findByRegLugarEstadia", query = "SELECT r FROM Registros r WHERE r.regLugarEstadia = :regLugarEstadia")
-    , @NamedQuery(name = "Registros.findByPersonalPerId", query = "SELECT r FROM Registros r WHERE r.personalPerId = :personalPerId")})
+    , @NamedQuery(name = "Registros.findBySalidaNula", query = "SELECT r FROM Registros r WHERE r.personalPrRfc.prRfc = :prRfc AND r.regHoraSalida IS NULL")
+    , @NamedQuery(name = "Registros.salida", query = "UPDATE Registros r SET r.regHoraSalida = :regHoraSalida WHERE r.regId = :regId")})
 public class Registros implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,7 +53,6 @@ public class Registros implements Serializable {
     @Temporal(TemporalType.TIME)
     private Date regHoraEntrada;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "reg_hora_salida")
     @Temporal(TemporalType.TIME)
     private Date regHoraSalida;
@@ -61,13 +61,9 @@ public class Registros implements Serializable {
     @Size(min = 1, max = 100)
     @Column(name = "reg_lugar_estadia")
     private String regLugarEstadia;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "personal_per_id")
-    private int personalPerId;
-    @JoinColumn(name = "personal_usuarios_usu_id", referencedColumnName = "usuarios_usu_id")
+    @JoinColumn(name = "personal_pr_rfc", referencedColumnName = "pr_rfc")
     @ManyToOne(optional = false)
-    private Personal personalUsuariosUsuId;
+    private Personal personalPrRfc;
 
     public Registros() {
     }
@@ -76,12 +72,11 @@ public class Registros implements Serializable {
         this.regId = regId;
     }
 
-    public Registros(Integer regId, Date regHoraEntrada, Date regHoraSalida, String regLugarEstadia, int personalPerId) {
+    public Registros(Integer regId, Date regHoraEntrada, Date regHoraSalida, String regLugarEstadia) {
         this.regId = regId;
         this.regHoraEntrada = regHoraEntrada;
         this.regHoraSalida = regHoraSalida;
         this.regLugarEstadia = regLugarEstadia;
-        this.personalPerId = personalPerId;
     }
 
     public Integer getRegId() {
@@ -116,20 +111,12 @@ public class Registros implements Serializable {
         this.regLugarEstadia = regLugarEstadia;
     }
 
-    public int getPersonalPerId() {
-        return personalPerId;
+    public Personal getPersonalPrRfc() {
+        return personalPrRfc;
     }
 
-    public void setPersonalPerId(int personalPerId) {
-        this.personalPerId = personalPerId;
-    }
-
-    public Personal getPersonalUsuariosUsuId() {
-        return personalUsuariosUsuId;
-    }
-
-    public void setPersonalUsuariosUsuId(Personal personalUsuariosUsuId) {
-        this.personalUsuariosUsuId = personalUsuariosUsuId;
+    public void setPersonalPrRfc(Personal personalPrRfc) {
+        this.personalPrRfc = personalPrRfc;
     }
 
     @Override
