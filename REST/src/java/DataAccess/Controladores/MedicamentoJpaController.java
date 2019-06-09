@@ -27,11 +27,10 @@ import javax.transaction.UserTransaction;
  */
 public class MedicamentoJpaController implements Serializable {
 
-    public MedicamentoJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
+    public MedicamentoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    private UserTransaction utx = null;
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -42,10 +41,9 @@ public class MedicamentoJpaController implements Serializable {
         if (medicamento.getRecetasCollection() == null) {
             medicamento.setRecetasCollection(new ArrayList<Recetas>());
         }
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
+            em.getTransaction().begin();
             Collection<Recetas> attachedRecetasCollection = new ArrayList<Recetas>();
             for (Recetas recetasCollectionRecetasToAttach : medicamento.getRecetasCollection()) {
                 recetasCollectionRecetasToAttach = em.getReference(recetasCollectionRecetasToAttach.getClass(), recetasCollectionRecetasToAttach.getRecFolio());
@@ -57,10 +55,10 @@ public class MedicamentoJpaController implements Serializable {
                 recetasCollectionRecetas.getMedicamentoCollection().add(medicamento);
                 recetasCollectionRecetas = em.merge(recetasCollectionRecetas);
             }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -73,10 +71,9 @@ public class MedicamentoJpaController implements Serializable {
     }
 
     public void edit(Medicamento medicamento) throws NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
+            em.getTransaction().begin();
             Medicamento persistentMedicamento = em.find(Medicamento.class, medicamento.getMedCodigo());
             Collection<Recetas> recetasCollectionOld = persistentMedicamento.getRecetasCollection();
             Collection<Recetas> recetasCollectionNew = medicamento.getRecetasCollection();
@@ -100,10 +97,10 @@ public class MedicamentoJpaController implements Serializable {
                     recetasCollectionNewRecetas = em.merge(recetasCollectionNewRecetas);
                 }
             }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -123,10 +120,9 @@ public class MedicamentoJpaController implements Serializable {
     }
 
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
+            em.getTransaction().begin();
             Medicamento medicamento;
             try {
                 medicamento = em.getReference(Medicamento.class, id);
@@ -140,10 +136,10 @@ public class MedicamentoJpaController implements Serializable {
                 recetasCollectionRecetas = em.merge(recetasCollectionRecetas);
             }
             em.remove(medicamento);
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
