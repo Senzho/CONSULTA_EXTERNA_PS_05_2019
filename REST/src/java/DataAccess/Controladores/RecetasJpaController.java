@@ -21,7 +21,6 @@ import DataAccess.entidades.Recetas;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.transaction.UserTransaction;
 
 /**
  *
@@ -29,11 +28,10 @@ import javax.transaction.UserTransaction;
  */
 public class RecetasJpaController implements Serializable {
 
-    public RecetasJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
+    public RecetasJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    private UserTransaction utx = null;
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -41,46 +39,20 @@ public class RecetasJpaController implements Serializable {
     }
 
     public void create(Recetas recetas) throws RollbackFailureException, Exception {
-        if (recetas.getMedicamentoCollection() == null) {
-            recetas.setMedicamentoCollection(new ArrayList<Medicamento>());
-        }
-        if (recetas.getConsultasCollection() == null) {
-            recetas.setConsultasCollection(new ArrayList<Consultas>());
-        }
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
+            em.getTransaction().begin();
             Collection<Medicamento> attachedMedicamentoCollection = new ArrayList<Medicamento>();
             for (Medicamento medicamentoCollectionMedicamentoToAttach : recetas.getMedicamentoCollection()) {
                 medicamentoCollectionMedicamentoToAttach = em.getReference(medicamentoCollectionMedicamentoToAttach.getClass(), medicamentoCollectionMedicamentoToAttach.getMedCodigo());
                 attachedMedicamentoCollection.add(medicamentoCollectionMedicamentoToAttach);
             }
             recetas.setMedicamentoCollection(attachedMedicamentoCollection);
-            Collection<Consultas> attachedConsultasCollection = new ArrayList<Consultas>();
-            for (Consultas consultasCollectionConsultasToAttach : recetas.getConsultasCollection()) {
-                consultasCollectionConsultasToAttach = em.getReference(consultasCollectionConsultasToAttach.getClass(), consultasCollectionConsultasToAttach.getConId());
-                attachedConsultasCollection.add(consultasCollectionConsultasToAttach);
-            }
-            recetas.setConsultasCollection(attachedConsultasCollection);
             em.persist(recetas);
-            for (Medicamento medicamentoCollectionMedicamento : recetas.getMedicamentoCollection()) {
-                medicamentoCollectionMedicamento.getRecetasCollection().add(recetas);
-                medicamentoCollectionMedicamento = em.merge(medicamentoCollectionMedicamento);
-            }
-            for (Consultas consultasCollectionConsultas : recetas.getConsultasCollection()) {
-                Recetas oldConFolioRecetaOfConsultasCollectionConsultas = consultasCollectionConsultas.getConFolioReceta();
-                consultasCollectionConsultas.setConFolioReceta(recetas);
-                consultasCollectionConsultas = em.merge(consultasCollectionConsultas);
-                if (oldConFolioRecetaOfConsultasCollectionConsultas != null) {
-                    oldConFolioRecetaOfConsultasCollectionConsultas.getConsultasCollection().remove(consultasCollectionConsultas);
-                    oldConFolioRecetaOfConsultasCollectionConsultas = em.merge(oldConFolioRecetaOfConsultasCollectionConsultas);
-                }
-            }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -93,69 +65,14 @@ public class RecetasJpaController implements Serializable {
     }
 
     public void edit(Recetas recetas) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
-            Recetas persistentRecetas = em.find(Recetas.class, recetas.getRecFolio());
-            Collection<Medicamento> medicamentoCollectionOld = persistentRecetas.getMedicamentoCollection();
-            Collection<Medicamento> medicamentoCollectionNew = recetas.getMedicamentoCollection();
-            Collection<Consultas> consultasCollectionOld = persistentRecetas.getConsultasCollection();
-            Collection<Consultas> consultasCollectionNew = recetas.getConsultasCollection();
-            List<String> illegalOrphanMessages = null;
-            for (Consultas consultasCollectionOldConsultas : consultasCollectionOld) {
-                if (!consultasCollectionNew.contains(consultasCollectionOldConsultas)) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("You must retain Consultas " + consultasCollectionOldConsultas + " since its conFolioReceta field is not nullable.");
-                }
-            }
-            if (illegalOrphanMessages != null) {
-                throw new IllegalOrphanException(illegalOrphanMessages);
-            }
-            Collection<Medicamento> attachedMedicamentoCollectionNew = new ArrayList<Medicamento>();
-            for (Medicamento medicamentoCollectionNewMedicamentoToAttach : medicamentoCollectionNew) {
-                medicamentoCollectionNewMedicamentoToAttach = em.getReference(medicamentoCollectionNewMedicamentoToAttach.getClass(), medicamentoCollectionNewMedicamentoToAttach.getMedCodigo());
-                attachedMedicamentoCollectionNew.add(medicamentoCollectionNewMedicamentoToAttach);
-            }
-            medicamentoCollectionNew = attachedMedicamentoCollectionNew;
-            recetas.setMedicamentoCollection(medicamentoCollectionNew);
-            Collection<Consultas> attachedConsultasCollectionNew = new ArrayList<Consultas>();
-            for (Consultas consultasCollectionNewConsultasToAttach : consultasCollectionNew) {
-                consultasCollectionNewConsultasToAttach = em.getReference(consultasCollectionNewConsultasToAttach.getClass(), consultasCollectionNewConsultasToAttach.getConId());
-                attachedConsultasCollectionNew.add(consultasCollectionNewConsultasToAttach);
-            }
-            consultasCollectionNew = attachedConsultasCollectionNew;
-            recetas.setConsultasCollection(consultasCollectionNew);
+            em.getTransaction().begin();
             recetas = em.merge(recetas);
-            for (Medicamento medicamentoCollectionOldMedicamento : medicamentoCollectionOld) {
-                if (!medicamentoCollectionNew.contains(medicamentoCollectionOldMedicamento)) {
-                    medicamentoCollectionOldMedicamento.getRecetasCollection().remove(recetas);
-                    medicamentoCollectionOldMedicamento = em.merge(medicamentoCollectionOldMedicamento);
-                }
-            }
-            for (Medicamento medicamentoCollectionNewMedicamento : medicamentoCollectionNew) {
-                if (!medicamentoCollectionOld.contains(medicamentoCollectionNewMedicamento)) {
-                    medicamentoCollectionNewMedicamento.getRecetasCollection().add(recetas);
-                    medicamentoCollectionNewMedicamento = em.merge(medicamentoCollectionNewMedicamento);
-                }
-            }
-            for (Consultas consultasCollectionNewConsultas : consultasCollectionNew) {
-                if (!consultasCollectionOld.contains(consultasCollectionNewConsultas)) {
-                    Recetas oldConFolioRecetaOfConsultasCollectionNewConsultas = consultasCollectionNewConsultas.getConFolioReceta();
-                    consultasCollectionNewConsultas.setConFolioReceta(recetas);
-                    consultasCollectionNewConsultas = em.merge(consultasCollectionNewConsultas);
-                    if (oldConFolioRecetaOfConsultasCollectionNewConsultas != null && !oldConFolioRecetaOfConsultasCollectionNewConsultas.equals(recetas)) {
-                        oldConFolioRecetaOfConsultasCollectionNewConsultas.getConsultasCollection().remove(consultasCollectionNewConsultas);
-                        oldConFolioRecetaOfConsultasCollectionNewConsultas = em.merge(oldConFolioRecetaOfConsultasCollectionNewConsultas);
-                    }
-                }
-            }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -175,10 +92,9 @@ public class RecetasJpaController implements Serializable {
     }
 
     public void destroy(Integer id) throws IllegalOrphanException, NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
+            em.getTransaction().begin();
             Recetas recetas;
             try {
                 recetas = em.getReference(Recetas.class, id);
@@ -203,10 +119,10 @@ public class RecetasJpaController implements Serializable {
                 medicamentoCollectionMedicamento = em.merge(medicamentoCollectionMedicamento);
             }
             em.remove(recetas);
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }

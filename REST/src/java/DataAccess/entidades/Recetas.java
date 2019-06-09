@@ -6,8 +6,12 @@
 package DataAccess.entidades;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,6 +31,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -81,6 +87,17 @@ public class Recetas implements Serializable {
         this.recFechaVencimiento = recFechaVencimiento;
         this.recFechaCreacion = recFechaCreacion;
         this.recInstrucciones = recInstrucciones;
+    }
+    
+    public Recetas(JSONObject jObjeto) throws JSONException {
+        this.recFolio = jObjeto.getInt("recFolio");
+        try {
+            this.recFechaCreacion = new SimpleDateFormat("yyyy-MM-dd").parse(jObjeto.getString("recFechaCreacion"));
+            this.recFechaVencimiento = new SimpleDateFormat("yyyy-MM-dd").parse(jObjeto.getString("recFechaVencimiento"));
+        } catch (ParseException ex) {
+            Logger.getLogger(Recetas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.recInstrucciones = jObjeto.getString("recInstrucciones");
     }
 
     public Integer getRecFolio() {

@@ -41,8 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Consultas.findByConHoraInicio", query = "SELECT c FROM Consultas c WHERE c.conHoraInicio = :conHoraInicio")
     , @NamedQuery(name = "Consultas.findByConPeso", query = "SELECT c FROM Consultas c WHERE c.conPeso = :conPeso")
     , @NamedQuery(name = "Consultas.findByConPresion", query = "SELECT c FROM Consultas c WHERE c.conPresion = :conPresion")
-    , @NamedQuery(name = "Consultas.findByConTemperatura", query = "SELECT c FROM Consultas c WHERE c.conTemperatura = :conTemperatura")
-    , @NamedQuery(name = "Consultas.findByConIdPersonal", query = "SELECT c FROM Consultas c WHERE c.conIdPersonal = :conIdPersonal")})
+    , @NamedQuery(name = "Consultas.findByConTemperatura", query = "SELECT c FROM Consultas c WHERE c.conTemperatura = :conTemperatura")})
 public class Consultas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -89,10 +88,9 @@ public class Consultas implements Serializable {
     @NotNull
     @Column(name = "con_temperatura")
     private float conTemperatura;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "con_id_personal")
-    private int conIdPersonal;
+    @JoinColumn(name = "con_pr_rfc", referencedColumnName = "pr_rfc")
+    @ManyToOne(optional = false)
+    private Personal conPrRfc;
     @JoinColumn(name = "con_seguro_paciente", referencedColumnName = "pac_num_seguro")
     @ManyToOne(optional = false)
     private Pacientes conSeguroPaciente;
@@ -107,7 +105,7 @@ public class Consultas implements Serializable {
         this.conId = conId;
     }
 
-    public Consultas(Integer conId, String conDiagnostico, float conEstatura, Date conFecha, Date conHoraFin, Date conHoraInicio, float conPeso, String conPresion, float conTemperatura, int conIdPersonal) {
+    public Consultas(Integer conId, String conDiagnostico, float conEstatura, Date conFecha, Date conHoraFin, Date conHoraInicio, float conPeso, String conPresion, float conTemperatura) {
         this.conId = conId;
         this.conDiagnostico = conDiagnostico;
         this.conEstatura = conEstatura;
@@ -117,7 +115,6 @@ public class Consultas implements Serializable {
         this.conPeso = conPeso;
         this.conPresion = conPresion;
         this.conTemperatura = conTemperatura;
-        this.conIdPersonal = conIdPersonal;
     }
 
     public Integer getConId() {
@@ -192,12 +189,12 @@ public class Consultas implements Serializable {
         this.conTemperatura = conTemperatura;
     }
 
-    public int getConIdPersonal() {
-        return conIdPersonal;
+    public Personal getConPrRfc() {
+        return conPrRfc;
     }
 
-    public void setConIdPersonal(int conIdPersonal) {
-        this.conIdPersonal = conIdPersonal;
+    public void setConIdPersonal(Personal conPrRfc) {
+        this.conPrRfc = conPrRfc;
     }
 
     public Pacientes getConSeguroPaciente() {

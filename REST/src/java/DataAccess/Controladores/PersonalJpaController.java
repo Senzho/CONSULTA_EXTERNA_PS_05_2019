@@ -208,6 +208,7 @@ public class PersonalJpaController implements Serializable {
             consulta.setParameter("prRfc", rfc);
             personal = (Personal) consulta.getSingleResult();
             personal.setUsuariosUsuId(null);
+            personal.setRegistrosCollection(null);
         } finally {
             em.close();
         }
@@ -222,6 +223,7 @@ public class PersonalJpaController implements Serializable {
             consulta.setParameter("usuId", usuario.getUsuId());
             personal = (Personal) consulta.getSingleResult();
             personal.setUsuariosUsuId(null);
+            personal.setRegistrosCollection(null);
         } finally {
             em.close();
         }
@@ -237,6 +239,7 @@ public class PersonalJpaController implements Serializable {
             personales = consulta.getResultList();
             personales.forEach((personal) -> {
                 personal.setUsuariosUsuId(null);
+                personal.setRegistrosCollection(null);
             });
         } finally {
             em.close();

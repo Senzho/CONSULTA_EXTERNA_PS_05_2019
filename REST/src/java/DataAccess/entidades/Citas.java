@@ -6,7 +6,11 @@
 package DataAccess.entidades;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +26,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -35,7 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Citas.findByCitId", query = "SELECT c FROM Citas c WHERE c.citId = :citId")
     , @NamedQuery(name = "Citas.findByCitFechaHoraReserva", query = "SELECT c FROM Citas c WHERE c.citFechaHoraReserva = :citFechaHoraReserva")
     , @NamedQuery(name = "Citas.findByCitEstado", query = "SELECT c FROM Citas c WHERE c.citEstado = :citEstado")
-    , @NamedQuery(name = "Citas.findByCitIdPersonal", query = "SELECT c FROM Citas c WHERE c.citIdPersonal = :citIdPersonal")})
+    , @NamedQuery(name = "Citas.findByCitFechaReserva", query = "SELECT c FROM Citas c WHERE c.citFechaHoraReserva BETWEEN :citFechaReserva AND :fecha")})
 public class Citas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,10 +59,9 @@ public class Citas implements Serializable {
     @NotNull
     @Column(name = "cit_estado")
     private int citEstado;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "cit_id_personal")
-    private int citIdPersonal;
+    @JoinColumn(name = "cit_pr_rfc", referencedColumnName = "pr_rfc")
+    @ManyToOne(optional = false)
+    private Personal citPrRfc;
     @JoinColumn(name = "cit_num_seguro_paciente", referencedColumnName = "pac_num_seguro")
     @ManyToOne(optional = false)
     private Pacientes citNumSeguroPaciente;
@@ -68,11 +73,19 @@ public class Citas implements Serializable {
         this.citId = citId;
     }
 
-    public Citas(Integer citId, Date citFechaHoraReserva, int citEstado, int citIdPersonal) {
+    public Citas(Integer citId, Date citFechaHoraReserva, int citEstado) {
         this.citId = citId;
         this.citFechaHoraReserva = citFechaHoraReserva;
         this.citEstado = citEstado;
-        this.citIdPersonal = citIdPersonal;
+    }
+    
+    public Citas(JSONObject jObjeto) throws JSONException {
+        this.citEstado = jObjeto.getInt("citEstado");
+        try {
+            this.citFechaHoraReserva = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jObjeto.getString("citFechaHoraReserva"));
+        } catch (ParseException ex) {
+            Logger.getLogger(Citas.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Integer getCitId() {
@@ -99,12 +112,12 @@ public class Citas implements Serializable {
         this.citEstado = citEstado;
     }
 
-    public int getCitIdPersonal() {
-        return citIdPersonal;
+    public Personal getCitPrRfc() {
+        return citPrRfc;
     }
 
-    public void setCitIdPersonal(int citIdPersonal) {
-        this.citIdPersonal = citIdPersonal;
+    public void setCitPrRfc(Personal citPrRfc) {
+        this.citPrRfc = citPrRfc;
     }
 
     public Pacientes getCitNumSeguroPaciente() {

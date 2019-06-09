@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package DataAccess.controladores;
 
 import DataAccess.controladores.exceptions.NonexistentEntityException;
@@ -14,10 +9,14 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import DataAccess.entidades.Pacientes;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.transaction.UserTransaction;
 
 /**
  *
@@ -25,11 +24,10 @@ import javax.transaction.UserTransaction;
  */
 public class CitasJpaController implements Serializable {
 
-    public CitasJpaController(UserTransaction utx, EntityManagerFactory emf) {
-        this.utx = utx;
+    public CitasJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    private UserTransaction utx = null;
+    
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -37,24 +35,14 @@ public class CitasJpaController implements Serializable {
     }
 
     public void create(Citas citas) throws RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
-            Pacientes citNumSeguroPaciente = citas.getCitNumSeguroPaciente();
-            if (citNumSeguroPaciente != null) {
-                citNumSeguroPaciente = em.getReference(citNumSeguroPaciente.getClass(), citNumSeguroPaciente.getPacNumSeguro());
-                citas.setCitNumSeguroPaciente(citNumSeguroPaciente);
-            }
+            em.getTransaction().begin();
             em.persist(citas);
-            if (citNumSeguroPaciente != null) {
-                citNumSeguroPaciente.getCitasCollection().add(citas);
-                citNumSeguroPaciente = em.merge(citNumSeguroPaciente);
-            }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -67,30 +55,14 @@ public class CitasJpaController implements Serializable {
     }
 
     public void edit(Citas citas) throws NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
-            Citas persistentCitas = em.find(Citas.class, citas.getCitId());
-            Pacientes citNumSeguroPacienteOld = persistentCitas.getCitNumSeguroPaciente();
-            Pacientes citNumSeguroPacienteNew = citas.getCitNumSeguroPaciente();
-            if (citNumSeguroPacienteNew != null) {
-                citNumSeguroPacienteNew = em.getReference(citNumSeguroPacienteNew.getClass(), citNumSeguroPacienteNew.getPacNumSeguro());
-                citas.setCitNumSeguroPaciente(citNumSeguroPacienteNew);
-            }
+            em.getTransaction().begin();
             citas = em.merge(citas);
-            if (citNumSeguroPacienteOld != null && !citNumSeguroPacienteOld.equals(citNumSeguroPacienteNew)) {
-                citNumSeguroPacienteOld.getCitasCollection().remove(citas);
-                citNumSeguroPacienteOld = em.merge(citNumSeguroPacienteOld);
-            }
-            if (citNumSeguroPacienteNew != null && !citNumSeguroPacienteNew.equals(citNumSeguroPacienteOld)) {
-                citNumSeguroPacienteNew.getCitasCollection().add(citas);
-                citNumSeguroPacienteNew = em.merge(citNumSeguroPacienteNew);
-            }
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -110,10 +82,9 @@ public class CitasJpaController implements Serializable {
     }
 
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            utx.begin();
-            em = getEntityManager();
+            em.getTransaction().begin();
             Citas citas;
             try {
                 citas = em.getReference(Citas.class, id);
@@ -127,10 +98,10 @@ public class CitasJpaController implements Serializable {
                 citNumSeguroPaciente = em.merge(citNumSeguroPaciente);
             }
             em.remove(citas);
-            utx.commit();
+            em.getTransaction().commit();
         } catch (Exception ex) {
             try {
-                utx.rollback();
+                em.getTransaction().rollback();
             } catch (Exception re) {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
@@ -165,6 +136,28 @@ public class CitasJpaController implements Serializable {
             em.close();
         }
     }
+    
+    public List<Citas> obtenerPorFecha(String fecha) {
+        List<Citas> citas = new ArrayList<>();
+        EntityManager em = getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("Citas.findByCitFechaReserva");
+            try {
+                consulta.setParameter("citFechaReserva", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fecha + " 00:00:00"));
+                consulta.setParameter("fecha", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fecha + " 23:59:59"));
+                citas = consulta.getResultList();
+                citas.forEach((cita) -> {
+                    cita.setCitNumSeguroPaciente(null);
+                    cita.setCitPrRfc(null);
+                });
+            } catch (ParseException ex) {
+                Logger.getLogger(CitasJpaController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } finally {
+            
+        }
+        return citas;
+    }
 
     public Citas findCitas(Integer id) {
         EntityManager em = getEntityManager();
@@ -174,7 +167,8 @@ public class CitasJpaController implements Serializable {
             em.close();
         }
     }
-
+    
+    
     public int getCitasCount() {
         EntityManager em = getEntityManager();
         try {

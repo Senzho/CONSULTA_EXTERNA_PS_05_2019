@@ -74,6 +74,7 @@ public class ServicioUsuario extends ServicioSeguro {
                 controladorUsuario.create(usuario);
                 respuesta.getJson().put("registrado", true);
             } catch(Exception excepcion) {
+                System.out.println(excepcion.getMessage());
                 respuesta.getJson().put("registrado", false);
             }
         }

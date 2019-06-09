@@ -127,13 +127,10 @@ public class ServicioPersonal extends ServicioSeguro {
             PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
             try {
                 List<Personal> roles = personalJpaController.obtenerPorRol(rol);
-                JSONArray jArreglo = new JSONArray();
-                roles.forEach((personal) -> {
-                    jArreglo.put(new JSONObject(personal));
-                });
+                JSONArray jArreglo = new JSONArray(roles);
                 respuesta.getJson().put("personales", jArreglo);
             } catch(Exception exception) {
-                respuesta.getJson().put("personales", new JSONArray("{}"));
+                respuesta.getJson().put("personales", new JSONArray("[]"));
             }
         }
         return respuesta.toString();

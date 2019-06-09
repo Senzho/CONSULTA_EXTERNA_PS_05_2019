@@ -1,5 +1,10 @@
 package WS;
 
+import DataAccess.controladores.MedicamentoJpaController;
+import DataAccess.entidades.Medicamento;
+import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -7,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
+import org.json.JSONArray;
 
 /**
  *
@@ -28,21 +34,29 @@ public class ServicioMedicamento extends ServicioSeguro {
      * @param token: recibe el token de sesión.
      */
     public String obtener(@PathParam("token") String token) {
-        if (this.tokenValido(token)) {
-            
+        boolean resultadoToken = this.tokenValido(token);
+        Respuesta respuesta = new Respuesta(resultadoToken);
+        if (resultadoToken) {
+            EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
+            MedicamentoJpaController medicamentoJpaController = new MedicamentoJpaController(entityManagerFactory);
+            try {
+                List<Medicamento> medicamentos = medicamentoJpaController.findMedicamentoEntities();
+                JSONArray jArreglo = new JSONArray(medicamentos);
+                respuesta.getJson().put("medicamentos", jArreglo);
+            } catch(Exception exception) {
+                respuesta.getJson().put("medicamentos", new JSONArray("[]"));
+            }
         }
-        return null;
+        return respuesta.toString();
     }
     
     @GET
-    @Path("obtenerrecetados/{desde}/{hasta}/{token}")
+    @Path("obtenerrecetados/{token}")
     @Produces(MediaType.APPLICATION_JSON)
     /**
-     * @param fechaMenor: recibe la fecha desde la cual se quiere el histórico.
-     * @param fechaMayor: recibe la fecha hasta la cual se requiere el histórico.
      * @param token: recibe el token de sesión.
      */
-    public String obtenerRecetados(@PathParam("desde") String fechaMenor, @PathParam("hasta") String fechaMayor, @PathParam("token") String token) {
+    public String obtenerRecetados(@PathParam("token") String token) {
         if (this.tokenValido(token)) {
             
         }
