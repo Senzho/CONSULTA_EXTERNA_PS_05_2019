@@ -170,6 +170,8 @@ public class PacientesJpaController implements Serializable {
             Query consulta = em.createNamedQuery("Pacientes.findByPacNumSeguro");
             consulta.setParameter("pacNumSeguro", numeroSeguro);
             paciente = (Pacientes) consulta.getSingleResult();
+            paciente.setCitasCollection(null);
+            paciente.setConsultasCollection(null);
         } finally {
             em.close();
         }

@@ -5,9 +5,7 @@ import DataAccess.controladores.RegistrosJpaController;
 import DataAccess.controladores.UsuariosJpaController;
 import DataAccess.entidades.Personal;
 import DataAccess.entidades.Registros;
-import DataAccess.entidades.Usuarios;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.ws.rs.Consumes;
@@ -51,10 +49,8 @@ public class ServicioPersonal extends ServicioSeguro {
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
             PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
             try {
-                Personal personal = personalJpaController.findPersonal(rfc);
-                respuesta.getJson().put("cambiado", personalJpaController.cambiarEstado(personal));
+                respuesta.getJson().put("cambiado", personalJpaController.cambiarEstado(personalJpaController.findPersonal(rfc)));
             } catch(Exception excepcion) {
-                System.out.println(excepcion.getMessage());
                 respuesta.getJson().put("cambiado", false);
             }
         }
@@ -75,9 +71,7 @@ public class ServicioPersonal extends ServicioSeguro {
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
             PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
             try {
-                Personal personal = personalJpaController.obtenerPorRfc(rfc);
-                JSONObject jObjeto = new JSONObject(personal);
-                respuesta.getJson().put("personal", jObjeto);
+                respuesta.getJson().put("personal", new JSONObject(personalJpaController.obtenerPorRfc(rfc)));
             } catch(Exception excepcion) {
                 System.out.println(excepcion.getMessage());
                 respuesta.getJson().put("personal", new JSONObject("{'prRfc': ''}"));
@@ -101,10 +95,7 @@ public class ServicioPersonal extends ServicioSeguro {
             PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
             UsuariosJpaController usuariosJpaController = new UsuariosJpaController(entityManagerFactory);
             try {
-                Usuarios usuario = usuariosJpaController.findUsuarios(idUsuario);
-                Personal personal = personalJpaController.obtenerPorIdUsuario(usuario);
-                JSONObject jObjeto = new JSONObject(personal);
-                respuesta.getJson().put("personal", jObjeto);
+                respuesta.getJson().put("personal", new JSONObject(personalJpaController.obtenerPorIdUsuario(usuariosJpaController.findUsuarios(idUsuario))));
             } catch(Exception excepcion) {
                 respuesta.getJson().put("personal", new JSONObject("{'prRfc': ''}"));
             }
@@ -126,9 +117,7 @@ public class ServicioPersonal extends ServicioSeguro {
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
             PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
             try {
-                List<Personal> roles = personalJpaController.obtenerPorRol(rol);
-                JSONArray jArreglo = new JSONArray(roles);
-                respuesta.getJson().put("personales", jArreglo);
+                respuesta.getJson().put("personales", new JSONArray(personalJpaController.obtenerPorRol(rol)));
             } catch(Exception exception) {
                 respuesta.getJson().put("personales", new JSONArray("[]"));
             }
@@ -149,13 +138,12 @@ public class ServicioPersonal extends ServicioSeguro {
         boolean resultadoToken = this.tokenValido(token);
         Respuesta respuesta = new Respuesta(resultadoToken);
         if (resultadoToken) {
-            JSONObject jObjeto = new JSONObject(contenido);
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
-            Personal personal = new Personal(jObjeto);
             UsuariosJpaController usuariosJpaController = new UsuariosJpaController(entityManagerFactory);
-            personal.setUsuariosUsuId(usuariosJpaController.findUsuarios(idUsuario));
             PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
             try {
+                Personal personal = new Personal(new JSONObject(contenido));
+                personal.setUsuariosUsuId(usuariosJpaController.findUsuarios(idUsuario));
                 personalJpaController.create(personal);
                 respuesta.getJson().put("registrado", true);
             } catch(Exception excepcion) {
@@ -178,12 +166,12 @@ public class ServicioPersonal extends ServicioSeguro {
         Respuesta respuesta = new Respuesta(resultadoToken);
         if (resultadoToken) {
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
+            PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
+            RegistrosJpaController registrosJpaController = new RegistrosJpaController(entityManagerFactory);
             Registros registros = new Registros();
             registros.setRegHoraEntrada(new Date());
             registros.setRegLugarEstadia(numeroConsultorio);
-            PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
             registros.setPersonalPrRfc(personalJpaController.findPersonal(rfc));
-            RegistrosJpaController registrosJpaController = new RegistrosJpaController(entityManagerFactory);
             try {
                 if (!registrosJpaController.existeSalidaNula(rfc)) {
                     registrosJpaController.create(registros);
@@ -243,12 +231,10 @@ public class ServicioPersonal extends ServicioSeguro {
         boolean resultadoToken = this.tokenValido(token);
         Respuesta respuesta = new Respuesta(resultadoToken);
         if (resultadoToken) {
-            JSONObject jObjeto = new JSONObject(contenido);
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
-            Personal personal = new Personal(jObjeto);
             PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
             try {
-                respuesta.getJson().put("actualizado", personalJpaController.edit(personal));
+                respuesta.getJson().put("actualizado", personalJpaController.edit(new Personal(new JSONObject(contenido))));
             } catch(Exception excepcion) {
                 respuesta.getJson().put("actualizado", false);
             }

@@ -7,26 +7,27 @@ package DataAccess.controladores;
 
 import DataAccess.controladores.exceptions.NonexistentEntityException;
 import DataAccess.controladores.exceptions.RollbackFailureException;
-import DataAccess.entidades.Citas;
-import DataAccess.entidades.Consultas;
+import DataAccess.entidades.Personal;
+import DataAccess.entidades.Sesiones;
+import WS.Hasher;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import DataAccess.entidades.Pacientes;
-import DataAccess.entidades.Recetas;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 /**
  *
  * @author Victor Javier
  */
-public class ConsultasJpaController implements Serializable {
+public class SesionesJpaController implements Serializable {
 
-    public ConsultasJpaController(EntityManagerFactory emf) {
+    public SesionesJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
     
@@ -36,17 +37,12 @@ public class ConsultasJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Consultas consultas) throws RollbackFailureException, Exception {
+    public void create(Personal personal, Sesiones sesion) throws RollbackFailureException, Exception {
         EntityManager em = getEntityManager();
+        sesion.setToken(Hasher.hash("ceht" + personal.getPerNombres() + personal.getPerApellidos() + personal.getPrRfc() + new SimpleDateFormat("yyyy-MM-dd").format(new Date())));
         try {
             em.getTransaction().begin();
-            em.persist(consultas);
-            CitasJpaController citasJpaController = new CitasJpaController(this.emf);
-            Citas cita = citasJpaController.obtenerPorConsulta(consultas);
-            if (cita != null) {
-                cita.setCitEstado(1);
-                em.merge(cita);
-            }
+            em.persist(sesion);
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -62,11 +58,11 @@ public class ConsultasJpaController implements Serializable {
         }
     }
 
-    public void edit(Consultas consultas) throws NonexistentEntityException, RollbackFailureException, Exception {
+    public void edit(Sesiones sesiones) throws NonexistentEntityException, RollbackFailureException, Exception {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            consultas = em.merge(consultas);
+            sesiones = em.merge(sesiones);
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -76,9 +72,9 @@ public class ConsultasJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = consultas.getConId();
-                if (findConsultas(id) == null) {
-                    throw new NonexistentEntityException("The consultas with id " + id + " no longer exists.");
+                Integer id = sesiones.getSesId();
+                if (findSesiones(id) == null) {
+                    throw new NonexistentEntityException("The sesiones with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -93,24 +89,14 @@ public class ConsultasJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            Consultas consultas;
+            Sesiones sesiones;
             try {
-                consultas = em.getReference(Consultas.class, id);
-                consultas.getConId();
+                sesiones = em.getReference(Sesiones.class, id);
+                sesiones.getSesId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The consultas with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The sesiones with id " + id + " no longer exists.", enfe);
             }
-            Pacientes conSeguroPaciente = consultas.getConSeguroPaciente();
-            if (conSeguroPaciente != null) {
-                conSeguroPaciente.getConsultasCollection().remove(consultas);
-                conSeguroPaciente = em.merge(conSeguroPaciente);
-            }
-            Recetas conFolioReceta = consultas.getConFolioReceta();
-            if (conFolioReceta != null) {
-                conFolioReceta.getConsultasCollection().remove(consultas);
-                conFolioReceta = em.merge(conFolioReceta);
-            }
-            em.remove(consultas);
+            em.remove(sesiones);
             em.getTransaction().commit();
         } catch (Exception ex) {
             try {
@@ -126,19 +112,19 @@ public class ConsultasJpaController implements Serializable {
         }
     }
 
-    public List<Consultas> findConsultasEntities() {
-        return findConsultasEntities(true, -1, -1);
+    public List<Sesiones> findSesionesEntities() {
+        return findSesionesEntities(true, -1, -1);
     }
 
-    public List<Consultas> findConsultasEntities(int maxResults, int firstResult) {
-        return findConsultasEntities(false, maxResults, firstResult);
+    public List<Sesiones> findSesionesEntities(int maxResults, int firstResult) {
+        return findSesionesEntities(false, maxResults, firstResult);
     }
 
-    private List<Consultas> findConsultasEntities(boolean all, int maxResults, int firstResult) {
+    private List<Sesiones> findSesionesEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Consultas.class));
+            cq.select(cq.from(Sesiones.class));
             Query q = em.createQuery(cq);
             if (!all) {
                 q.setMaxResults(maxResults);
@@ -149,39 +135,34 @@ public class ConsultasJpaController implements Serializable {
             em.close();
         }
     }
+
+    public Sesiones findSesiones(Integer id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Sesiones.class, id);
+        } finally {
+            em.close();
+        }
+    }
     
-    public List<Consultas> obtenerPorPaciente(int numeroSeguro) {
-        List<Consultas> consultas;
+    public Sesiones obtenerPorToken(String token) {
+        Sesiones sesion;
         EntityManager em = getEntityManager();
         try {
-            Query consulta = em.createNamedQuery("Consultas.findByPaciente");
-            consulta.setParameter("pacNumSeguro", numeroSeguro);
-            consultas = consulta.getResultList();
-            for (Consultas consultaLista : consultas) {
-                consultaLista.setConFolioReceta(null);
-                consultaLista.setConPrRfc(null);
-                consultaLista.setConSeguroPaciente(null);
-            }
+            Query consulta = em.createNamedQuery("Sesiones.findByToken");
+            consulta.setParameter("token", token);
+            sesion = (Sesiones) consulta.getSingleResult();
         } finally {
             em.close();
         }
-        return consultas;
+        return sesion;
     }
 
-    public Consultas findConsultas(Integer id) {
-        EntityManager em = getEntityManager();
-        try {
-            return em.find(Consultas.class, id);
-        } finally {
-            em.close();
-        }
-    }
-
-    public int getConsultasCount() {
+    public int getSesionesCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Consultas> rt = cq.from(Consultas.class);
+            Root<Sesiones> rt = cq.from(Sesiones.class);
             cq.select(em.getCriteriaBuilder().count(rt));
             Query q = em.createQuery(cq);
             return ((Long) q.getSingleResult()).intValue();

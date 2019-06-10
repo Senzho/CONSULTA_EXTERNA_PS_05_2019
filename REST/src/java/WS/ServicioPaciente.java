@@ -43,9 +43,7 @@ public class ServicioPaciente extends ServicioSeguro {
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
             PacientesJpaController pacientesJpaController = new PacientesJpaController(entityManagerFactory);
             try {
-                Pacientes paciente = pacientesJpaController.obtenerPorNumeroSeguro(numeroSeguro);
-                JSONObject jObjeto = new JSONObject(paciente);
-                respuesta.getJson().put("paciente", jObjeto);
+                respuesta.getJson().put("paciente", new JSONObject(pacientesJpaController.obtenerPorNumeroSeguro(numeroSeguro)));
             } catch(Exception excepcion) {
                 respuesta.getJson().put("paciente", new JSONObject("{'pacNumSeguro': '0'}"));
             }
@@ -65,15 +63,20 @@ public class ServicioPaciente extends ServicioSeguro {
         boolean resultadoToken = this.tokenValido(token);
         Respuesta respuesta = new Respuesta(resultadoToken);
         if (resultadoToken) {
-            JSONObject jObjeto = new JSONObject(contenido);
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
-            Pacientes paciente = new Pacientes(jObjeto);
             PacientesJpaController pacientesJpaController = new PacientesJpaController(entityManagerFactory);
             try {
-                pacientesJpaController.create(paciente);
-                respuesta.getJson().put("registrado", true);
+                Pacientes paciente = new Pacientes(new JSONObject(contenido));
+                if (pacientesJpaController.findPacientes(paciente.getPacNumSeguro()) == null) {
+                    pacientesJpaController.create(paciente);
+                    respuesta.getJson().put("registrado", true);
+                } else {
+                    respuesta.getJson().put("registrado", false);
+                    respuesta.getJson().put("error", "existente");
+                }
             } catch(Exception excepcion) {
                 respuesta.getJson().put("registrado", false);
+                respuesta.getJson().put("error", "registro");
             }
         }
         return respuesta.toString();
@@ -91,12 +94,10 @@ public class ServicioPaciente extends ServicioSeguro {
         boolean resultadoToken = this.tokenValido(token);
         Respuesta respuesta = new Respuesta(resultadoToken);
         if (resultadoToken) {
-            JSONObject jObjeto = new JSONObject(contenido);
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
-            Pacientes paciente = new Pacientes(jObjeto);
             PacientesJpaController pacientesJpaController = new PacientesJpaController(entityManagerFactory);
             try {
-                pacientesJpaController.edit(paciente);
+                pacientesJpaController.edit(new Pacientes(new JSONObject(contenido)));
                 respuesta.getJson().put("actualizado", true);
             } catch(Exception excepcion) {
                 respuesta.getJson().put("actualizado", false);

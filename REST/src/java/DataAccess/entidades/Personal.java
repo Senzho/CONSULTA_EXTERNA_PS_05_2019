@@ -56,6 +56,11 @@ import org.json.JSONObject;
     , @NamedQuery(name = "Personal.findByUsuRol", query = "SELECT p FROM Personal p WHERE p.usuariosUsuId.usuRol = :usuRol")})
 public class Personal implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "citPrRfc")
+    private Collection<Citas> citasCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "conPrRfc")
+    private Collection<Consultas> consultasCollection;
+
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @NotNull
@@ -254,6 +259,24 @@ public class Personal implements Serializable {
     @Override
     public String toString() {
         return "DataAccess.entidades.Personal[ prRfc=" + prRfc + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Citas> getCitasCollection() {
+        return citasCollection;
+    }
+
+    public void setCitasCollection(Collection<Citas> citasCollection) {
+        this.citasCollection = citasCollection;
+    }
+
+    @XmlTransient
+    public Collection<Consultas> getConsultasCollection() {
+        return consultasCollection;
+    }
+
+    public void setConsultasCollection(Collection<Consultas> consultasCollection) {
+        this.consultasCollection = consultasCollection;
     }
     
 }

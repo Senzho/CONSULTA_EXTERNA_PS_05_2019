@@ -48,6 +48,9 @@ import org.json.JSONObject;
     , @NamedQuery(name = "Recetas.findByRecFechaCreacion", query = "SELECT r FROM Recetas r WHERE r.recFechaCreacion = :recFechaCreacion")})
 public class Recetas implements Serializable {
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recmedFolio")
+    private Collection<RecetasMedicamentos> recetasMedicamentosCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -173,6 +176,15 @@ public class Recetas implements Serializable {
     @Override
     public String toString() {
         return "DataAccess.entidades.Recetas[ recFolio=" + recFolio + " ]";
+    }
+
+    @XmlTransient
+    public Collection<RecetasMedicamentos> getRecetasMedicamentosCollection() {
+        return recetasMedicamentosCollection;
+    }
+
+    public void setRecetasMedicamentosCollection(Collection<RecetasMedicamentos> recetasMedicamentosCollection) {
+        this.recetasMedicamentosCollection = recetasMedicamentosCollection;
     }
     
 }

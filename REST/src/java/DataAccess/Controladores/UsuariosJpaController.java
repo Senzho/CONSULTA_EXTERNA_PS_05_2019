@@ -163,6 +163,7 @@ public class UsuariosJpaController implements Serializable {
             consulta.setParameter("usuNombre", nombreUsuario);
             consulta.setParameter("usuContrasena", contraseña);
             usuario = (Usuarios) consulta.getSingleResult();
+            usuario.setPersonalCollection(null);
         } finally {
             em.close();
         }

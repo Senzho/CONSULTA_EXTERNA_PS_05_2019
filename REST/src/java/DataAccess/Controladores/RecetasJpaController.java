@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import DataAccess.entidades.Consultas;
 import DataAccess.entidades.Recetas;
+import DataAccess.entidades.RecetasMedicamentos;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -42,14 +43,17 @@ public class RecetasJpaController implements Serializable {
         EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
-            Collection<Medicamento> attachedMedicamentoCollection = new ArrayList<Medicamento>();
-            for (Medicamento medicamentoCollectionMedicamentoToAttach : recetas.getMedicamentoCollection()) {
-                medicamentoCollectionMedicamentoToAttach = em.getReference(medicamentoCollectionMedicamentoToAttach.getClass(), medicamentoCollectionMedicamentoToAttach.getMedCodigo());
-                attachedMedicamentoCollection.add(medicamentoCollectionMedicamentoToAttach);
-            }
-            recetas.setMedicamentoCollection(attachedMedicamentoCollection);
             em.persist(recetas);
+            for (Medicamento medicamento : recetas.getMedicamentoCollection()) {
+                RecetasMedicamentos recetasMedicamentos = new RecetasMedicamentos();
+                recetasMedicamentos.setRecmedCodigo(medicamento);
+                recetasMedicamentos.setRecmedFolio(recetas);
+                em.persist(recetasMedicamentos);
+            }
             em.getTransaction().commit();
+            recetas.setConsultasCollection(null);
+            recetas.setMedicamentoCollection(null);
+            recetas.setRecetasMedicamentosCollection(null);
         } catch (Exception ex) {
             try {
                 em.getTransaction().rollback();
@@ -135,7 +139,15 @@ public class RecetasJpaController implements Serializable {
     }
 
     public List<Recetas> findRecetasEntities() {
-        return findRecetasEntities(true, -1, -1);
+        List<Recetas> recetas = findRecetasEntities(true, -1, -1);
+        for (Recetas receta : recetas) {
+            receta.setConsultasCollection(null);
+            receta.setRecetasMedicamentosCollection(null);
+            for (Medicamento medicamento : receta.getMedicamentoCollection()) {
+                medicamento.setRecetasCollection(null);
+            }
+        }
+        return recetas;
     }
 
     public List<Recetas> findRecetasEntities(int maxResults, int firstResult) {

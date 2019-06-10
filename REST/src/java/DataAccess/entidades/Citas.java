@@ -41,7 +41,8 @@ import org.json.JSONObject;
     , @NamedQuery(name = "Citas.findByCitId", query = "SELECT c FROM Citas c WHERE c.citId = :citId")
     , @NamedQuery(name = "Citas.findByCitFechaHoraReserva", query = "SELECT c FROM Citas c WHERE c.citFechaHoraReserva = :citFechaHoraReserva")
     , @NamedQuery(name = "Citas.findByCitEstado", query = "SELECT c FROM Citas c WHERE c.citEstado = :citEstado")
-    , @NamedQuery(name = "Citas.findByCitFechaReserva", query = "SELECT c FROM Citas c WHERE c.citFechaHoraReserva BETWEEN :citFechaReserva AND :fecha")})
+    , @NamedQuery(name = "Citas.findByCitFechaReserva", query = "SELECT c FROM Citas c WHERE c.citFechaHoraReserva BETWEEN :citFechaReserva AND :fecha")
+    , @NamedQuery(name = "Citas.findByConsulta", query = "SELECT c FROM Citas c WHERE c.citNumSeguroPaciente.pacNumSeguro = :pacNumSeguro AND c.citPrRfc.prRfc = :prRfc AND (c.citFechaHoraReserva BETWEEN :conFechaReserva AND :fecha)")})
 public class Citas implements Serializable {
 
     private static final long serialVersionUID = 1L;

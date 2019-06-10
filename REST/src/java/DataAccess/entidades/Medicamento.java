@@ -39,7 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Medicamento.findByMedCodigo", query = "SELECT m FROM Medicamento m WHERE m.medCodigo = :medCodigo")
     , @NamedQuery(name = "Medicamento.findByMedFechaCaducidad", query = "SELECT m FROM Medicamento m WHERE m.medFechaCaducidad = :medFechaCaducidad")
     , @NamedQuery(name = "Medicamento.findByMedGramaje", query = "SELECT m FROM Medicamento m WHERE m.medGramaje = :medGramaje")
-    , @NamedQuery(name = "Medicamento.findByMedNombre", query = "SELECT m FROM Medicamento m WHERE m.medNombre = :medNombre")})
+    , @NamedQuery(name = "Medicamento.findByMedNombre", query = "SELECT m FROM Medicamento m WHERE m.medNombre = :medNombre")
+    , @NamedQuery(name = "Medicamento.findByConsulta", query = "SELECT m FROM Medicamento m, RecetasMedicamentos rm JOIN Consultas c WHERE c.conId = :conId AND rm.recmedFolio.recFolio = c.conFolioReceta.recFolio AND rm.recmedCodigo.medCodigo = m.medCodigo")})
 public class Medicamento implements Serializable {
 
     private static final long serialVersionUID = 1L;

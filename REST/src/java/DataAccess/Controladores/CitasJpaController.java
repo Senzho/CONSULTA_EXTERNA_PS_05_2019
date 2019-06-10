@@ -3,6 +3,7 @@ package DataAccess.controladores;
 import DataAccess.controladores.exceptions.NonexistentEntityException;
 import DataAccess.controladores.exceptions.RollbackFailureException;
 import DataAccess.entidades.Citas;
+import DataAccess.entidades.Consultas;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -154,7 +155,28 @@ public class CitasJpaController implements Serializable {
                 Logger.getLogger(CitasJpaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         } finally {
-            
+            em.close();
+        }
+        return citas;
+    }
+    
+    public Citas obtenerPorConsulta(Consultas consultas) {
+        Citas citas;
+        EntityManager em = getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("Citas.findByConsulta");
+            consulta.setParameter("pacNumSeguro", consultas.getConSeguroPaciente().getPacNumSeguro());
+            consulta.setParameter("prRfc", consultas.getConPrRfc().getPrRfc());
+            String fecha = new SimpleDateFormat("yyyy-MM-dd").format(consultas.getConFecha());
+            try {
+                consulta.setParameter("conFechaReserva", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fecha + " 00:00:00"));
+                consulta.setParameter("fecha", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fecha + " 23:59:59"));
+            } catch (ParseException ex) {
+                Logger.getLogger(CitasJpaController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            citas = (Citas) consulta.getSingleResult();
+        } finally {
+            em.close();
         }
         return citas;
     }

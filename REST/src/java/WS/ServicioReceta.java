@@ -44,22 +44,21 @@ public class ServicioReceta extends ServicioSeguro {
         boolean resultadoToken = this.tokenValido(token);
         Respuesta respuesta = new Respuesta(resultadoToken);
         if (resultadoToken) {
-            JSONObject jObjeto = new JSONObject(contenido);
-            Recetas receta = new Recetas(jObjeto.getJSONObject("receta"));
-            JSONArray jArreglo = jObjeto.getJSONArray("medicamentos");
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
             MedicamentoJpaController medicamentoJpaController = new MedicamentoJpaController(entityManagerFactory);
-            List<Medicamento> medicamentos = new ArrayList<>();
-            for (int i = 0; i < jArreglo.length(); i ++) {
-                JSONObject jsObjeto = jArreglo.getJSONObject(i);
-                Medicamento medicamento = medicamentoJpaController.findMedicamento(jsObjeto.getInt("medCodigo"));
-                medicamentos.add(medicamento);
-            }
-            receta.setMedicamentoCollection(medicamentos);
             RecetasJpaController recetasJpaController = new RecetasJpaController(entityManagerFactory);
             try {
+                JSONObject jObjeto = new JSONObject(contenido);
+                Recetas receta = new Recetas(jObjeto.getJSONObject("receta"));
+                JSONArray jArreglo = jObjeto.getJSONArray("medicamentos");
+                List<Medicamento> medicamentos = new ArrayList<>();
+                for (int i = 0; i < jArreglo.length(); i ++) {
+                    medicamentos.add(medicamentoJpaController.findMedicamento(jArreglo.getJSONObject(i).getInt("medCodigo")));
+                }
+                receta.setMedicamentoCollection(medicamentos);
                 recetasJpaController.create(receta);
                 respuesta.getJson().put("registrada", true);
+                respuesta.getJson().put("receta", new JSONObject(receta));
             } catch(Exception excepcion) {
                 respuesta.getJson().put("registrada", false);
             }

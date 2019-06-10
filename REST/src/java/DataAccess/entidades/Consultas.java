@@ -6,7 +6,11 @@
 package DataAccess.entidades;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +28,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -41,7 +47,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Consultas.findByConHoraInicio", query = "SELECT c FROM Consultas c WHERE c.conHoraInicio = :conHoraInicio")
     , @NamedQuery(name = "Consultas.findByConPeso", query = "SELECT c FROM Consultas c WHERE c.conPeso = :conPeso")
     , @NamedQuery(name = "Consultas.findByConPresion", query = "SELECT c FROM Consultas c WHERE c.conPresion = :conPresion")
-    , @NamedQuery(name = "Consultas.findByConTemperatura", query = "SELECT c FROM Consultas c WHERE c.conTemperatura = :conTemperatura")})
+    , @NamedQuery(name = "Consultas.findByConTemperatura", query = "SELECT c FROM Consultas c WHERE c.conTemperatura = :conTemperatura")
+    , @NamedQuery(name = "Consultas.findByPaciente", query = "SELECT c FROM Consultas c WHERE c.conSeguroPaciente.pacNumSeguro = :pacNumSeguro")})
 public class Consultas implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -115,6 +122,21 @@ public class Consultas implements Serializable {
         this.conPeso = conPeso;
         this.conPresion = conPresion;
         this.conTemperatura = conTemperatura;
+    }
+    
+    public Consultas(JSONObject jObjeto) throws JSONException {
+        this.conDiagnostico = jObjeto.getString("conDiagnostico");
+        this.conEstatura = (float) jObjeto.getDouble("conEstatura");
+        try {
+            this.conFecha = new SimpleDateFormat("yyyy-MM-dd").parse(jObjeto.getString("conFecha"));
+            this.conHoraInicio = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jObjeto.getString("conHoraInicio"));
+            this.conHoraFin = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(jObjeto.getString("conHoraFin"));
+        } catch (ParseException ex) {
+            Logger.getLogger(Consultas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.conPeso = (float) jObjeto.getDouble("conPeso");
+        this.conPresion = jObjeto.getString("conPresion");
+        this.conTemperatura = (float) jObjeto.getDouble("conTemperatura");
     }
 
     public Integer getConId() {
@@ -193,7 +215,7 @@ public class Consultas implements Serializable {
         return conPrRfc;
     }
 
-    public void setConIdPersonal(Personal conPrRfc) {
+    public void setConPrRfc(Personal conPrRfc) {
         this.conPrRfc = conPrRfc;
     }
 

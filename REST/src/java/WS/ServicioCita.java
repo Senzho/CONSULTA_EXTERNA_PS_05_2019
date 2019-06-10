@@ -4,7 +4,6 @@ import DataAccess.controladores.CitasJpaController;
 import DataAccess.controladores.PacientesJpaController;
 import DataAccess.controladores.PersonalJpaController;
 import DataAccess.entidades.Citas;
-import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.ws.rs.Consumes;
@@ -46,11 +45,8 @@ public class ServicioCita extends ServicioSeguro {
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
             CitasJpaController citasJpaController = new CitasJpaController(entityManagerFactory);
             try {
-                List<Citas> citas = citasJpaController.obtenerPorFecha(fecha);
-                JSONArray jArreglo = new JSONArray(citas);
-                respuesta.getJson().put("citas", jArreglo);
+                respuesta.getJson().put("citas", new JSONArray(citasJpaController.obtenerPorFecha(fecha)));
             } catch(Exception excepcion) {
-                System.out.println(excepcion.getMessage());
                 respuesta.getJson().put("citas", new JSONArray("[]"));
             }
         }
@@ -71,15 +67,14 @@ public class ServicioCita extends ServicioSeguro {
         boolean resultadoToken = this.tokenValido(token);
         Respuesta respuesta = new Respuesta(resultadoToken);
         if (resultadoToken) {
-            JSONObject jObjeto = new JSONObject(contenido);
             EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("ConsultaExterna_WSPU");
             CitasJpaController citasJpaController = new CitasJpaController(entityManagerFactory);
-            Citas cita = new Citas(jObjeto);
             PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
-            cita.setCitPrRfc(personalJpaController.findPersonal(rfc));
             PacientesJpaController pacientesJpaController = new PacientesJpaController(entityManagerFactory);
-            cita.setCitNumSeguroPaciente(pacientesJpaController.findPacientes(numeroSeguro));
             try {
+                Citas cita = new Citas(new JSONObject(contenido));
+                cita.setCitPrRfc(personalJpaController.findPersonal(rfc));
+                cita.setCitNumSeguroPaciente(pacientesJpaController.findPacientes(numeroSeguro));
                 citasJpaController.create(cita);
                 respuesta.getJson().put("registrada", true);
             } catch(Exception excepcion) {

@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.transaction.UserTransaction;
 
 /**
  *
@@ -152,7 +151,11 @@ public class MedicamentoJpaController implements Serializable {
     }
 
     public List<Medicamento> findMedicamentoEntities() {
-        return findMedicamentoEntities(true, -1, -1);
+        List<Medicamento> medicamentos = findMedicamentoEntities(true, -1, -1);
+        for (Medicamento medicamento : medicamentos) {
+            medicamento.setRecetasCollection(null);
+        }
+        return medicamentos;
     }
 
     public List<Medicamento> findMedicamentoEntities(int maxResults, int firstResult) {
@@ -173,6 +176,22 @@ public class MedicamentoJpaController implements Serializable {
         } finally {
             em.close();
         }
+    }
+    
+    public List<Medicamento> obtenerPorConsulta(int idConsulta) {
+        List<Medicamento> medicamentos;
+        EntityManager em = getEntityManager();
+        try {
+            Query consulta = em.createNamedQuery("Medicamento.findByConsulta");
+            consulta.setParameter("conId", idConsulta);
+            medicamentos = consulta.getResultList();
+            for (Medicamento medicamento : medicamentos) {
+                medicamento.setRecetasCollection(null);
+            }
+        } finally {
+            em.close();
+        }
+        return medicamentos;
     }
 
     public Medicamento findMedicamento(Integer id) {
