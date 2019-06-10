@@ -23,6 +23,7 @@
       autoclose: true,
       todayHighlight: true,
       enableOnReadonly: false,
+      language: 'es',
     });
     $('#datepicker').datepicker("setDate", new Date());
     $('#datepicker').keypress(function(event) {
@@ -34,6 +35,7 @@
       autoclose: true,
       todayHighlight: true,
       enableOnReadonly: false,
+      language: 'es',
     });
     $('#datepickerCitaNueva').datepicker("setDate", new Date());
     $('#datepickerCitaNueva').keypress(function(event) {
@@ -231,7 +233,7 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Paciente actualizado</h4>
+          <h4 class="modal-title">Cita agendada</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -239,7 +241,8 @@
         <div class="modal-body">
           <p>Solo de muestra hay que quitar el botón y vincularlo con el de registrar pero eso se realiza con js</p>
           <p>Laura Martínez</p>
-          <p>625327635-1</p>
+          <p>Fecha: 31 de diciembre de 2019</p>
+          <p>12:30 PM</p>
         </div>
 
         <!-- Modal footer -->

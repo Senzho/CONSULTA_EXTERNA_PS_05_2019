@@ -20,6 +20,6 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('agendar_cita_view');
+		$this->load->view('realizar_consulta_view');
 	}
 }
