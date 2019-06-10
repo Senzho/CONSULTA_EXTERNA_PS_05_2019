@@ -7,5 +7,6 @@ interface IRecepcionista{
     public function eliminar($numeroPersonal);
     public function agregarConsulta($consulta);
     public function obtenerCitas($fecha);
-    public function obtenerRecepcionista($numeroPersonal);
+    public function obtenerRecepcionista($rfc);
+    public function obtenerRecepcionistaId($numeroPersonal);
 }

@@ -49,8 +49,8 @@ class Recepcionista extends Personal{
         return $datosRecepcionista;
     }
 
-    public function iRecepcionista($iRecepcionista){
-        $this->iRececionista = $iRecepcionista;
+    public function setIRecepcionista($iRecepcionista){
+        $this->iRecepcionista = $iRecepcionista;
     }
 
     public function registrar(){
@@ -92,11 +92,14 @@ class Recepcionista extends Personal{
     }
     
     public function eliminar(){
-        return $this->irecepcionista->eliminar($this->getNumeroPersonal());
+        return $this->iRecepcionista->eliminar($this->getNumeroPersonal());
     }
 
-    public abstract function obtenerPersonal($numeroPersonal){
-        return $this->iRecepcionista->obtenerPersonal($numeroPersonal);
+    public function obtenerPersonal($rfc){
+        return $this->iRecepcionista->obtenerRecepcionista($rfc);
+    }
+    public function obtenerPersonalId($idUsuario){
+        return $this->iRecepcionista->obtenerRecepcionistaId($idUsuario);
     }
 
     public function agregarConsulta($consulta){

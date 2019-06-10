@@ -5,5 +5,6 @@ interface ICoordinador{
     public function registrarEntrada($numeroPersonal, $numeroConsultorio);
     public function registrarSalida($numeroPersonal);
     public function eliminar($numeroPersonal);
-    public function obtenerCoordinador($numeroPersonal);  
+    public function obtenerCoordinador($rfc);  
+    public function obtenerCoordinadorId($idUsuario);  
 } 

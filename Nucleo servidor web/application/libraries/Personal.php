@@ -8,7 +8,8 @@ abstract class Personal{
     private $fechaNacimiento;
     private $sexo;
     private $turno;
-    
+    private $estado;
+
     public function __get($attr) {
 		return CI_Controller::get_instance()->$attr;
     }
@@ -80,11 +81,18 @@ abstract class Personal{
     public function setTurno($turno) {
         $this->turno = $turno;
     }
+    public function getEstado(){
+        return $this->estado;
+    }
+    public function setEstado($estado){
+        $this->estado = $estado;
+    }
 
     public abstract function registrar();
     public abstract function modificar();
     public abstract function registrarEntrada($numeroConsultorio);
     public abstract function registrarSalida();
     public abstract function eliminar();
-    public abstract function obtenerPersonal($numeroPersonal);
+    public abstract function obtenerPersonal($rfc);
+    public abstract function obtenerPersonalId($idUsuario);
 }

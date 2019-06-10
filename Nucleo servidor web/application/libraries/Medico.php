@@ -95,8 +95,11 @@ class Medico extends Personal{
         //return $this->iMedico->eliminar();
     }
 
-    public function obtenerPersonal($numeroPersonal){
-        return $this->iMedico->obtenerMedico($numeroPersonal);
+    public function obtenerPersonal($rfc){
+        return $this->iMedico->obtenerMedico($rfc);
+    }
+    public function obtenerPersonalId($idUsuario){
+        return $this->iMedico->obtenerMedicoId($idUsuario);
     }
 
 }

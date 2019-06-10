@@ -12,10 +12,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <!-- <script src="<?=base_url('scripts/jquery-3.3.1.min.js');?>"></script> -->
-  <script type="text/javascript">
-  var base_url = "<?php echo site_url(); ?>";
-  </script>
-  <script src="<?=base_url('scripts/login.js');?>"></script>
+
 </head>
 <body class="text-center align-content-center" data-gr-c-s-loaded="true">
   <div class="container">
@@ -26,13 +23,14 @@
         }?></p>
       </div>
       <div class="col">
-        <form id="formulario" class="form-signin">
+        <?php echo form_open('UsuarioController/iniciarSesion',array('id'=>'formulario', 'class'=>'form-signin'))?>
+        
           <img class="mb-4x" src="<?=base_url('estilos/imagenes/login.png');?>" alt="imagen login"/>
           <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión</h1>
           <label for="inputEmail" class="sr-only">Usuario</label>
-          <input type="text" id="usuario" class="form-control" placeholder="Usuario" required="" autofocus="">
+          <input type="text" id="usuario" class="form-control" placeholder="Usuario" required="" autofocus="" name="usuario">
           <label for="contrasena" class="sr-only">Contraseña</label>
-          <input type="password" id="contrasena" class="form-control" placeholder="Contraseña" required="">
+          <input type="password" id="contrasena" class="form-control" placeholder="Contraseña" required="" name="contrasena">
           <button class="btn btn-lg btn-primary btn-block" type="submit" id="btnEnviar">Ingresar</button>
           <p class="mt-5 mb-3 text-muted">© 2019-2020</p>
         </form>

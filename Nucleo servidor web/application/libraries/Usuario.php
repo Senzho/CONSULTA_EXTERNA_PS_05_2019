@@ -5,6 +5,7 @@ class Usuario{
     private $contraseña;
     private $personalUsuario;
     private $iUsuario;
+    private $rol;
 
     public function __get($attr) {
 		return CI_Controller::get_instance()->$attr;
@@ -18,7 +19,7 @@ class Usuario{
         $datosUsuario = DatosUsuario::VALIDO;
         if ($this->idUsuario < 1){
             $datosUsuario = DatosUsuario::ID_NEGATIVO;
-        } else if ($this->nombreUsuario. == "" || $this->nombreUsuario == null){
+        } else if ($this->nombreUsuario == "" || $this->nombreUsuario == null){
             $datosUsuario = DatosUsuario::NOMBRE_VACIO;
         } else if (strlen($this->nombreUsuario) > 15){
             $datosUsuario = DatosUsuario::NOMBRE_LARGO;
@@ -70,6 +71,12 @@ class Usuario{
     public function setiUsuario($iUsuario) {
         $this->iUsuario = $iUsuario;
     }
+    public function getRol(){
+        return $this->rol;
+    }
+    public function setRol($rol){
+        $this->rol = $rol;
+    }
     
     public function registrarUsuario() {
         $validacion = $this->validarDatos();
@@ -93,8 +100,8 @@ class Usuario{
      * @param contraseña
      * @return 
      */
-    public function iniciarSesion($nombre, $contraseña) {
-        return $this->iUsuario->iniciarSesion($nombre, $contraseña);
+    public function iniciarSesion() {
+        return $this->iUsuario->iniciarSesion($this->getNombreUsuario(), $this->getContraseña());
     }
 
 }

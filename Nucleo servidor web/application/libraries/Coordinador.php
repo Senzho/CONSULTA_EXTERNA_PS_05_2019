@@ -86,7 +86,10 @@ class Coordinador extends Personal{
     public function eliminar(){
         return $this->iCoordinador->eliminar($this->getNumeroPersonal());
     }
-    public function obtenerPersonal($numeroPersonal){
-        return $this->iCoordinador->obtenerCoordinador($numeroPersonal);
+    public function obtenerPersonal($rfc){
+        return $this->iCoordinador->obtenerCoordinador($rfc);
+    }
+        public function obtenerPersonalId($idUsuario){
+        return $this->iCoordinador->obtenerCoordinadorId($idUsuario);
     }
 }
