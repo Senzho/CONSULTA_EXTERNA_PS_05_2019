@@ -11,7 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <!-- <script src="<?=base_url('scripts/jquery-3.3.1.min.js');?>"></script> -->
+  <script src="<?=base_url('scripts/recepcionistaConsultas.js');?>"></script>
   <script type="text/javascript">
   var base_url = "<?php echo site_url(); ?>";
   </script>
@@ -21,7 +21,7 @@
   <nav id="navbarMain" class="navbar navbar-expand-lg navbar-ligth">
     <a id="home" >SCE.mx</a>
     <span class="mr-auto navbarText">
-      Marta Laura Martínez Mendoza
+      <?= $nombre?>
     </span>
     <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="#">Cerrar sesión</a>
   </nav>
@@ -90,20 +90,25 @@
         <form id="formRegistro" action="" method="post">
           <div class="form-group">
             <label for="nombre">Nombre</label>
-            <input type="text" class="form-control" id="txtNombre" placeholder="Ejemplo: 'María Guadalupe'" name="nombre">
+            <input type="text" class="form-control" id="txtNombre" placeholder="Ejemplo: 'María Guadalupe'" name="nombre" required>
           </div>
           <div class="form-group">
             <label for="apellido">Apellido</label>
-            <input type="text" class="form-control" id="txtApellido" placeholder="Ejemplo: 'Hernández Sánchez'" name="apellido">
+            <input type="text" class="form-control" id="txtApellido" placeholder="Ejemplo: 'Hernández Sánchez'" name="apellido" required>
+          </div>
+          <div class="form-group">
+            <label for="telefono">Número de seguro social</label>
+            <input type="tel" class="form-control" id="txtSeguroSocial" placeholder="2282813731" name="seguro"required>
           </div>
           <div class="form-group">
             <label for="telefono">Telefono</label>
-            <input type="tel" class="form-control" id="txtTelefono" placeholder="2282813731" name="telefono">
+            <input type="tel" class="form-control" id="txtTelefono" placeholder="2282813731" name="telefono" required>
           </div>
           <div class="form-group">
             <label for="alergias">Alergias</label>
-            <textarea class="form-control" id="txtAlergias" rows="5" name="alergias"></textarea>
+            <textarea class="form-control" id="txtAlergias" rows="5" name="alergias" required></textarea>
           </div>
+          <div id="mensajes"></div>
           <button type="submit" class="btn btn-primary">Registrar</button>
         </form>
       </div>
@@ -138,9 +143,9 @@
   </div>
   <div class="container">
     <!-- Button to Open the Modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
       Open modal
-    </button>
+    </button> -->
 
     <!-- The Modal -->
     <div class="modal fade" id="myModal">
