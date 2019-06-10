@@ -15,8 +15,22 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
 	<!-- <script src="<?=base_url('scripts/jquery-3.3.1.min.js');?>"></script> -->
 	<script type="text/javascript">
-		var base_url = "<?php echo site_url(); ?>";
-	</script>
+  var base_url = "<?php echo site_url(); ?>";
+  $(function () {
+    $('#datepicker').datepicker({
+      weekStart: 1,
+      daysOfWeekHighlighted: "6,0",
+      autoclose: true,
+      todayHighlight: true,
+      enableOnReadonly: false,
+      language: 'es',
+    });
+    $('#datepicker').datepicker("setDate", new Date());
+    $('#datepicker').keypress(function(event) {
+      event.preventDefault();
+    });
+  });
+  </script>
 	<title>Coordinador</title>
 </head>
 <body>
@@ -69,8 +83,8 @@
       <div class="col-sm">
         <h1>Medicamentos recetados</h1>
       </div>
-    </div>	
-    
+    </div>
+
     <div class="row">
     <div class="col-sm">
         <form class="">
@@ -78,21 +92,9 @@
             <div class="col-auto">
               <i class="fas fa-search h4 text-body"></i>
             </div>
-            <!--end of col-->
             <div class="col">
-              <input type="text" class="form-control" placeholder="2019">
+              <input class="form-control" data-date-format="dd/mm/yyyy" id="datepicker">
             </div>
-            <div class="col">
-              <input type="text" class="form-control" placeholder="Septiembre">
-            </div>
-            <div class="col">
-              <input type="text" class="form-control" placeholder="30">
-            </div>
-            <!--end of col-->
-            <div class="col-auto">
-              <button class="btn btn-primary" type="submit">Buscar</button>
-            </div>
-            <!--end of col-->
           </div>
         </form>
   </div>
@@ -101,7 +103,7 @@
           <div class="card-body row no-gutters align-items-center">
           </div>
         </form>
-  </div>  
+  </div>
   </div>
     <div class="row">
       <div class="col-sm">
@@ -120,7 +122,7 @@
               <a class="list-group-item list-group-item-action" >Medicamento nombre - hora</a>
               <a class="list-group-item list-group-item-action" >Medicamento nombre - hora</a>
             </div>
-      </div>    
+      </div>
     </div>
 
   </div>
