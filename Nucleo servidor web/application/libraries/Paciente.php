@@ -116,7 +116,7 @@ class Paciente{
 
     }
 
-    public DatosPaciente registrarPaciente() {
+    public function registrarPaciente() {
         $registro = $this->validarDatos();
         if ($registro == DatosPaciente::VALIDO){
             if ($this->obtenerPaciente($this->numeroSeguro) == null){

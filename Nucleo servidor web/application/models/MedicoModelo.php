@@ -18,12 +18,12 @@ class MedicoModelo implements IMedico {
     }
 
     public function registrar($medico,$idUsuario){
-        $registrado = false;
+        $registrado = FALSE;
         $cliente = new Client();
         $medicoJSON = $this->getJSON($medico);
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrar/'.$idUsuario.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $usuarioJSON]);
-         $respuesta = json_decode($respuesta->getBody());  
-         if($respuesta->token){
+        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrar/'.$idUsuario.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $medicoJSON]);
+        $respuesta = json_decode($respuesta->getBody());  
+        if($respuesta->token){
             if($respuesta->registrado){
                 $registrado = TRUE;
             }
@@ -32,16 +32,53 @@ class MedicoModelo implements IMedico {
     }
 
     public function modificar($medico){
-
+        $actualizado = FALSE;
+        $cliente = new Client();
+        $medicoJSON = $this->getJSON($medico);
+        $respuesta = $cliente->put('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/modificar/' . $this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $medicoJSON]);
+        $respuesta = json_decode($respuesta->getBody());  
+        if($respuesta->token){
+            if($respuesta->actualizado){
+                $actualizado = TRUE;
+            }
+        }
+        return $actualizado;
     }
-    public function registrarEntrada($numeroPersonal, $numeroConsultorio){
-
+    public function registrarEntrada($rfc, $numeroConsultorio){
+        $registrada = FALSE;
+        $cliente = new Client();
+        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrarentrada/' . $numeroConsultorio . '/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = json_decode($respuesta->getBody());
+        if ($respuesta->token) {
+            if ($respuesta->registrada) {
+                $registrada = TRUE;
+            }
+        }
+        return $registrada;
     }
-    public function registrarSalida($numeroPersonal){
-
+    public function registrarSalida($rfc){
+        $registrada = FALSE;
+        $cliente = new Client();
+        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrarsalida/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = json_decode($respuesta->getBody());
+        if ($respuesta->token) {
+            if ($respuesta->registrada) {
+                $registrada = TRUE;
+            }
+        }
+        return $registrada;
     }
-    public function eliminar(){
-
+    public function eliminar($rfc){
+        $eliminado = FALSE;
+        $cliente = new Client();
+        $respuesta = $cliente->delete('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/estado/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = json_decode($respuesta->getBody());
+        if ($respuesta->token) {
+            if ($respuesta->cambiado) {
+                $eliminado = TRUE;
+            }
+        }
+        return $eliminado;
     }
 
     public function obtenerMedico($rfc){
@@ -68,8 +105,7 @@ class MedicoModelo implements IMedico {
         if(!$JSONObject->token){
             $medico->setNumeroPersonal(0);
         }else{
-
-          $this->session->set_userdata('rcf', $medicoJSON->prRfc);
+            $this->session->set_userdata('rcf', $medicoJSON->prRfc);
             $medico->setRfc($medicoJSON->prRfc);
             $medico->setNumeroTelefono($medicoJSON->perNumTelefono);
             $medico->setNombre($medicoJSON->perNombres);

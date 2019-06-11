@@ -53,11 +53,11 @@ class Recepcionista extends Personal{
         $this->iRecepcionista = $iRecepcionista;
     }
 
-    public function registrar(){
+    public function registrar($idUsuario){
         $datosPersonal = $this->validarDatosPersonalesRecepcionista();
         if($datosPersonal ===  DatosPersonal::VALIDO){
             if($this->obtenerPersonal($this->getNumeroPersonal()) === null){
-                if($this->iRecepcionista->registrar($this)){
+                if($this->iRecepcionista->registrar($this, $idUsuario)){
                     $datosPersonal = DatosPersonal::EXITO;
                 }else{
                     $datosPersonal = DatosPersonal::ERROR_ALMACENAMIENTO;
@@ -82,17 +82,17 @@ class Recepcionista extends Personal{
     public function registrarEntrada($numeroConsultorio){
         $entradaRegistrada = false;
         if($numeroConsultorio != ""){
-            $entradaRegistrada = $this->iRecepcionista->registrarEntrada($numeroConsultorio);
+            $entradaRegistrada = $this->iRecepcionista->registrarEntrada($numeroConsultorio, $this->getRfc());
         }
         return $entradaRegistrada;
     }
 
     public function registrarSalida(){
-        return $this->iRecepcionista->registrarSalida($this->getNumeroPersonal());
+        return $this->iRecepcionista->registrarSalida($this->getRfc());
     }
     
     public function eliminar(){
-        return $this->iRecepcionista->eliminar($this->getNumeroPersonal());
+        return $this->iRecepcionista->eliminar($this->getRfc());
     }
 
     public function obtenerPersonal($rfc){

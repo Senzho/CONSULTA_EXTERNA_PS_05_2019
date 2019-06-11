@@ -68,7 +68,6 @@ class UsuarioModelo implements IUsuario{
         	$usuario->setRol($usuarioJSON->usuRol);
         }
     	return $usuario;
-      
     }
   
 }

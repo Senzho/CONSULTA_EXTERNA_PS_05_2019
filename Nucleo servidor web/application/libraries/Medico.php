@@ -82,17 +82,17 @@ class Medico extends Personal{
     public function registrarEntrada($numeroConsultorio){
         $respuesta = false;
         if($numeroConsultorio!="" | $numeroConsultorio!= null){
-            $respuesta = $this->iMedico->registrarEntrada($numeroConsultrio);
+            $respuesta = $this->iMedico->registrarEntrada($this->getRfc(), $numeroConsultrio);
         }
         return $respuesta;
     }
 
     public function registrarSalida(){
-        return $this->iMedico->registrarSalida($this->getNumeroPersonal());
+        return $this->iMedico->registrarSalida($this->getRfc());
     }
 
     public function eliminar(){
-        //return $this->iMedico->eliminar();
+        return $this->iMedico->eliminar($this->getRfc());
     }
 
     public function obtenerPersonal($rfc){

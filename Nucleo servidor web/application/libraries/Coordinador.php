@@ -53,11 +53,11 @@ class Coordinador extends Personal{
     }
 
 
-    public function registrar(){
+    public function registrar($idUsuario){
         $coordinadorRegistrado = $this->validarDatosPersonalesCoordinador();
         if($coordinadorRegistrado == DatosPersonal::VALIDO){
             if($this->obtenerPersonal($this->getNumeroPersonal()) === null){
-                if($this->iCoordinador->registrar($this)){
+                if($this->iCoordinador->registrar($this, $idUsuario)){
                     $coordinadorRegistrado = DatosPersonal::EXITO;
                 }else{
                     $coordinadorRegistrado =  DatosPersonal::ERROR_ALMACENAMIENTO;
@@ -78,13 +78,13 @@ class Coordinador extends Personal{
         return $coordinadorModificado;
     }
     public function registrarEntrada($numeroConsultorio){
-        return $this->iCoordinador->registrarEntrada($this->getNumeroPersonal(),$numeroConsultorio);
+        return $this->iCoordinador->registrarEntrada($this->getRfc(),$numeroConsultorio);
     }
     public function registrarSalida(){
-        return $this->iCoordinador->registrarSalida($this->getNumeroPersonal());
+        return $this->iCoordinador->registrarSalida($this->getRfc());
     }
     public function eliminar(){
-        return $this->iCoordinador->eliminar($this->getNumeroPersonal());
+        return $this->iCoordinador->eliminar($this->getRfc());
     }
     public function obtenerPersonal($rfc){
         return $this->iCoordinador->obtenerCoordinador($rfc);

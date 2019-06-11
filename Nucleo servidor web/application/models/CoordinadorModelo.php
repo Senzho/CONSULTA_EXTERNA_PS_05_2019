@@ -17,20 +17,67 @@ class CoordinadorModelo implements ICoordinador{
 
     }
 
-    public function registrar($coordinador){
-        echo $coordinador->getNombre();
+    public function registrar($coordinador, $idUsuario){
+        $registrado = FALSE;
+        $cliente = new Client();
+        $coordinadorJSON = $this->getJSON($coordinador);
+        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrar/'.$idUsuario.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $coordinadorJSON]);
+        $respuesta = json_decode($respuesta->getBody());  
+        if($respuesta->token){
+            if($respuesta->registrado){
+                $registrado = TRUE;
+            }
+        }
+        return $registrado;
     }
     public function modificar($coordinador){
-
+        $actualizado = FALSE;
+        $cliente = new Client();
+        $coordinadorJSON = $this->getJSON($coordinador);
+        $respuesta = $cliente->put('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/modificar/' . $this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $coordinadorJSON]);
+        $respuesta = json_decode($respuesta->getBody());  
+        if($respuesta->token){
+            if($respuesta->actualizado){
+                $actualizado = TRUE;
+            }
+        }
+        return $actualizado;
     }
-    public function registrarEntrada($numeroPersonal, $numeroConsultorio){
-
+    public function registrarEntrada($rfc, $numeroConsultorio){
+        $registrada = FALSE;
+        $cliente = new Client();
+        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrarentrada/' . $numeroConsultorio . '/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = json_decode($respuesta->getBody());
+        if ($respuesta->token) {
+            if ($respuesta->registrada) {
+                $registrada = TRUE;
+            }
+        }
+        return $registrada;
     }
-    public function registrarSalida($numeroPersonal){
-
+    public function registrarSalida($rfc){
+        $registrada = FALSE;
+        $cliente = new Client();
+        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrarsalida/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = json_decode($respuesta->getBody());
+        if ($respuesta->token) {
+            if ($respuesta->registrada) {
+                $registrada = TRUE;
+            }
+        }
+        return $registrada;
     }
-    public function eliminar($numeroPersonal){
-
+    public function eliminar($rfc){
+        $eliminado = FALSE;
+        $cliente = new Client();
+        $respuesta = $cliente->delete('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/estado/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = json_decode($respuesta->getBody());
+        if ($respuesta->token) {
+            if ($respuesta->cambiado) {
+                $eliminado = TRUE;
+            }
+        }
+        return $eliminado;
     }
     public function obtenerCoordinador($rfc){
         $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
@@ -68,5 +115,9 @@ class CoordinadorModelo implements ICoordinador{
             $coordinador->setEstado($coordinadorJSON->perEstado);
         }
         return $coordinador;
+    }
+
+    private function getJSON($coordinador){
+        return array('prRfc'=>$coordinador->getRfc(),'perApellidos'=>$coordinador->getApellido(), 'perEstado'=>$coordinador->getEstado(),'perNombres'=>$coordinador->getNombre(),'perNumPersonal'=>$coordinador->getNumeroPersonal(),'perNumTelefono'=>$coordinador->getNumeroTelefono(),'perSexo'=>$coordinador->getSexo(),'perTurno'=>$coordinador->getTurno(),'perFechaNac'=>$coordinador->getFechaNacimiento());
     }
 }

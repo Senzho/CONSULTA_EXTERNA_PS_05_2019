@@ -1,12 +1,12 @@
 <?php
 interface IRecepcionista{
-    public function registrar($recepcionista);
+    public function registrar($recepcionista, $idUsuario);
     public function modificar($recepcionista);
-    public function registrarEntrada($numeroConsultorio, $numeroPersonal);
-    public function registrarSalida($numeroPersonal);
-    public function eliminar($numeroPersonal);
+    public function registrarEntrada($numeroConsultorio, $rfc);
+    public function registrarSalida($rfc);
+    public function eliminar($rfc);
     public function agregarConsulta($consulta);
     public function obtenerCitas($fecha);
     public function obtenerRecepcionista($rfc);
-    public function obtenerRecepcionistaId($numeroPersonal);
+    public function obtenerRecepcionistaId($idUsuario);
 }
