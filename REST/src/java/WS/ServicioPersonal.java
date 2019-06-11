@@ -5,6 +5,7 @@ import DataAccess.controladores.RegistrosJpaController;
 import DataAccess.controladores.UsuariosJpaController;
 import DataAccess.entidades.Personal;
 import DataAccess.entidades.Registros;
+import DataAccess.entidades.Usuarios;
 import java.util.Date;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -95,7 +96,9 @@ public class ServicioPersonal extends ServicioSeguro {
             PersonalJpaController personalJpaController = new PersonalJpaController(entityManagerFactory);
             UsuariosJpaController usuariosJpaController = new UsuariosJpaController(entityManagerFactory);
             try {
-                respuesta.getJson().put("personal", new JSONObject(personalJpaController.obtenerPorIdUsuario(usuariosJpaController.findUsuarios(idUsuario))));
+                Usuarios usuario = usuariosJpaController.findUsuarios(idUsuario);
+                Personal personal = personalJpaController.obtenerPorIdUsuario(usuario);
+                respuesta.getJson().put("personal", new JSONObject(personal));
             } catch(Exception excepcion) {
                 respuesta.getJson().put("personal", new JSONObject("{'prRfc': ''}"));
             }

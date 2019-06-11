@@ -151,7 +151,8 @@ public class SesionesJpaController implements Serializable {
         try {
             Query consulta = em.createNamedQuery("Sesiones.findByToken");
             consulta.setParameter("token", token);
-            sesion = (Sesiones) consulta.getSingleResult();
+            List<Sesiones> sesiones = consulta.getResultList();
+            sesion = sesiones.get(0);
         } finally {
             em.close();
         }
