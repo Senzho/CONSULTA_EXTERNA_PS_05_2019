@@ -1,6 +1,7 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 interface_exists('IRecepcionista', FALSE) OR require_once(APPPATH.'libraries/IRecepcionista.php');
+require_once(APPPATH.'libraries/Cita.php');
 
 require APPPATH . 'vendor/autoload.php';
 use GuzzleHttp\Psr7\Request;
@@ -135,9 +136,9 @@ class RecepcionistaModelo implements IRecepcionista {
         $arreglo = $json->citas;
         foreach ($arreglo as $elemento) {
             $cita = new Cita();
-            $cita.setIdCita($elemento->citId);
-            $cita.setEstado($elemento->citEstado);
-            $cita.setHoraReserva($elemento->citFechaHoraReserva);
+            $cita->setIdCita($elemento->citId);
+            $cita->setEstado($elemento->citEstado);
+            $cita->setHoraReserva($elemento->citFechaHoraReserva);
             array_push($citas, $cita);
         }
         return $citas;

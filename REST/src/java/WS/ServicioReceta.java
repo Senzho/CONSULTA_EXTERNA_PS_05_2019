@@ -60,6 +60,7 @@ public class ServicioReceta extends ServicioSeguro {
                 respuesta.getJson().put("registrada", true);
                 respuesta.getJson().put("receta", new JSONObject(receta));
             } catch(Exception excepcion) {
+                System.out.println(excepcion.getMessage());
                 respuesta.getJson().put("registrada", false);
             }
         }

@@ -1,5 +1,5 @@
 <?php
 interface IReceta{
-    public function registrar($receta, $idConsulta);
+    public function registrar($receta);
     public function obtenerMedicamentosRecetados();
 }

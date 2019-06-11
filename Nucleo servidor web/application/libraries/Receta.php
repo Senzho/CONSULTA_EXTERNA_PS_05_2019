@@ -8,7 +8,8 @@ class Receta{
     private $instrucciones;
     private $fechaVencimiento;
     private $medicamentosReceta;
-    private $iReceta;    
+    private $iReceta;
+    private $fechaCreacion;    
 
     public function __get($attr) {
 		return CI_Controller::get_instance()->$attr;
@@ -28,6 +29,12 @@ class Receta{
             $datosReceta = DatosReceta::FECHA_VENCIMIENTO_VACIA;
         }
         return $datosReceta;
+    }
+    public function getFechaCreacion(){
+        return $this->fechaCreacion;
+    }
+    public function setFechaCreacion($fechaCreacion){
+        $this->fechaCreacion = $fechaCreacion;
     }
 
     public function getFolio() {
@@ -74,10 +81,10 @@ class Receta{
      * @param idConsulta
      * @return 
      */
-    public function registrar($idConsulta) {
+    public function registrar() {
         $validacion = $this->validarDatos();
-        if ($validacion == DatosReceta::VALIDA){
-            $validacion = $this->iReceta->registrar($this, $idConsulta) ? DatosReceta::EXITO : DatosReceta::ERROR_ALMACENAMIENTO;
+       if ($validacion == DatosReceta::VALIDA){
+            $validacion = $this->iReceta->registrar($this) ? DatosReceta::EXITO : DatosReceta::ERROR_ALMACENAMIENTO;
         }
         return $validacion;
     }

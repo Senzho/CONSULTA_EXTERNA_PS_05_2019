@@ -82,7 +82,7 @@ class Medico extends Personal{
     public function registrarEntrada($numeroConsultorio){
         $respuesta = false;
         if($numeroConsultorio!="" | $numeroConsultorio!= null){
-            $respuesta = $this->iMedico->registrarEntrada($this->getRfc(), $numeroConsultrio);
+            $respuesta = $this->iMedico->registrarEntrada($this->getRfc(), $numeroConsultorio);
         }
         return $respuesta;
     }

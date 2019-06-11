@@ -2,6 +2,11 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/Victor%20Javier/Documents/NetBeansProjects/ConsultaExterna_WS/src/java/WS/ServicioCita.java</file>
+            <file>file:/C:/Users/Victor%20Javier/Documents/NetBeansProjects/ConsultaExterna_WS/src/java/DataAccess/controladores/CitasJpaController.java</file>
+            <file>file:/C:/Users/Victor%20Javier/Documents/NetBeansProjects/ConsultaExterna_WS/src/java/WS/ServicioPersonal.java</file>
+            <file>file:/C:/Users/Victor%20Javier/Documents/NetBeansProjects/ConsultaExterna_WS/src/java/DataAccess/entidades/Citas.java</file>
+        </group>
     </open-files>
 </project-private>
