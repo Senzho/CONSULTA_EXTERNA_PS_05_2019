@@ -22,7 +22,7 @@ class MedicoModelo implements IMedico {
         $cliente = new Client();
         $medicoJSON = $this->getJSON($medico);
         $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrar/'.$idUsuario.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $medicoJSON]);
-        $respuesta = json_decode($respuesta->getBody());  
+        $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->registrado){
                 $registrado = TRUE;
@@ -36,7 +36,7 @@ class MedicoModelo implements IMedico {
         $cliente = new Client();
         $medicoJSON = $this->getJSON($medico);
         $respuesta = $cliente->put('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/modificar/' . $this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $medicoJSON]);
-        $respuesta = json_decode($respuesta->getBody());  
+        $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->actualizado){
                 $actualizado = TRUE;
@@ -106,6 +106,7 @@ class MedicoModelo implements IMedico {
             $medico->setNumeroPersonal(0);
         }else{
             $this->session->set_userdata('rcf', $medicoJSON->prRfc);
+            $this->session->set_userdata('nombre', $medicoJSON->perNombres." ".$medicoJSON->perApellidos);
             $medico->setRfc($medicoJSON->prRfc);
             $medico->setNumeroTelefono($medicoJSON->perNumTelefono);
             $medico->setNombre($medicoJSON->perNombres);

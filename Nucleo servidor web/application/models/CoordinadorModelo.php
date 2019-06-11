@@ -22,7 +22,7 @@ class CoordinadorModelo implements ICoordinador{
         $cliente = new Client();
         $coordinadorJSON = $this->getJSON($coordinador);
         $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrar/'.$idUsuario.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $coordinadorJSON]);
-        $respuesta = json_decode($respuesta->getBody());  
+        $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->registrado){
                 $registrado = TRUE;
@@ -35,7 +35,7 @@ class CoordinadorModelo implements ICoordinador{
         $cliente = new Client();
         $coordinadorJSON = $this->getJSON($coordinador);
         $respuesta = $cliente->put('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/modificar/' . $this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $coordinadorJSON]);
-        $respuesta = json_decode($respuesta->getBody());  
+        $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->actualizado){
                 $actualizado = TRUE;
@@ -104,6 +104,7 @@ class CoordinadorModelo implements ICoordinador{
             $coordinador->setNumeroPersonal(0);
         }else{
           $this->session->set_userdata('rcf', $coordinadorJSON->prRfc);
+          $this->session->set_userdata('nombre', $coordinadorJSON->perNombres." ".$coordinadorJSON->perApellidos);
             $coordinador->setRfc($coordinadorJSON->prRfc);
             $coordinador->setNumeroTelefono($coordinadorJSON->perNumTelefono);
             $coordinador->setNombre($coordinadorJSON->perNombres);
