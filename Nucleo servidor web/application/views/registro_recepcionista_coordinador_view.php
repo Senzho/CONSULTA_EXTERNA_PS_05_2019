@@ -32,7 +32,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	    <span class="mr-auto navbarText">
 	    	 Marta Laura Martínez Mendoza
 	    </span>
-	    <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="<?php echo site_url('/CoordinadorController/cerrarSesion'); ?>">Cerrar sesión</a>
+	    <!-- <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="<?php echo site_url('/CoordinadorController/cerrarSesion'); ?>">Cerrar sesión</a> -->
+			<?php echo anchor('CoordinadorController/cerrarSesion', 'Cerrar sesión',array('id'=>'cerrarSesion', 'class' => 'nav-link ml-auto navbarText'));  ?>
 	</nav>
 	 <div id="recepContenidorRegistro" class="container m-4 mx-auto">
 	<div class="row">

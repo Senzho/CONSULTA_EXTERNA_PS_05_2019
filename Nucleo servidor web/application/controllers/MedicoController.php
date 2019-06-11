@@ -6,14 +6,14 @@ interface_exists('IMedico', FALSE) OR require_once(APPPATH.'libraries/IMedico.ph
 class MedicoController extends CI_Controller{
   public function __construct(){
     parent::__construct();
-    $this->load->helper('url');
-    $this->load->helper('form');
+    //$this->load->helper('url');
+    //$this->load->helper('form');
     $this->load->library('Medico');
     $this->load->model('MedicoModelo','medicoModelo');
-    $this->load->library('form_validation');
+    //$this->load->library('form_validation');
   }
   function index(){
-    if ($this->session->userdata('token')) {
+    if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Medico') {
       $data['nombre'] = $this->session->userdata('nombre');
       $this->load->view('consultas_medico_view', $data);
     } else {
@@ -21,11 +21,15 @@ class MedicoController extends CI_Controller{
       redirect('UsuarioController');
     }
   }
-  public function cerarSesion()
+  public function cerrarSesion()
   {
     $this->session->unset_userdata('rol');
     $this->session->unset_userdata('rfc');
     $this->session->unset_userdata('token');
     redirect('UsuarioController');
+  }
+  public function load()
+  {
+    // code...
   }
 }

@@ -13,7 +13,7 @@ class CoordinadorController extends CI_Controller{
         $this->load->library('form_validation');
     }
     function index(){
-      if ($this->session->userdata('token')) {
+      if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Coordinador') {
         $data['nombre'] = $this->session->userdata('nombre');
         $this->load->view('registro_entradas_salidas_coordinador_view', $data);
       } else {
@@ -21,7 +21,7 @@ class CoordinadorController extends CI_Controller{
         redirect('UsuarioController');
       }
     }
-    public function cerarSesion()
+    public function cerrarSesion()
     {
       $this->session->unset_userdata('rol');
       $this->session->unset_userdata('rfc');
