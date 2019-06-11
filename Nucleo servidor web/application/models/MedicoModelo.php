@@ -12,9 +12,9 @@ class MedicoModelo implements IMedico {
      public function __get($attr) {
         return CI_Controller::get_instance()->$attr;
     }
-    
+
     public function __construct(){
-             
+
     }
 
     public function registrar($coordinador){
@@ -28,7 +28,7 @@ class MedicoModelo implements IMedico {
     public function registrarEntrada($numeroPersonal, $numeroConsultorio){
 
     }
-    
+
     public function registrarSalida($numeroPersonal){
 
     }
@@ -61,6 +61,8 @@ class MedicoModelo implements IMedico {
         if(!$JSONObject->token){
             $medico->setNumeroPersonal(0);
         }else{
+
+          $this->session->set_userdata('rcf', $medicoJSON->prRfc);
             $medico->setRfc($medicoJSON->prRfc);
             $medico->setNumeroTelefono($medicoJSON->perNumTelefono);
             $medico->setNombre($medicoJSON->perNombres);

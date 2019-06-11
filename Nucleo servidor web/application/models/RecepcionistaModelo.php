@@ -11,13 +11,13 @@ class RecepcionistaModelo implements IRecepcionista {
     public function __get($attr) {
         return CI_Controller::get_instance()->$attr;
     }
-    
+
     public function __construct(){
-             
+
     }
 
     public function registrar($recepcionista){
-        
+
     }
 
     public function modificar($recepcionista){
@@ -27,7 +27,7 @@ class RecepcionistaModelo implements IRecepcionista {
 
     }
     public function registrarSalida($numeroPersonal){
-        
+
     }
     public function eliminar($numeroPersonal){
 
@@ -61,6 +61,7 @@ class RecepcionistaModelo implements IRecepcionista {
         if(!$JSONObject->token){
             $recepcionista->setNumeroPersonal(0);
         }else{
+          $this->session->set_userdata('rcf', $recepcionistaJSON->prRfc);
             $recepcionista->setRfc($recepcionistaJSON->prRfc);
             $recepcionista->setNumeroTelefono($recepcionistaJSON->perNumTelefono);
             $recepcionista->setNombre($recepcionistaJSON->perNombres);

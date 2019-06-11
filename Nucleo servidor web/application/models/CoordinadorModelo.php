@@ -12,9 +12,9 @@ class CoordinadorModelo implements ICoordinador{
      public function __get($attr) {
         return CI_Controller::get_instance()->$attr;
     }
-    
+
     public function __construct(){
-             
+
     }
 
     public function registrar($coordinador){
@@ -40,7 +40,7 @@ class CoordinadorModelo implements ICoordinador{
         $json = json_decode($respuesta->getBody());
         return $this->getJSONObject($json);
     }
-    
+
     public function obtenerCoordinadorId($numeroPersonal){
         $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
         $token = $this->session->userdata('token');
@@ -56,6 +56,7 @@ class CoordinadorModelo implements ICoordinador{
         if(!$JSONObject->token){
             $coordinador->setNumeroPersonal(0);
         }else{
+          $this->session->set_userdata('rcf', $coordinadorJSON->prRfc);
             $coordinador->setRfc($coordinadorJSON->prRfc);
             $coordinador->setNumeroTelefono($coordinadorJSON->perNumTelefono);
             $coordinador->setNombre($coordinadorJSON->perNombres);

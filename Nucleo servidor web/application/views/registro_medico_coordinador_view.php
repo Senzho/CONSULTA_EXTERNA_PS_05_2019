@@ -1,3 +1,6 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <html>
@@ -25,7 +28,7 @@
 	    <span class="mr-auto navbarText">
 	    	 Marta Laura Martínez Mendoza
 	    </span>
-	    <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="#">Cerrar sesión</a>
+	    <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="<?php echo site_url('/CoordinadorController/cerrarSesion'); ?>">Cerrar sesión</a>
 	</nav>
 	 <div id="recepContenidorRegistro" class="container m-4 mx-auto">
 	<div class="row">
@@ -72,8 +75,8 @@
       <div class="col-sm">
         <h1 class="mb-1">Registro / Edición</h1>
       </div>
-    </div>	
-    
+    </div>
+
     <div class="row">
     <div class="col-sm">
         <form class="">
@@ -98,7 +101,7 @@
           <div class="card-body row no-gutters align-items-center">
           </div>
         </form>
-  </div>  
+  </div>
   </div>
     <div class="row">
       <div class="col-sm">
@@ -117,7 +120,7 @@
               <a class="list-group-item list-group-item-action" >medico nombre - hora</a>
               <a class="list-group-item list-group-item-action" >medico nombre - hora</a>
             </div>
-      </div>    
+      </div>
     </div>
     <div class="col-sm">
         <div class="">
@@ -200,7 +203,7 @@
                <button type="submit" class="btn btn-primary">Guardar</button>
 
             </form>
-      </div>    
+      </div>
     </div>
   </div>
 

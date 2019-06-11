@@ -1,3 +1,6 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
@@ -18,13 +21,11 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <p id="mensaje"><?php if (isset($info)) {
-          echo $info;
-        }?></p>
+
       </div>
       <div class="col">
         <?php echo form_open('UsuarioController/iniciarSesion',array('id'=>'formulario', 'class'=>'form-signin'))?>
-        
+
           <img class="mb-4x" src="<?=base_url('estilos/imagenes/login.png');?>" alt="imagen login"/>
           <h1 class="h3 mb-3 font-weight-normal">Iniciar sesión</h1>
           <label for="inputEmail" class="sr-only">Usuario</label>
@@ -32,6 +33,9 @@
           <label for="contrasena" class="sr-only">Contraseña</label>
           <input type="password" id="contrasena" class="form-control" placeholder="Contraseña" required="" name="contrasena">
           <button class="btn btn-lg btn-primary btn-block" type="submit" id="btnEnviar">Ingresar</button>
+          <p id="mensaje"><?php if (isset($info)) {
+            echo $info;
+          }?></p>
           <p class="mt-5 mb-3 text-muted">© 2019-2020</p>
         </form>
       </div>

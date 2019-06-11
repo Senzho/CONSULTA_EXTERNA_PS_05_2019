@@ -13,17 +13,19 @@ class CoordinadorController extends CI_Controller{
         $this->load->library('form_validation');
     }
     function index(){
-        $coordinador = new Coordinador();
-        $coordinador->setApellido("Gonzalez Hernandez");
-        $coordinador->setFechaNacimiento("12-jun-2012");
-        $coordinador->setNombre("Abril");
-        $coordinador->setNumeroPersonal("2016");
-        $coordinador->setNumeroTelefono("2281065539");
-        $coordinador->setRfc("zsg125hgti786");
-        $coordinador->setSexo('F');
-        $coordinador->setTurno("Matutino");
-        $coordinador->setNombre("mario");
-        $coordinador->setICoordinador(new CoordinadorModelo());
-        $coordinador->registrar();
+      if ($this->session->userdata('token')) {
+        $data['nombre'] = $this->session->userdata('nombre');
+        $this->load->view('registro_entradas_salidas_coordinador_view', $data);
+      } else {
+        $this->session->set_flashdata('no_session', 'Favor de iniciar sesión para ingresar al sistema');
+        redirect('UsuarioController');
+      }
+    }
+    public function cerarSesion()
+    {
+      $this->session->unset_userdata('rol');
+      $this->session->unset_userdata('rfc');
+      $this->session->unset_userdata('token');
+      redirect('UsuarioController');
     }
 }

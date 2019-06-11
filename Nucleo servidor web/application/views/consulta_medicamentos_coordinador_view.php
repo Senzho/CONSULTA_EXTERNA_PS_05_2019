@@ -1,3 +1,6 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <html>
@@ -39,7 +42,7 @@
 	    <span class="mr-auto navbarText">
 	    	 Marta Laura Martínez Mendoza
 	    </span>
-	    <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="#">Cerrar sesión</a>
+	    <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="<?php echo site_url('/CoordinadorController/cerrarSesion'); ?>">Cerrar sesión</a>
 	</nav>
 	 <div id="recepContenidorRegistro" class="container m-4 mx-auto">
 	<div class="row">
