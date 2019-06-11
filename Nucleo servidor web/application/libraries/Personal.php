@@ -88,7 +88,7 @@ abstract class Personal{
         $this->estado = $estado;
     }
 
-    public abstract function registrar();
+    public abstract function registrar($idUsuario);
     public abstract function modificar();
     public abstract function registrarEntrada($numeroConsultorio);
     public abstract function registrarSalida();

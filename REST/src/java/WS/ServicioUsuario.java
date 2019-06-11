@@ -3,7 +3,6 @@ package WS;
 import DataAccess.controladores.PersonalJpaController;
 import DataAccess.controladores.SesionesJpaController;
 import DataAccess.controladores.UsuariosJpaController;
-import DataAccess.entidades.Personal;
 import DataAccess.entidades.Sesiones;
 import DataAccess.entidades.Usuarios;
 import javax.persistence.EntityManagerFactory;
@@ -78,6 +77,7 @@ public class ServicioUsuario extends ServicioSeguro {
                 respuesta.getJson().put("registrado", true);
                 respuesta.getJson().put("usuario", new JSONObject(usuario));
             } catch(Exception excepcion) {
+                System.out.println(excepcion.getMessage());
                 respuesta.getJson().put("registrado", false);
             }
         }

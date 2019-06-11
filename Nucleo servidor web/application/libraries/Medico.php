@@ -53,11 +53,11 @@ class Medico extends Personal{
         $this->iMedico = $iMedico;
     }
 
-    public function registrar(){
+    public function registrar($idUsuario){
         $registro = $this->validarDatosPersonalesMedico();
         if($registro === DatosPersonal::VALIDO){
             if($this->obtenerPersonal($this->getNumeroPersonal())== null){
-                if($this->iMedico->registrar($this)){
+                if($this->iMedico->registrar($this, $idUsuario)){
                     $registro = DatosPersonal::EXITO;
                 }else{
                     $registro = DatosPersonal::ERROR_ALMACENAMIENTO;
