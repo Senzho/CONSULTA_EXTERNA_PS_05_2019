@@ -53,7 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="col d-inline-flex centralizado">
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block" href="#">
+            <a class="d-block" href="<?php echo site_url('/CoordinadorController/index'); ?>">
               <img src="<?=base_url('estilos/imagenes/lista-de-verificacion.svg');?>" alt="" height="70" width="70">
             </a>
             <span class="btn d-block">Entradas y salidas</span>
@@ -61,7 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block mx-auto" href="#">
+            <a class="d-block mx-auto" href="<?php echo site_url('/CoordinadorController/registrarMedico'); ?>">
               <img src="<?=base_url('estilos/imagenes/doctor.svg');?>" alt="botón para agendar cita" height="70" width="70">
             </a>
             <span class="btn d-block ">Registrar médico</span>
@@ -69,7 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block" href="#">
+            <a class="d-block" href="<?php echo site_url('/CoordinadorController/registrarRecepcionista'); ?>">
               <img src="<?=base_url('estilos/imagenes/usuario.svg');?>" alt="" height="70" width="70">
             </a>
             <span class="btn d-block">Registrar recepcionista</span>

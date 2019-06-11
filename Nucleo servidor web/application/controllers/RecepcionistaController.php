@@ -36,7 +36,7 @@ class RecepcionistaController extends CI_Controller{
     $paciente->setNombre($this->input->post('nombre'));
     $paciente->setNumeroSeguro($this->input->post('seguro'));
     $paciente->setNumeroTelefono($this->input->post('telefono'));
-    $paciente->set
+    //$paciente->set
   }
   public function actualizarPacientes()
   {

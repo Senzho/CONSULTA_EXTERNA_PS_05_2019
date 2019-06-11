@@ -24,6 +24,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?=base_url('scripts/bootstrap.min.js');?>"></script>
   <script type="text/javascript">
   var base_url = "<?php echo site_url(); ?>";
+  $(function () {
+    $('#fechaNac').datepicker({
+      weekStart: 1,
+      daysOfWeekHighlighted: "6,0",
+      autoclose: true,
+      todayHighlight: true,
+      enableOnReadonly: false,
+      language: 'es',
+    });
+    $('#fechaNac').datepicker("setDate", new Date());
+    $('#fechaNac').keypress(function(event) {
+      event.preventDefault();
+    });
+  });
   </script>
 </head>
 <body >
@@ -124,6 +138,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               <option value="H">Hombre</option>
               <option value="M">Mujer</option>
             </select>
+          </div>
+          <div class="form-group">
+            <label for="nombre">Fecha de la nacimiento</label>
+            <input id="fechaNac" class="form-control" data-date-format="dd/mm/yyyy">
           </div>
           <div id="mensajes"></div>
           <button type="submit" class="btn btn-primary">Registrar</button>

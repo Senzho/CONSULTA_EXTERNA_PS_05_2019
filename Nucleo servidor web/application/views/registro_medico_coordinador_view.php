@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="stylesheet" href="<?=base_url('estilos/bootstrap/bootstrap.min.css');?>">
 	<link rel="stylesheet" href="<?=base_url('estilos/bootstrap/bootstrap-grid.min.css');?>">
 	<link rel="stylesheet" href="<?=base_url('estilos/bootstrap/bootstrap-reboot.min.css');?>">
-	<<link rel="stylesheet" href="<?=base_url('estilos/bootstrap-datepicker.min.css');?>">
+	<link rel="stylesheet" href="<?=base_url('estilos/bootstrap-datepicker.min.css');?>">
 	<!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" rel="stylesheet"/> -->
 	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script> -->
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
@@ -210,27 +210,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <!--este div permite que todo lo que esté adentro se pueda centrar-->
   </div>
   <!--este div permite que todo lo que esté adentro se pueda centrar-->
