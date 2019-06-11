@@ -56,7 +56,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <nav id="navbarMain" class="navbar navbar-expand-lg navbar-ligth">
     <a id="home" >SCE.mx</a>
     <span class="mr-auto navbarText">
-      Marta Laura Martínez Mendoza
+      <?= $nombre?>
     </span>
     <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="<?php echo site_url('/RecepcionistaController/cerrarSesion'); ?>">Cerrar sesión</a>
   </nav>
@@ -65,7 +65,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="col d-inline-flex centralizado">
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block" href="#">
+            <a class="d-block" href="<?php echo site_url('/RecepcionistaController/index'); ?>">
               <img src="<?=base_url('estilos/imagenes/icons8-home.svg');?>" alt="" height="70" width="70">
             </a>
             <span class="btn d-block">Registro y consultas</span>
@@ -81,7 +81,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block" href="#">
+            <a class="d-block" href="<?php echo site_url('/RecepcionistaController/actualizarPacientes'); ?>">
               <img src="<?=base_url('estilos/imagenes/icons8-grupos.png');?>" alt="" height="70" width="70">
             </a>
             <span class="btn d-block">Actualización</span>

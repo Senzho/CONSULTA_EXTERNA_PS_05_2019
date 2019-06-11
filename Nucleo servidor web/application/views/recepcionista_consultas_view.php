@@ -47,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block mx-auto" href="#">
+            <a class="d-block mx-auto" href="<?php echo site_url('/RecepcionistaController/agendarCita'); ?>">
               <img src="<?=base_url('estilos/imagenes/icons8-calendario.svg');?>" alt="botón para agendar cita" height="70" width="70">
             </a>
             <span class="btn d-block ">Agendar citas</span>
@@ -55,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block" href="#">
+            <a class="d-block" href="<?php echo site_url('/RecepcionistaController/actualizarPacientes'); ?>">
               <img src="<?=base_url('estilos/imagenes/icons8-grupos.png');?>" alt="" height="70" width="70">
             </a>
             <span class="btn d-block">Actualización</span>

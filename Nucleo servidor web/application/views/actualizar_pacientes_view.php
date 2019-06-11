@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <nav id="navbarMain" class="navbar navbar-expand-lg navbar-ligth">
     <a id="home" >SCE.mx</a>
     <span class="mr-auto navbarText">
-      Marta Laura Martínez Mendoza
+      <?= $nombre?>
     </span>
     <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="<?php echo site_url('/RecepcionistaController/cerrarSesion'); ?>">Cerrar sesión</a>
   </nav>
@@ -39,7 +39,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="col-sm d-inline-flex centralizado">
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block" href="#">
+            <a class="d-block" href="<?php echo site_url('/RecepcionistaController/index'); ?>">
               <img src="<?=base_url('estilos/imagenes/icons8-home.svg');?>" alt="" height="70" width="70">
             </a>
             <span class="btn d-block">Registro y consultas</span>
@@ -47,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block mx-auto" href="#">
+            <a class="d-block mx-auto" href="<?php echo site_url('/RecepcionistaController/agendarCita'); ?>">
               <img src="<?=base_url('estilos/imagenes/icons8-calendario.svg');?>" alt="botón para agendar cita" height="70" width="70">
             </a>
             <span class="btn d-block ">Agendar citas</span>

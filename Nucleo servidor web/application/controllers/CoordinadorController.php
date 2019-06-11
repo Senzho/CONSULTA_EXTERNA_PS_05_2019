@@ -21,6 +21,36 @@ class CoordinadorController extends CI_Controller{
         redirect('UsuarioController');
       }
     }
+    public function consultarMedicamentos()
+    {
+      if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Coordinador') {
+        $data['nombre'] = $this->session->userdata('nombre');
+        $this->load->view('consulta_medicamentos_coordinador_view', $data);
+      } else {
+        $this->session->set_flashdata('no_session', 'Favor de iniciar sesión para ingresar al sistema');
+        redirect('UsuarioController');
+      }
+    }
+    public function registrarMedico()
+    {
+      if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Coordinador') {
+        $data['nombre'] = $this->session->userdata('nombre');
+        $this->load->view('registro_medico_coordinador_view', $data);
+      } else {
+        $this->session->set_flashdata('no_session', 'Favor de iniciar sesión para ingresar al sistema');
+        redirect('UsuarioController');
+      }
+    }
+    public function registrarRecepcionista()
+    {
+      if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Coordinador') {
+        $data['nombre'] = $this->session->userdata('nombre');
+        $this->load->view('registro_recepcionista_coordinador_view', $data);
+      } else {
+        $this->session->set_flashdata('no_session', 'Favor de iniciar sesión para ingresar al sistema');
+        redirect('UsuarioController');
+      }
+    }
     public function cerrarSesion()
     {
       $this->session->unset_userdata('rol');

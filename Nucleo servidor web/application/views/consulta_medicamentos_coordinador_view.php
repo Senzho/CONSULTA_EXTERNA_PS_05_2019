@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<nav id="navbarMain" class="navbar navbar-expand-lg navbar-ligth">
 	    <a id="home" >SCE.mx</a>
 	    <span class="mr-auto navbarText">
-	    	 Marta Laura Martínez Mendoza
+	    	 <?= $nombre?>
 	    </span>
 	    <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="<?php echo site_url('/CoordinadorController/cerrarSesion'); ?>">Cerrar sesión</a>
 	</nav>

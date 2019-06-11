@@ -31,6 +31,26 @@ class RecepcionistaController extends CI_Controller{
     $telefono = $this->input->post('telefono');
     $alergias = $this->input->post('alergias');
   }
+  public function actualizarPacientes()
+  {
+    if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Recepcionista') {
+      $data['nombre'] = $this->session->userdata('nombre');
+      $this->load->view('actualizar_pacientes_view', $data);
+    } else {
+      $this->session->set_flashdata('no_session', 'Favor de iniciar sesión para ingresar al sistema');
+      redirect('UsuarioController');
+    }
+  }
+  public function agendarCita()
+  {
+    if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Recepcionista') {
+      $data['nombre'] = $this->session->userdata('nombre');
+      $this->load->view('agendar_cita_view', $data);
+    } else {
+      $this->session->set_flashdata('no_session', 'Favor de iniciar sesión para ingresar al sistema');
+      redirect('UsuarioController');
+    }
+  }
   public function cerrarSesion()
   {
     $this->session->unset_userdata('rol');
@@ -38,5 +58,6 @@ class RecepcionistaController extends CI_Controller{
     $this->session->unset_userdata('token');
     redirect('UsuarioController');
   }
+
 
 }

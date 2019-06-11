@@ -21,15 +21,21 @@ class MedicoController extends CI_Controller{
       redirect('UsuarioController');
     }
   }
+  public function realizarCita()
+  {
+    if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Medico') {
+      $data['nombre'] = $this->session->userdata('nombre');
+      $this->load->view('realizar_cita_view', $data);
+    } else {
+      $this->session->set_flashdata('no_session', 'Favor de iniciar sesión para ingresar al sistema');
+      redirect('UsuarioController');
+    }
+  }
   public function cerrarSesion()
   {
     $this->session->unset_userdata('rol');
     $this->session->unset_userdata('rfc');
     $this->session->unset_userdata('token');
     redirect('UsuarioController');
-  }
-  public function load()
-  {
-    // code...
   }
 }

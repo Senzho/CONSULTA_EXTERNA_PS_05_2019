@@ -30,7 +30,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<nav id="navbarMain" class="navbar navbar-expand-lg navbar-ligth">
 	    <a id="home" >SCE.mx</a>
 	    <span class="mr-auto navbarText">
-	    	 Marta Laura Martínez Mendoza
+	    	 <?= $nombre?>
 	    </span>
 	    <!-- <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="<?php echo site_url('/CoordinadorController/cerrarSesion'); ?>">Cerrar sesión</a> -->
 			<?php echo anchor('CoordinadorController/cerrarSesion', 'Cerrar sesión',array('id'=>'cerrarSesion', 'class' => 'nav-link ml-auto navbarText'));  ?>
@@ -40,7 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="col d-inline-flex centralizado">
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block" href="#">
+            <a class="d-block" href="<?php echo site_url('/CoordinadorController/index'); ?>">
               <img src="<?=base_url('estilos/imagenes/lista-de-verificacion.svg');?>" alt="" height="70" width="70">
             </a>
             <span class="btn d-block">Entradas y salidas</span>
@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="d-inline">
           <div class="px-4 center-cont">
-            <a class="d-block mx-auto" href="#">
+            <a class="d-block mx-auto" href="<?php echo site_url('/CoordinadorController/registrarMedico'); ?>">
               <img src="<?=base_url('estilos/imagenes/doctor.svg');?>" alt="botón para agendar cita" height="70" width="70">
             </a>
             <span class="btn d-block ">Registrar médico</span>
@@ -64,7 +64,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
         <div class="d-inline">
         <div class="px-4 center-cont">
-        <a class="d-block mx-auto" href="#">
+        <a class="d-block mx-auto" href="<?php echo site_url('/CoordinadorController/consultarMedicamentos'); ?>">
           <img src="<?=base_url('estilos/imagenes/pastillas.svg');?>" alt="botón para agendar cita" height="70" width="70">
         </a>
         <span class="btn d-block ">Cosultar medicamentos</span>
