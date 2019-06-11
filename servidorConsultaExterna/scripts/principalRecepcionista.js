@@ -12,36 +12,22 @@ $(function() {
     });
 });
 
-$.fn.registrarPaciente = function(json, token){
+$.fn.registrarPaciente = function(json){
 	$.ajax({
-	    url:'http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Paciente/registrar/' + token,
-	    type:"post",
+	    url:'http://localhost/ServidorConsultaExterna/index.php/RecepcionistaController/registrarPaciente',
+	    method:"post",
 	    data:json,
 	    processData:false,
-	    contentType:false,
+        contentType:"application/json",
+        dataType:"json",
 	    cache:false,
-	    async:true,
-	    success: function(data){
-            var json = JSON.parse(data);
-            if (json['token']) {
-                if (json['registrado']) {
-                    alert('registrado');
-                    //actualizar la interfaz
-                } else {
-                    var mensaje;
-                    if (json['error'] == 'registro') {
-                        mensaje = "Ocurrió un error al registrar el paciente, intente de nuevo más tarde"
-                    } else {
-                        mensaje = "Ya existe un paciente con el número de seguro ingresado";
-                    }
-                    alert("Error: " + mensaje);
-                }
-            } else {
-                alert("Lo sentimos, tu sesión a expirado");
-            }
-	    },
-	    error: function(data){
-	    	alert("Lo sentimos, ocurrió un error al subir tu documento");
-	    }
-	});
+	    async:true
+	}).done(function (data) {
+        console.log(data);
+        if (data.resultado) {
+            alert('registrado');
+        } else {
+            alert("Lo sentimos, ocurrió un error al registrar el paciente");
+        }
+    });
 }
