@@ -18,13 +18,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script> -->
 	<script src="<?=base_url('scripts/jquery.min.js');?>"></script>
+  <script src="<?=base_url('scripts/principalRecepcionista.js');?>"></script>
 	<script src="<?=base_url('scripts/bootstrap-datepicker.min.js');?>"></script>
 	<script src="<?=base_url('scripts/popper.min.js');?>"></script>
 	<script src="<?=base_url('scripts/bootstrap.min.js');?>"></script>
   <script type="text/javascript">
   var base_url = "<?php echo site_url(); ?>";
   </script>
-  <script src="<?=base_url('scripts/login.js');?>"></script>
 </head>
 <body >
   <nav id="navbarMain" class="navbar navbar-expand-lg navbar-ligth">
@@ -96,7 +96,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
       </div>
       <div class="col-sm">
-        <form id="formRegistro" action="" method="post">
+        <form id="formRegistro" role="form" method="post">
+          <input type="hidden" name="tHidden" id="tHidden" value="<?=$t ?>"/>
           <div class="form-group">
             <label for="nombre">Nombre</label>
             <input type="text" class="form-control" id="txtNombre" placeholder="Ejemplo: 'María Guadalupe'" name="nombre" required>
@@ -116,6 +117,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           <div class="form-group">
             <label for="alergias">Alergias</label>
             <textarea class="form-control" id="txtAlergias" rows="5" name="alergias" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="sexo">Sexo</label>
+            <select class="form-control" id="sexo" name="sexo">
+              <option value="H">Hombre</option>
+              <option value="M">Mujer</option>
+            </select>
           </div>
           <div id="mensajes"></div>
           <button type="submit" class="btn btn-primary">Registrar</button>

@@ -16,6 +16,7 @@ class RecepcionistaController extends CI_Controller{
   public function index(){
     if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Recepcionista') {
       $data['nombre'] = $this->session->userdata('nombre');
+      $data['t'] = $this->session->userdata('token');
       $this->load->view('recepcionista_consultas_view', $data);
     } else {
       $this->session->set_flashdata('no_session', 'Favor de iniciar sesión para ingresar al sistema');
@@ -30,6 +31,12 @@ class RecepcionistaController extends CI_Controller{
     $seguro = $this->input->post('seguro');
     $telefono = $this->input->post('telefono');
     $alergias = $this->input->post('alergias');
+    $sexo = $this->input->post('sexo');
+    $paciente = new Paciente();
+    $paciente->setNombre($this->input->post('nombre'));
+    $paciente->setNumeroSeguro($this->input->post('seguro'));
+    $paciente->setNumeroTelefono($this->input->post('telefono'));
+    $paciente->set
   }
   public function actualizarPacientes()
   {
