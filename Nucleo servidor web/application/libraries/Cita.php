@@ -64,8 +64,8 @@ class Cita{
         $this->iCita = $iCita;
     }
 
-    public function registrar($numeroSeguro, $numeroPersonal, $horaReserva) {
-        return $this->iCita->registrar($numeroSeguro, $numeroPersonal, $horaReserva);
+    public function registrar($numeroSeguro, $rfc) {
+        return $this->iCita->registrar($numeroSeguro, $rfc, $this);
     }
 
 }
