@@ -17,22 +17,29 @@ class MedicoModelo implements IMedico {
              
     }
 
-    public function registrar($coordinador){
-        echo $coordinador->getNombre();
+    public function registrar($medico,$idUsuario){
+        $registrado = false;
+        $cliente = new Client();
+        $medicoJSON = $this->getJSON($medico);
+        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrar/'.$idUsuario.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $usuarioJSON]);
+         $respuesta = json_decode($respuesta->getBody());  
+         if($respuesta->token){
+            if($respuesta->registrado){
+                $registrado = TRUE;
+            }
+        }
+        return $registrado;
     }
 
-    public function modificar($coordinador){
+    public function modificar($medico){
 
     }
-
     public function registrarEntrada($numeroPersonal, $numeroConsultorio){
 
     }
-    
     public function registrarSalida($numeroPersonal){
 
     }
-
     public function eliminar(){
 
     }
@@ -72,5 +79,9 @@ class MedicoModelo implements IMedico {
             $medico->setEstado($medicoJSON->perEstado);
         }
         return $medico;
+    }
+
+    private function getJSON($medico){
+        return array('prRfc'=>$medico->getRfc(),'perApellidos'=>$medico->getApellido(), 'perEstado'=>$medico->getEstado(),'perNombres'=>$medico->getNombre(),'perNumPersonal'=>$medico->getNumeroPersonal(),'perNumTelefono'=>$medico->getNumeroTelefono(),'perSexo'=>$medico->getSexo(),'perTurno'=>$medico->getTurno(),'perFechaNac'=>$medico->getFechaNacimiento());
     }
 }

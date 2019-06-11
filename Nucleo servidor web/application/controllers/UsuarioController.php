@@ -61,8 +61,6 @@ class UsuarioController extends CI_Controller{
                     echo "si existe recepcionista";
                 }    
             }
-            //aqui debe haber un redirect
-            //echo $usuarioSesion->getIdUsuario();
         }
     }
 

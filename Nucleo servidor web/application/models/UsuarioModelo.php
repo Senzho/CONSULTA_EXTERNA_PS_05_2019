@@ -19,10 +19,32 @@ class UsuarioModelo implements IUsuario{
     }
 
     public function registrarUsuario($usuario){
-
+        $registrado = FALSE;
+        $cliente = new Client();
+        $usuarioJSON = $this->getJSON($usuario);
+        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Usuario/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $usuarioJSON]);
+        $respuesta = json_decode($respuesta->getBody());  
+        if($respuesta->token){
+            if($respuesta->registrado){
+                $registrado = TRUE;
+                $usuario->setIdUsuario($respuesta->usuario->usuId);
+            }
+        }
+        return $registrado;
     }
-    public function modificar($usuario){
 
+    public function modificar($usuario){
+        $modificado = FALSE;
+        $cliente = new Client();
+        $usuarioJSON = $this->getJSON($usuario);
+        $respuesta = $cliente->put('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Usuario/modificar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $usuarioJSON]);
+        $respuesta = json_decode($respuesta->getBody());  
+        if($respuesta->token){
+            if($respuesta->actualizado){
+                $modificado = TRUE;
+            }
+        }
+        return $modificado;
     }
     
     public function iniciarSesion($nombre, $contraseña){
@@ -33,12 +55,15 @@ class UsuarioModelo implements IUsuario{
     	return $this->getJSONObject($json);
     }
 
+    private function getJSON($usuario){
+        return array('usuId'=>$usuario->getIdUsuario(),'usuNombre'=>$usuario->getNombreUsuario(), 'usuContrasena'=>$usuario->getContraseña(),'usuRol'=>$usuario->getRol());
+    }
+
     private function getJSONObject($JSONObject){
     	$usuarioJSON = $JSONObject->usuario;
     	$usuario = new Usuario();
         $usuario->setIdUsuario(0);
         if($usuarioJSON->usuId != 0){
-            
             $this->session->set_userdata('token',$JSONObject->tokenGenerado);
         	$usuario->setNombreUsuario ($usuarioJSON->usuNombre);
         	$usuario->setContraseña ($usuarioJSON->usuContrasena);
