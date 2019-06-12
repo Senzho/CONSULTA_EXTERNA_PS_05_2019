@@ -44,7 +44,8 @@ class UsuarioModelo implements IUsuario{
     }
     
     public function iniciarSesion($nombre, $contraseña){
-    	$cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
+        //$cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
+        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
     	$peticion = new Request('GET','/ConsultaExterna_WS/webresources/Usuario/obtener/'.$nombre.'/'.$contraseña,[]);
     	$respuesta = $cliente->send($peticion, []);
     	$json = json_decode($respuesta->getBody());

@@ -37,7 +37,7 @@ class Paciente{
         } else if ($this->fechaNacimiento == null){
             $datosPaciente = DatosPaciente::FECHA_NACIMIENTO_VACIA;
         } else if ($this->sexo == ""){
-            $datosPaciente = DatosPaciente::FECHA_NACIMIENTO_VACIA;
+            $datosPaciente = DatosPaciente::SEXO_VACIO;
         } else if ($this->alergias == "" || $this->alergias == null){
             $datosPaciente = DatosPaciente::ALERGIAS_VACIAS;
         } else if (strlen($this->alergias) > 200){
@@ -118,11 +118,11 @@ class Paciente{
 
     public function registrarPaciente() {
         $registro = $this->validarDatos();
-        //if ($registro == DatosPaciente::VALIDO){
-          //  if ($this->obtenerPaciente($this->numeroSeguro) == null){
+        if ($registro == DatosPaciente::VALIDO){
+            if ($this->obtenerPaciente($this->numeroSeguro) == null){
                 $registro = $this->iPaciente->registrarPaciente($this)? DatosPaciente::EXITO : DatosPaciente::ERROR_ALMACENAMIENTO;
-            //}
-        //}
+            }
+        }
         return $registro;
     }
     

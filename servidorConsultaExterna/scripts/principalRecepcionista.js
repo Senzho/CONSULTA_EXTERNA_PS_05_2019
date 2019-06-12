@@ -7,8 +7,9 @@ $(function() {
         var telefono = $("#txtTelefono").val();
         var alergias = $("txtAlergias").val();
         var sexo = $("#sexo").val();
-        var json = JSON.stringify({pacNombres: nombre, pacApellidos: apellido, pacNumSeguro: seguro, pacNumTelefono: telefono, pacAlergias: alergias, pacSexo: sexo});
-        $(this).registrarPaciente(json, $("#tHidden").val());
+        var fechaNacimiento = $("#fechaNac").datepicker({dateFormat: "yyyy-mm-dd"}).val();
+        var json = JSON.stringify({pacNombres: nombre, pacApellidos: apellido, pacNumSeguro: seguro, pacNumTelefono: telefono, pacAlergias: alergias, pacSexo: sexo, pacFechaNac: fechaNacimiento});
+        $(this).registrarPaciente(json);
     });
 });
 
@@ -23,11 +24,12 @@ $.fn.registrarPaciente = function(json){
 	    cache:false,
 	    async:true
 	}).done(function (data) {
-        console.log(data);
-        if (data.resultado) {
+        if (data.respuesta.resultado) {
             alert('registrado');
+            //Ventana modal
         } else {
-            alert("Lo sentimos, ocurrió un error al registrar el paciente");
+            alert(data.respuesta.mensaje);
+            //Ventana modal
         }
     });
 }

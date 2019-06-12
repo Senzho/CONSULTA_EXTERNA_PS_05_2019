@@ -111,7 +111,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="col-sm">
         <form id="formRegistro" role="form" method="post">
-          <input type="hidden" name="tHidden" id="tHidden" value="<?=$t ?>"/>
           <div class="form-group">
             <label for="nombre">Nombre</label>
             <input type="text" class="form-control" id="txtNombre" placeholder="Ejemplo: 'María Guadalupe'" name="nombre" required>

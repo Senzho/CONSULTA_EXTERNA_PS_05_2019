@@ -15,7 +15,8 @@ class PacienteModelo implements IPaciente{
         $registrado = FALSE;
         $cliente = new Client();
         $pacienteJSON = $this->getJSON($paciente);
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Paciente/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $pacienteJSON]);
+        //$respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Paciente/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $pacienteJSON]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Paciente/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $pacienteJSON]);
         $respuesta = json_decode($respuesta->getBody());  
         if($respuesta->token){
             if($respuesta->registrado){
