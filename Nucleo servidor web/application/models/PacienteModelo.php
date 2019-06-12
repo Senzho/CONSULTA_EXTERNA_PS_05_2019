@@ -8,8 +8,12 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Client;
 
 class PacienteModelo implements IPaciente{
-    public function obtenerPaciente($numeroSeguro){
+    public function __get($attr) {
+        return CI_Controller::get_instance()->$attr;
+    }
 
+    public function obtenerPaciente($numeroSeguro){
+        return false;
     }
     public function registrarPaciente($paciente){
         $registrado = FALSE;
@@ -30,6 +34,6 @@ class PacienteModelo implements IPaciente{
     }
 
     private function getJSON($paciente){
-        return array('pacNumSeguro' => $paciente->getNumeroSeguro(), 'pacAlergias' => $paciente->getAlergias(), 'pacApellidos' => $paciente->getApellido, 'pacNombres' => $paciente->getNombre(), 'pacNumTelefono' => $paciente->getNumTelefono(), 'pacSexo' => $paciente->getSexo());
+        return array('pacNumSeguro' => $paciente->getNumeroSeguro(), 'pacAlergias' => $paciente->getAlergias(), 'pacApellidos' => $paciente->getApellido(), 'pacNombres' => $paciente->getNombre(), 'pacNumTelefono' => $paciente->getNumeroTelefono(), 'pacSexo' => $paciente->getSexo(), 'pacFechaNac' => $paciente->getFechaNacimiento());
     }
 }

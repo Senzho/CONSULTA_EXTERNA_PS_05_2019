@@ -10,9 +10,9 @@ use GuzzleHttp\Client;
 
 class UsuarioModelo implements IUsuario{
 
-  public function __get($attr) {
-    return CI_Controller::get_instance()->$attr;
-  }
+    public function __get($attr) {
+        return CI_Controller::get_instance()->$attr;
+    }
 
     public function registrarUsuario($usuario){
         $registrado = FALSE;

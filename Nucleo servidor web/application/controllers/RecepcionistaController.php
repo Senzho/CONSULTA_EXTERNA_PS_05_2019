@@ -53,14 +53,15 @@ class RecepcionistaController extends CI_Controller{
 
   public function registrarPaciente()
   {
+    $post = json_decode(file_get_contents('php://input'));
     $paciente = new Paciente();
-    $paciente->setNombre($this->input->post('pacNombres'));
-    $paciente->setNumeroSeguro($this->input->post('pacNumSeguro'));
-    $paciente->setNumeroTelefono($this->input->post('pacNumTelefono'));
-    $paciente->setFechaNacimiento($this->input->post('pacFechaNac'));
-    $paciente->setSexo($this->input->post('pacSexo'));
-    $paciente->setAlergias($this->input->post('pacAlergias'));
-    $paciente->setApellido($this->input->post('pacApellidos'));
+    $paciente->setNombre($post->nombres);
+    $paciente->setNumeroSeguro($post->numeroSeguro);
+    $paciente->setNumeroTelefono($post->numeroTelefono);
+    $paciente->setFechaNacimiento($post->fechaNacimiento);
+    $paciente->setSexo($post->sexo);
+    $paciente->setAlergias($post->alergias);
+    $paciente->setApellido($post->apellidos);
     $paciente->setiPaciente(new PacienteModelo());
     $datosPaciente = $paciente->registrarPaciente();
     $respuesta = array('resultado' => FALSE);

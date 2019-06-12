@@ -23,21 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?=base_url('scripts/popper.min.js');?>"></script>
 	<script src="<?=base_url('scripts/bootstrap.min.js');?>"></script>
   <script type="text/javascript">
-  var base_url = "<?php echo site_url(); ?>";
-  $(function () {
-    $('#fechaNac').datepicker({
-      weekStart: 1,
-      daysOfWeekHighlighted: "6,0",
-      autoclose: true,
-      todayHighlight: true,
-      enableOnReadonly: false,
-      language: 'es',
-    });
-    $('#fechaNac').datepicker("setDate", new Date());
-    $('#fechaNac').keypress(function(event) {
-      event.preventDefault();
-    });
-  });
+    var base_url = "<?php echo site_url(); ?>";
   </script>
 </head>
 <body >
@@ -112,12 +98,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="col-sm">
         <form id="formRegistro" role="form" method="post">
           <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" class="form-control" id="txtNombre" placeholder="Ejemplo: 'María Guadalupe'" name="nombre" required>
+            <label for="nombre">Nombres</label>
+            <input type="text" class="form-control" id="txtNombre" placeholder="Ejemplo: 'María Guadalupe'" name="nombres" required>
           </div>
           <div class="form-group">
-            <label for="apellido">Apellido</label>
-            <input type="text" class="form-control" id="txtApellido" placeholder="Ejemplo: 'Hernández Sánchez'" name="apellido" required>
+            <label for="apellido">Apellidos</label>
+            <input type="text" class="form-control" id="txtApellido" placeholder="Ejemplo: 'Hernández Sánchez'" name="apellidos" required>
           </div>
           <div class="form-group">
             <label for="telefono">Número de seguro social</label>
@@ -140,7 +126,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </div>
           <div class="form-group">
             <label for="nombre">Fecha de la nacimiento</label>
-            <input id="fechaNac" class="form-control" data-date-format="dd/mm/yyyy">
+            <input id="fechaNac" class="form-control" data-date-format="yyyy-mm-dd" name="fecha">
           </div>
           <div id="mensajes"></div>
           <button type="submit" class="btn btn-primary">Registrar</button>
@@ -182,26 +168,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </button> -->
 
     <!-- The Modal -->
-    <div class="modal fade" id="myModal">
+    <div class="modal fade" id="modalPacienteRegistrado">
       <div class="modal-dialog">
         <div class="modal-content">
 
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">Paciente registrado</h4>
+            <h4 class="modal-title" id="tituloModalRegistro">Paciente registrado</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
 
           <!-- Modal body -->
           <div class="modal-body">
-            <p>Solo de muestra hay que quitar el botón y vincularlo con el de registrar pero eso se realiza con js</p>
-            <p>Laura Martínez</p>
-            <p>625327635-1</p>
+            <!-- <p>Solo de muestra hay que quitar el botón y vincularlo con el de registrar pero eso se realiza con js</p> -->
+            <p id="nombreRegistro">Laura Martínez</p>
+            <p id="numeroRegistro">625327635-1</p>
           </div>
 
           <!-- Modal footer -->
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Añadir a la lista</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="botonAñadirConsulta">Añadir a la lista</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Listo</button>
           </div>
 
