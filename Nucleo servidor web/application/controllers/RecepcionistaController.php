@@ -72,6 +72,41 @@ class RecepcionistaController extends CI_Controller{
     }
     echo json_encode(array('respuesta' => $respuesta));
   }
+  public function modificarPaciente() {
+    $post = json_decode(file_get_contents('php://input'));
+    $paciente = new Paciente();
+    $paciente->setNombre($put->nombres);
+    $paciente->setNumeroSeguro($put->numeroSeguro);
+    $paciente->setNumeroTelefono($put->numeroTelefono);
+    $paciente->setFechaNacimiento($put->fechaNacimiento);
+    $paciente->setSexo($put->sexo);
+    $paciente->setAlergias($put->alergias);
+    $paciente->setApellido($put->apellidos);
+    $paciente->setiPaciente(new PacienteModelo());
+    $datosPaciente = $paciente->modificarPaciente();
+    $respuesta = array('resultado' => FALSE);
+    if ($datosPaciente == DatosPaciente::EXITO) {
+      $respuesta['resultado'] = TRUE;
+    } else {
+      $respuesta['mensaje'] = $this->obtenerMensajeError($datosPaciente);
+    }
+    echo json_encode(array('respuesta' => $respuesta));
+  }
+  public function obtenerPaciente($numeroSeguro) {
+    $paciente = new Paciente();
+    $paciente.setIPaciente(new PacienteModelo());
+    $paciente = $paciente->obtenerPaciente($numeroSeguro);
+    $respuesta = array('numeroSeguro' => $paciente->getNumeroSeguro());
+    if ($paciente->getNumeroSeguro() != 0) {
+      $respuesta['nombres'] = $paciente->getNombre();
+      $respuesta['apellidos'] = $paciente->getApellido();
+      $respuesta['numeroTelefono'] = $paciente->getNumeroTelefono();
+      $respuesta['sexo'] = $paciente->getSexo();
+      $respuesta['fechaNacimiento'] = $paciente->getFechaNacimiento();
+      $respuesta['alergias'] = $paciente->getAlergias();
+    }
+    echo json_encode($respuesta);
+  }
   public function actualizarPacientes()
   {
     if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Recepcionista') {

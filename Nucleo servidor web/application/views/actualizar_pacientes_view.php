@@ -21,6 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <script src="<?=base_url('scripts/bootstrap-datepicker.min.js');?>"></script>
   <script src="<?=base_url('scripts/popper.min.js');?>"></script>
   <script src="<?=base_url('scripts/bootstrap.min.js');?>"></script>
+  <script src="<?=base_url('scripts/actualizacionPacientes.js');?>"></script>
   <script type="text/javascript">
   var base_url = "<?php echo site_url(); ?>";
   </script>
@@ -133,6 +134,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <label for="alergias">Alergias</label>
             <textarea class="form-control" id="txtAlergias" rows="5" name="alergias"></textarea>
           </div>
+          <div class="form-group">
+            <label for="sexo">Sexo</label>
+            <select class="form-control" id="sexo" name="sexo">
+              <option value="H">Hombre</option>
+              <option value="M">Mujer</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="nombre">Fecha de la nacimiento</label>
+            <input id="fechaNac" class="form-control" data-date-format="yyyy-mm-dd" name="fecha">
+          </div>
           <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
       </div>
@@ -152,14 +164,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
           <!-- Modal Header -->
           <div class="modal-header">
-            <h4 class="modal-title">Paciente actualizado</h4>
+            <h4 class="modal-title" id="tituloModalRegistro">Paciente actualizado</h4>
             <button type="button" class="close" data-dismiss="modal">&times;</button>
           </div>
 
           <!-- Modal body -->
           <div class="modal-body">
-            <p>Solo de muestra hay que quitar el botón y vincularlo con el de registrar pero eso se realiza con js</p>
-            <p>Laura Martínez</p>
+            <p id="nombreRegistro">Solo de muestra hay que quitar el botón y vincularlo con el de registrar pero eso se realiza con js</p>
+            <p id="numeroRegistro">Laura Martínez</p>
             <p>625327635-1</p>
           </div>
 
