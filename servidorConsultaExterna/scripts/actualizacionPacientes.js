@@ -13,13 +13,13 @@ $(function() {
     });
     $("#formRegistro").submit(function(event){
         event.preventDefault();
-        var nombre = $("#txtNombre").val();
-        var apellido = $("#txtApellido").val();
-        var seguro = $("#txtSeguroSocial").val();
-        var telefono = $("#txtTelefono").val();
-        var alergias = $("#txtAlergias").val();
-        var sexo = $("#sexo").val();
-        var fechaNacimiento = $("#fechaNac").val();
+        var nombre = $(this).limpiarEntradas($("#txtNombre").val());
+        var apellido = $(this).limpiarEntradas($("#txtApellido").val());
+        var seguro = $(this).limpiarEntradas($("#txtSeguroSocial").val());
+        var telefono = $(this).limpiarEntradas($("#txtTelefono").val());
+        var alergias = $(this).limpiarEntradas($("#txtAlergias").val());
+        var sexo = $(this).limpiarEntradas($("#sexo").val());
+        var fechaNacimiento = $(this).limpiarEntradas($("#fechaNac").val());
         var json = JSON.stringify({nombres: nombre, apellidos: apellido, numeroSeguro: seguro, numeroTelefono: telefono, alergias: alergias, sexo: sexo, fechaNacimiento: fechaNacimiento});
         $(this).modificarPaciente(json);
     });
@@ -30,6 +30,8 @@ $(function() {
     });
     $("a.panelPaciente").click(function() {
         var numeroSeguro = $(this).attr("id");
+        //$('a.panelPaciente[id='+numeroSeguro+']').attr('class', 'list-group-item list-group-item-action panelPaciente active');
+        //$('a.panelPaciente[class=list-group-item list-group-item-action panelPaciente]').attr('class', 'list-group-item list-group-item-action panelPaciente ');
         $(this).obtenerPaciente(numeroSeguro);
     });
     var numeroSeguro;
@@ -37,7 +39,7 @@ $(function() {
 
 $.fn.modificarPaciente = function(json) {
     $.ajax({
-        url:'http://localhost/ServidorConsultaExterna/index.php/RecepcionistaController/modificarPaciente',
+        url: base_url+'/RecepcionistaController/modificarPaciente',
 	    method:"PUT",
 	    data:json,
 	    processData:false,
@@ -57,7 +59,7 @@ $.fn.modificarPaciente = function(json) {
 }
 $.fn.obtenerPaciente = function(numeroSeguro) {
     $.ajax({
-        url:'http://localhost/ServidorConsultaExterna/index.php/RecepcionistaController/obtenerPaciente/' + numeroSeguro,
+        url:base_url+'/RecepcionistaController/obtenerPaciente/' + numeroSeguro,
 	    method:"GET",
 	    processData:false,
         contentType:"application/json",
@@ -105,4 +107,7 @@ $.fn.mostrarModalError = function(mensaje) {
 }
 $.fn.actualizarLista = function(paciente) {
     $("#" + paciente['numeroSeguro']).text(paciente['nombres'] + " " + paciente['apellidos']);
+}
+$.fn.limpiarEntradas = function (cadena) {
+    return String(cadena).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }

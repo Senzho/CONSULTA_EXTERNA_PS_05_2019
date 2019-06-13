@@ -24,6 +24,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   <script type="text/javascript">
   var base_url = "<?php echo site_url(); ?>";
   $(function () {
+    $('#formCita').submit(function(event) {
+      event.preventDefault();
+    });
     $('#datepicker').datepicker({
       weekStart: 1,
       daysOfWeekHighlighted: "6,0",
@@ -118,6 +121,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </form>
         <div class="scrollable">
           <div id="listaConsultas" class="list-group">
+            <a class="list-group-item list-group-item-action" >Adriana Maribel - 12:30:00</a>
+            <!-- <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
             <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
             <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
             <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
@@ -131,14 +136,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
             <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
             <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
+            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a> -->
           </div>
         </div>
       </div>
       <div class="col-sm">
-        <form id="formRegistro" action="" method="post">
+        <form id="formCita" action="" method="post">
           <div class="form-group">
             <div class=" row">
               <div class="col">
@@ -221,7 +224,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
         </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Guardar</button>
       </form>
     </div>
   </div>
@@ -229,9 +232,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </div>
 <div class="container">
   <!-- Button to Open the Modal -->
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+  <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
     Open modal
-  </button>
+  </button> -->
 
   <!-- The Modal -->
   <div class="modal fade" id="myModal">
@@ -246,8 +249,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         <!-- Modal body -->
         <div class="modal-body">
-          <p>Solo de muestra hay que quitar el botón y vincularlo con el de registrar pero eso se realiza con js</p>
-          <p>Laura Martínez</p>
+          <p>Adriana Maribel</p>
           <p>Fecha: 31 de diciembre de 2019</p>
           <p>12:30 PM</p>
         </div>

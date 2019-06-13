@@ -19,7 +19,7 @@ class UsuarioModelo implements IUsuario{
         $cliente = new Client();
         $usuarioJSON = $this->getJSON($usuario);
         $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Usuario/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $usuarioJSON]);
-        $respuesta = json_decode($respuesta->getBody());  
+        $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->registrado){
                 $registrado = TRUE;
@@ -34,7 +34,7 @@ class UsuarioModelo implements IUsuario{
         $cliente = new Client();
         $usuarioJSON = $this->getJSON($usuario);
         $respuesta = $cliente->put('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Usuario/modificar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $usuarioJSON]);
-        $respuesta = json_decode($respuesta->getBody());  
+        $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->actualizado){
                 $modificado = TRUE;
@@ -42,10 +42,10 @@ class UsuarioModelo implements IUsuario{
         }
         return $modificado;
     }
-    
+
     public function iniciarSesion($nombre, $contraseña){
-        //$cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
-        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
+      $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
+      //  $cliente = new Client(['base_uri'=>'http://localhost:8080']);
     	$peticion = new Request('GET','/ConsultaExterna_WS/webresources/Usuario/obtener/'.$nombre.'/'.$contraseña,[]);
     	$respuesta = $cliente->send($peticion, []);
     	$json = json_decode($respuesta->getBody());
@@ -70,5 +70,5 @@ class UsuarioModelo implements IUsuario{
         }
     	return $usuario;
     }
-  
+
 }

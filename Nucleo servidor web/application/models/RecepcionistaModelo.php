@@ -99,8 +99,8 @@ class RecepcionistaModelo implements IRecepcionista {
         return $this->getJSONObject($json);
     }
     public function obtenerRecepcionistaId($numeroPersonal){
-        //$cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
-        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
+        $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
+        //$cliente = new Client(['base_uri'=>'http://localhost:8080']);
         $token = $this->session->userdata('token');
         $peticion = new Request('GET','/ConsultaExterna_WS/webresources/Personal/obteneridusuario/'.$numeroPersonal.'/'.$token,[]);
         $respuesta = $cliente->send($peticion, []);

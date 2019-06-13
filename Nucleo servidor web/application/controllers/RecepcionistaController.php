@@ -55,13 +55,13 @@ class RecepcionistaController extends CI_Controller{
   {
     $post = json_decode(file_get_contents('php://input'));
     $paciente = new Paciente();
-    $paciente->setNombre($post->nombres);
-    $paciente->setNumeroSeguro($post->numeroSeguro);
-    $paciente->setNumeroTelefono($post->numeroTelefono);
-    $paciente->setFechaNacimiento($post->fechaNacimiento);
-    $paciente->setSexo($post->sexo);
-    $paciente->setAlergias($post->alergias);
-    $paciente->setApellido($post->apellidos);
+    $paciente->setNombre($this->limpiar($post->nombres));
+    $paciente->setNumeroSeguro($this->limpiar($post->numeroSeguro));
+    $paciente->setNumeroTelefono($this->limpiar($post->numeroTelefono));
+    $paciente->setFechaNacimiento($this->limpiar($post->fechaNacimiento));
+    $paciente->setSexo($this->limpiar($post->sexo));
+    $paciente->setAlergias($this->limpiar($post->alergias));
+    $paciente->setApellido($this->limpiar($post->apellidos));
     $paciente->setiPaciente(new PacienteModelo());
     $datosPaciente = $paciente->registrarPaciente();
     $respuesta = array('resultado' => FALSE);
@@ -75,13 +75,13 @@ class RecepcionistaController extends CI_Controller{
   public function modificarPaciente() {
     $put = json_decode(file_get_contents('php://input'));
     $paciente = new Paciente();
-    $paciente->setNombre($put->nombres);
-    $paciente->setNumeroSeguro($put->numeroSeguro);
-    $paciente->setNumeroTelefono($put->numeroTelefono);
-    $paciente->setFechaNacimiento($put->fechaNacimiento);
-    $paciente->setSexo($put->sexo);
-    $paciente->setAlergias($put->alergias);
-    $paciente->setApellido($put->apellidos);
+    $paciente->setNombre($this->limpiar($put->nombres));
+    $paciente->setNumeroSeguro($this->limpiar($put->numeroSeguro));
+    $paciente->setNumeroTelefono($this->limpiar($put->numeroTelefono));
+    $paciente->setFechaNacimiento($this->limpiar($put->fechaNacimiento));
+    $paciente->setSexo($this->limpiar($put->sexo));
+    $paciente->setAlergias($this->limpiar($put->alergias));
+    $paciente->setApellido($this->limpiar($put->apellidos));
     $paciente->setiPaciente(new PacienteModelo());
     $datosPaciente = $paciente->modificarPaciente();
     $respuesta = array('resultado' => FALSE);
@@ -136,6 +136,11 @@ class RecepcionistaController extends CI_Controller{
     $this->session->unset_userdata('rfc');
     $this->session->unset_userdata('token');
     redirect('UsuarioController');
+  }
+  public function limpiar($value)
+  {
+    $search = array('<' ,'>', '/',"script");
+    return str_replace($search, "", $value);
   }
 
 

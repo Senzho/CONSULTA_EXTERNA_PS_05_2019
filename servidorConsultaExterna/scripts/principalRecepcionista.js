@@ -28,7 +28,7 @@ $(function() {
 
 $.fn.registrarPaciente = function(json){
 	$.ajax({
-	    url:'http://localhost/ServidorConsultaExterna/index.php/RecepcionistaController/registrarPaciente',
+	    url: base_url+'/RecepcionistaController/registrarPaciente',
 	    method:"POST",
 	    data:json,
 	    processData:false,
@@ -66,4 +66,7 @@ $.fn.mostrarModalError = function(mensaje) {
     $("#nombreRegistro").text(mensaje);
     $("#numeroRegistro").text("");
     $("#modalPacienteRegistrado").modal('toggle');
+}
+$.fn.limpiarEntradas = function (cadena) {
+    return String(cadena).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }

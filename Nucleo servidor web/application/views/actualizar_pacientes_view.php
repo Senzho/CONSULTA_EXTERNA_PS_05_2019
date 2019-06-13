@@ -92,11 +92,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </div>
         </form>
         <div class="scrollable">
-          <div id="listaConsultas" class="list-group">
+          <div id="listaConsultas" class="list-group" role="tablist">
             <?php
               for ($i = 0; $i < count($pacientes); $i ++) {
                 $paciente = $pacientes[$i];
-                echo "<a class='list-group-item list-group-item-action panelPaciente' id='" . $paciente->getNumeroSeguro() . "'>" . $paciente->getNombre() . " " . $paciente->getApellido() . "</a>";
+                echo "<a class='list-group-item list-group-item-action panelPaciente' data-toggle='list' id='" . $paciente->getNumeroSeguro() . "'>" . $paciente->getNombre() . " " . $paciente->getApellido() . "</a>";
               }
             ?>
           </div>
@@ -153,7 +153,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
           <!-- Modal body -->
           <div class="modal-body">
-            
+
             <p id="nombreRegistro">Laura Martínez</p>
             <p id="numeroRegistro">625327635-1</p>
           </div>
