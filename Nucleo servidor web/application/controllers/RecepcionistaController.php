@@ -73,7 +73,7 @@ class RecepcionistaController extends CI_Controller{
     echo json_encode(array('respuesta' => $respuesta));
   }
   public function modificarPaciente() {
-    $post = json_decode(file_get_contents('php://input'));
+    $put = json_decode(file_get_contents('php://input'));
     $paciente = new Paciente();
     $paciente->setNombre($put->nombres);
     $paciente->setNumeroSeguro($put->numeroSeguro);
@@ -94,7 +94,7 @@ class RecepcionistaController extends CI_Controller{
   }
   public function obtenerPaciente($numeroSeguro) {
     $paciente = new Paciente();
-    $paciente.setIPaciente(new PacienteModelo());
+    $paciente->setiPaciente(new PacienteModelo());
     $paciente = $paciente->obtenerPaciente($numeroSeguro);
     $respuesta = array('numeroSeguro' => $paciente->getNumeroSeguro());
     if ($paciente->getNumeroSeguro() != 0) {
@@ -111,6 +111,9 @@ class RecepcionistaController extends CI_Controller{
   {
     if ($this->session->userdata('token') && $this->session->userdata('rol') == 'Recepcionista') {
       $data['nombre'] = $this->session->userdata('nombre');
+      $paciente = new Paciente();
+      $paciente->setiPaciente(new PacienteModelo());
+      $data['pacientes'] = $paciente->obtenerPacientes();
       $this->load->view('actualizar_pacientes_view', $data);
     } else {
       $this->session->set_flashdata('no_session', 'Favor de iniciar sesión para ingresar al sistema');

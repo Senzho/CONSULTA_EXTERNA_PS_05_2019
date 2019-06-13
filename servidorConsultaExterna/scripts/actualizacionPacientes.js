@@ -23,6 +23,15 @@ $(function() {
         var json = JSON.stringify({nombres: nombre, apellidos: apellido, numeroSeguro: seguro, numeroTelefono: telefono, alergias: alergias, sexo: sexo, fechaNacimiento: fechaNacimiento});
         $(this).modificarPaciente(json);
     });
+    $("#botonBuscar").click(function(event) {
+        event.preventDefault();
+        var numeroSeguro = $("#campoBusqueda").val();
+        $(this).obtenerPaciente(numeroSeguro);
+    });
+    $("a.panelPaciente").click(function() {
+        var numeroSeguro = $(this).attr("id");
+        $(this).obtenerPaciente(numeroSeguro);
+    });
     var numeroSeguro;
 });
 
@@ -40,6 +49,7 @@ $.fn.modificarPaciente = function(json) {
         if (data.respuesta.resultado) {
             $(this).limpiarFormulario();
             $(this).mostrarModalOk(JSON.parse(json));
+            $(this).actualizarLista(JSON.parse(json));
         } else {
             $(this).mostrarModalError(data.respuesta.mensaje);
         }
@@ -49,7 +59,6 @@ $.fn.obtenerPaciente = function(numeroSeguro) {
     $.ajax({
         url:'http://localhost/ServidorConsultaExterna/index.php/RecepcionistaController/obtenerPaciente/' + numeroSeguro,
 	    method:"GET",
-	    data:json,
 	    processData:false,
         contentType:"application/json",
         dataType:"json",
@@ -62,6 +71,7 @@ $.fn.obtenerPaciente = function(numeroSeguro) {
     });
 }
 $.fn.limpiarFormulario = function() {
+    $("#tituloFormulario").text('Ningún paciente seleccionado');
     $("#txtNombre").val('');
     $("#txtApellido").val('');
     $("#txtSeguroSocial").val('');
@@ -70,6 +80,7 @@ $.fn.limpiarFormulario = function() {
     $('#fechaNac').datepicker("setDate", new Date());
 }
 $.fn.cargarFormulario = function(paciente) {
+    $("#tituloFormulario").text(paciente.numeroSeguro);
     $("#txtNombre").val(paciente.nombres);
     $("#txtApellido").val(paciente.apellidos);
     $("#txtSeguroSocial").val(paciente.numeroSeguro);
@@ -80,15 +91,18 @@ $.fn.cargarFormulario = function(paciente) {
 }
 $.fn.mostrarModalOk = function(pacienteNuevo) {
     $("#botonAñadirConsulta").show();
-    $("#tituloModalRegistro").text("Paciente registrado");
+    $("#tituloModalRegistro").text("Paciente actualizado");
     $("#nombreRegistro").text(pacienteNuevo['nombres'] + " " + pacienteNuevo['apellidos']);
     $("#numeroRegistro").text(pacienteNuevo['numeroSeguro']);
-    $("#modalPacienteRegistrado").modal('toggle');
+    $("#modalPacienteActualizado").modal('toggle');
 }
 $.fn.mostrarModalError = function(mensaje) {
     $("#botonAñadirConsulta").hide();
     $("#tituloModalRegistro").text("Ocurrió un error");
     $("#nombreRegistro").text(mensaje);
     $("#numeroRegistro").text("");
-    $("#modalPacienteRegistrado").modal('toggle');
+    $("#modalPacienteActualizado").modal('toggle');
+}
+$.fn.actualizarLista = function(paciente) {
+    $("#" + paciente['numeroSeguro']).text(paciente['nombres'] + " " + paciente['apellidos']);
 }

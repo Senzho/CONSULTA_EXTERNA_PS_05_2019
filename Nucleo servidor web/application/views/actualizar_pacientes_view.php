@@ -70,7 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <h1>Pacientes</h1>
       </div>
       <div class="col-sm">
-        <h1 class="mb-1">Ningún paciente seleccionado</h1>
+        <h1 class="mb-1" id="tituloFormulario">Ningún paciente seleccionado</h1>
       </div>
     </div>
     <div class="row">
@@ -82,33 +82,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
             <!--end of col-->
             <div class="col">
-              <input class="form-control form-control-borderless" type="search" placeholder="">
+              <input class="form-control form-control-borderless" type="search" placeholder="" id="campoBusqueda"/>
             </div>
             <!--end of col-->
             <div class="col-auto">
-              <button class="btn btn-primary" type="submit">Buscar</button>
+              <button class="btn btn-primary" type="button" id="botonBuscar">Buscar</button>
             </div>
             <!--end of col-->
           </div>
         </form>
         <div class="scrollable">
           <div id="listaConsultas" class="list-group">
-            <a class="list-group-item list-group-item-action" > Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
+            <?php
+              for ($i = 0; $i < count($pacientes); $i ++) {
+                $paciente = $pacientes[$i];
+                echo "<a class='list-group-item list-group-item-action panelPaciente' id='" . $paciente->getNumeroSeguro() . "'>" . $paciente->getNombre() . " " . $paciente->getApellido() . "</a>";
+              }
+            ?>
           </div>
         </div>
       </div>
@@ -122,10 +112,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <label for="apellido">Apellido</label>
             <input type="text" class="form-control" id="txtApellido" placeholder="Ejemplo: 'Hernández Sánchez'" name="apellido">
           </div>
-          <div class="form-group">
-            <label for="seguroSocial">Seguro Social</label>
-            <input type="text" class="form-control" id="txtApellido" placeholder="Ejemplo: '3323244'" name="seguroSocial">
-          </div>
+          <input type="hidden" id="txtSeguroSocial"/>
           <div class="form-group">
             <label for="telefono">Telefono</label>
             <input type="tel" class="form-control" id="txtTelefono" placeholder="2282813731" name="telefono">
@@ -152,13 +139,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
   </div>
   <div class="container">
-    <!-- Button to Open the Modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-      Open modal
-    </button>
 
     <!-- The Modal -->
-    <div class="modal fade" id="myModal">
+    <div class="modal fade" id="modalPacienteActualizado">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -170,9 +153,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
           <!-- Modal body -->
           <div class="modal-body">
-            <p id="nombreRegistro">Solo de muestra hay que quitar el botón y vincularlo con el de registrar pero eso se realiza con js</p>
-            <p id="numeroRegistro">Laura Martínez</p>
-            <p>625327635-1</p>
+            
+            <p id="nombreRegistro">Laura Martínez</p>
+            <p id="numeroRegistro">625327635-1</p>
           </div>
 
           <!-- Modal footer -->

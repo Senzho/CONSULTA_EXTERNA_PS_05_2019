@@ -143,4 +143,7 @@ class Paciente{
         return $this->iPaciente->obtenerPaciente($numeroSeguro);
     }
 
+    public function obtenerPacientes() {
+        return $this->iPaciente->obtenerPacientes();
+    }
 }
