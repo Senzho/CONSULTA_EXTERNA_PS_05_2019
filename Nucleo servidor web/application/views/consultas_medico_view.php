@@ -61,22 +61,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="col-sm">
         <div class="scrollable">
           <div id="listaConsultas" class="list-group">
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente - hora</a>
+            <a class="list-group-item list-group-item-action" >Adriana Maribel</a>
           </div>
         </div>
       </div>
