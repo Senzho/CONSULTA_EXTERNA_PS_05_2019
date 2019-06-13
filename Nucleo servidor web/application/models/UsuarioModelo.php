@@ -44,16 +44,18 @@ class UsuarioModelo implements IUsuario{
     }
 
     public function iniciarSesion($nombre, $contraseña){
-      $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
-      //  $cliente = new Client(['base_uri'=>'http://localhost:8080']);
-    	$peticion = new Request('GET','/ConsultaExterna_WS/webresources/Usuario/obtener/'.$nombre.'/'.$contraseña,[]);
+        $hash = hash('sha256', $contraseña);
+        //$cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
+        $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
+    	$peticion = new Request('GET','/ConsultaExterna_WS/webresources/Usuario/obtener/'.$nombre.'/'.$hash,[]);
     	$respuesta = $cliente->send($peticion, []);
     	$json = json_decode($respuesta->getBody());
     	return $this->getJSONObject($json);
     }
 
     private function getJSON($usuario){
-        return array('usuId'=>$usuario->getIdUsuario(),'usuNombre'=>$usuario->getNombreUsuario(), 'usuContrasena'=>$usuario->getContraseña(),'usuRol'=>$usuario->getRol());
+        $hash = hash('sha256', $usuario->getContraseña());
+        return array('usuId'=>$usuario->getIdUsuario(),'usuNombre'=>$usuario->getNombreUsuario(), 'usuContrasena'=>$hash,'usuRol'=>$usuario->getRol());
     }
 
     private function getJSONObject($JSONObject){
