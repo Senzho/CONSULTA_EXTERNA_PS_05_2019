@@ -119,7 +119,7 @@ class Paciente{
     public function registrarPaciente() {
         $registro = $this->validarDatos();
         if ($registro == DatosPaciente::VALIDO){
-            if ($this->obtenerPaciente($this->numeroSeguro) == null){
+            if ($this->obtenerPaciente($this->numeroSeguro)->getNumeroSeguro() == 0){
                 $registro = $this->iPaciente->registrarPaciente($this)? DatosPaciente::EXITO : DatosPaciente::ERROR_ALMACENAMIENTO;
             }
         }

@@ -76,7 +76,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="col-sm">
         <div class="scrollable">
           <div id="listaConsultas" class="list-group">
-            <a class="list-group-item list-group-item-action" > Nombre paciente</a>
+            <!-- <a class="list-group-item list-group-item-action" > Nombre paciente</a>
             <a class="list-group-item list-group-item-action" >Nombre paciente</a>
             <a class="list-group-item list-group-item-action" >Nombre paciente</a>
             <a class="list-group-item list-group-item-action" >Nombre paciente</a>
@@ -91,7 +91,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <a class="list-group-item list-group-item-action" >Nombre paciente</a>
             <a class="list-group-item list-group-item-action" >Nombre paciente</a>
             <a class="list-group-item list-group-item-action" >Nombre paciente</a>
-            <a class="list-group-item list-group-item-action" >Nombre paciente</a>
+            <a class="list-group-item list-group-item-action" >Nombre paciente</a> -->
           </div>
         </div>
       </div>
