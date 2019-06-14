@@ -109,5 +109,7 @@ class Recepcionista extends Personal{
     public function obtenerCitas($fecha){
         return $this->iRecepcionista->obtenerCitas($fecha);
     }
+    public function obtenerPersonalRol($rol) {
 
+    }
 }

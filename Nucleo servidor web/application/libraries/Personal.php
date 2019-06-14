@@ -95,4 +95,5 @@ abstract class Personal{
     public abstract function eliminar();
     public abstract function obtenerPersonal($rfc);
     public abstract function obtenerPersonalId($idUsuario);
+    public abstract function obtenerPersonalRol($rol);
 }

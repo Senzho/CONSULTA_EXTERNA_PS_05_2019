@@ -18,7 +18,7 @@ class UsuarioModelo implements IUsuario{
         $registrado = FALSE;
         $cliente = new Client();
         $usuarioJSON = $this->getJSON($usuario);
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Usuario/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $usuarioJSON]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Usuario/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $usuarioJSON]);
         $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->registrado){
@@ -33,7 +33,7 @@ class UsuarioModelo implements IUsuario{
         $modificado = FALSE;
         $cliente = new Client();
         $usuarioJSON = $this->getJSON($usuario);
-        $respuesta = $cliente->put('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Usuario/modificar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $usuarioJSON]);
+        $respuesta = $cliente->put('http://localhost:8080/ConsultaExterna_WS/webresources/Usuario/modificar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $usuarioJSON]);
         $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->actualizado){
@@ -45,8 +45,7 @@ class UsuarioModelo implements IUsuario{
 
     public function iniciarSesion($nombre, $contraseña){
         $hash = hash('sha256', $contraseña);
-        //$cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
-        $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
+        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
     	$peticion = new Request('GET','/ConsultaExterna_WS/webresources/Usuario/obtener/'.$nombre.'/'.$hash,[]);
     	$respuesta = $cliente->send($peticion, []);
     	$json = json_decode($respuesta->getBody());
@@ -72,5 +71,4 @@ class UsuarioModelo implements IUsuario{
         }
     	return $usuario;
     }
-
 }

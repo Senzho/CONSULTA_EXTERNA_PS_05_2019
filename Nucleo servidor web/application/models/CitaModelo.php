@@ -19,7 +19,7 @@ class CitaModelo implements ICita {
         $registrada = FALSE;
         $cliente = new Client();
         $citaJSON = $this->getJSON($cita);
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Cita/registrar/'.$numeroSeguro.'/'.$rfc.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $citaJSON]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Cita/registrar/'.$numeroSeguro.'/'.$rfc.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $citaJSON]);
         $respuesta = json_decode($respuesta->getBody());  
         if($respuesta->token){
             if($respuesta->registrada){
@@ -28,7 +28,7 @@ class CitaModelo implements ICita {
         }
         return $registrada;
     }
-    //citEstado, citFechaHoraReserva
+    
     private function getJSON($cita){
         return array('citEstado'=>$cita->getEstado(),'citFechaHoraReserva'=>$cita->getHoraReserva());
     }

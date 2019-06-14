@@ -22,7 +22,7 @@ class Medico extends Personal{
         }else if(strlen($this->getNumeroTelefono()) > 10){
             $datosMedico = DatosPersonal::NUMERO_TELEFONO_LARGO;
         }else if(strlen($this->getNumeroTelefono()) < 10){
-            $datosMedico = DatosPersonal::UMERO_TELEFONO_CORTO;
+            $datosMedico = DatosPersonal::NUMERO_TELEFONO_CORTO;
         }else if($this->getNombre() === "" || $this->getNombre() === null){
             $datosMedico = DatosPersonal::NOMBRE_VACIO;
         }else if(strlen($this->getNombre()) > 70){
@@ -56,19 +56,19 @@ class Medico extends Personal{
     public function registrar($idUsuario){
         $registro = $this->validarDatosPersonalesMedico();
         if($registro === DatosPersonal::VALIDO){
-            if($this->obtenerPersonal($this->getNumeroPersonal())== null){
+            if($this->obtenerPersonal($this->getRfc())->getRfc() == ''){
                 if($this->iMedico->registrar($this, $idUsuario)){
                     $registro = DatosPersonal::EXITO;
                 }else{
                     $registro = DatosPersonal::ERROR_ALMACENAMIENTO;
                 }
             }
-            return $registro;
         }
+        return $registro;
     }
 
     public function modificar(){
-        $registro = $this->validarDatos();
+        $registro = $this->validarDatosPersonalesMedico();
         if($registro === DatosPersonal::VALIDO){
             if($this->iMedico->modificar($this)){
                 $registro = DatosPersonal::EXITO;
@@ -101,5 +101,7 @@ class Medico extends Personal{
     public function obtenerPersonalId($idUsuario){
         return $this->iMedico->obtenerMedicoId($idUsuario);
     }
-
+    public function obtenerPersonalRol($rol) {
+        return $this->iMedico->obtenerMedicos();
+    }
 }

@@ -7,4 +7,5 @@ interface IMedico{
     public function eliminar($rfc);
     public function obtenerMedico($rfc);  
     public function obtenerMedicoId($idUsuario);
+    public function obtenerMedicos();
 }

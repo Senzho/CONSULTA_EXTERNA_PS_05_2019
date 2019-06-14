@@ -15,7 +15,7 @@ class RecetaModelo implements IReceta{
     	$registrado = false;
     	$cliente = new Client();
         $recetaJSON = $this->getJSON($receta);
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Receta/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $recetaJSON]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Receta/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $recetaJSON]);
         $respuesta = json_decode($respuesta->getBody());  
         if($respuesta->token){
             if($respuesta->registrada){
@@ -29,14 +29,14 @@ class RecetaModelo implements IReceta{
     public function obtenerMedicamentosRecetados(){
 
     }
-    //recFolio, recFechaCreacion, recFechaVencimiento, recInstrucciones
-   private function getJSON($receta){
-   	$medicamentos = $receta->getMedicamentosReceta();
-   	$medicamentosArray = array();
-	foreach ($medicamentos as $elemento) {
-		$medicamento = array('medCodigo'=>$elemento->getCodigo());
-		array_push($medicamentosArray, $medicamento);
-	}
-    return array('receta'=>array('recFolio'=>$receta->getFolio(),'recFechaCreacion'=>$receta->getFechaCreacion(),'recFechaVencimiento'=>$receta->getFechaVencimiento(),'recInstrucciones'=>$receta->getInstrucciones()), 'medicamentos'=>$medicamentosArray);
+    
+    private function getJSON($receta){
+        $medicamentos = $receta->getMedicamentosReceta();
+        $medicamentosArray = array();
+        foreach ($medicamentos as $elemento) {
+            $medicamento = array('medCodigo'=>$elemento->getCodigo());
+            array_push($medicamentosArray, $medicamento);
+        }
+        return array('receta'=>array('recFolio'=>$receta->getFolio(),'recFechaCreacion'=>$receta->getFechaCreacion(),'recFechaVencimiento'=>$receta->getFechaVencimiento(),'recInstrucciones'=>$receta->getInstrucciones()), 'medicamentos'=>$medicamentosArray);
     }
 }

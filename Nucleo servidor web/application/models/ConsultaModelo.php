@@ -15,7 +15,7 @@ class ConsultaModelo implements IConsulta{
         $registrado = false;
         $cliente = new Client();
         $consultaJSON = $this->getJSON($consulta);
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Consulta/registrar/'.$numeroSeguro.'/'.$rfc.'/'.$folio.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $consultaJSON]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Consulta/registrar/'.$numeroSeguro.'/'.$rfc.'/'.$folio.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $consultaJSON]);
         $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->registrado){
@@ -33,6 +33,6 @@ class ConsultaModelo implements IConsulta{
         echo $numeroSeguro;
     }
     public function getJSON($consulta){
-        return array('consulta'=>array('conDiagnostico'=>,$consulta->getDiagnostico(),'conEstatura'=>$consulta->getEstatura(),'conFecha'=>$consulta->getFecha(),'conHoraInicio'=>$consulta->getHoraInicio(),'conHoraFin'=>$consulta->getHoraFin(),'conPeso'=>$consulta->getPeso(),'conPresion'=>$consulta->getPresion(),'conTemperaura'=>$consulta->getTemperatura()));
+        return array('consulta'=>array('conDiagnostico'=>$consulta->getDiagnostico(),'conEstatura'=>$consulta->getEstatura(),'conFecha'=>$consulta->getFecha(),'conHoraInicio'=>$consulta->getHoraInicio(),'conHoraFin'=>$consulta->getHoraFin(),'conPeso'=>$consulta->getPeso(),'conPresion'=>$consulta->getPresion(),'conTemperaura'=>$consulta->getTemperatura()));
     }
 }

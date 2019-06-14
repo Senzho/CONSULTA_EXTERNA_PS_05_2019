@@ -13,8 +13,7 @@ class PacienteModelo implements IPaciente{
     }
 
     public function obtenerPaciente($numeroSeguro){
-        $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
-        //$cliente = new Client(['base_uri'=>'http://localhost:8080']);
+        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
         $peticion = new Request('GET',"/ConsultaExterna_WS/webresources/Paciente/obtener/".$numeroSeguro.'/'.$this->session->userdata('token'),[]);
         $respuesta = $cliente->send($peticion, []);
         $json = json_decode($respuesta->getBody());
@@ -22,8 +21,7 @@ class PacienteModelo implements IPaciente{
     }
 
     public function obtenerPacientes() {
-        $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
-        //$cliente = new Client(['base_uri'=>'http://localhost:8080']);
+        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
         $peticion = new Request('GET',"/ConsultaExterna_WS/webresources/Paciente/obtener/".$this->session->userdata('token'),[]);
         $respuesta = $cliente->send($peticion, []);
         $json = json_decode($respuesta->getBody());
@@ -34,8 +32,7 @@ class PacienteModelo implements IPaciente{
         $registrado = FALSE;
         $cliente = new Client();
         $pacienteJSON = $this->getJSON($paciente);
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Paciente/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $pacienteJSON]);
-        //$respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Paciente/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $pacienteJSON]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Paciente/registrar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $pacienteJSON]);
         $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->registrado){
@@ -48,8 +45,7 @@ class PacienteModelo implements IPaciente{
         $modificado = FALSE;
         $cliente = new Client();
         $pacienteJSON = $this->getJSON($paciente);
-        $respuesta = $cliente->put('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Paciente/modificar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $pacienteJSON]);
-        //$respuesta = $cliente->put('http://localhost:8080/ConsultaExterna_WS/webresources/Paciente/modificar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $pacienteJSON]);
+        $respuesta = $cliente->put('http://localhost:8080/ConsultaExterna_WS/webresources/Paciente/modificar/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $pacienteJSON]);
         $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->actualizado){

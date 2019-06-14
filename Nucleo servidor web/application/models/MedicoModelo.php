@@ -21,7 +21,7 @@ class MedicoModelo implements IMedico {
         $registrado = FALSE;
         $cliente = new Client();
         $medicoJSON = $this->getJSON($medico);
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrar/'.$idUsuario.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $medicoJSON]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Personal/registrar/'.$idUsuario.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $medicoJSON]);
         $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->registrado){
@@ -35,7 +35,7 @@ class MedicoModelo implements IMedico {
         $actualizado = FALSE;
         $cliente = new Client();
         $medicoJSON = $this->getJSON($medico);
-        $respuesta = $cliente->put('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/modificar/' . $this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $medicoJSON]);
+        $respuesta = $cliente->put('http://localhost:8080/ConsultaExterna_WS/webresources/Personal/modificar/' . $this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $medicoJSON]);
         $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->actualizado){
@@ -47,7 +47,7 @@ class MedicoModelo implements IMedico {
     public function registrarEntrada($rfc, $numeroConsultorio){
         $registrada = FALSE;
         $cliente = new Client();
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrarentrada/' . $numeroConsultorio . '/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Personal/registrarentrada/' . $numeroConsultorio . '/' . $rfc . '/' . $this->session->userdata('token'),[]);
         $respuesta = json_decode($respuesta->getBody());
         if ($respuesta->token) {
             if ($respuesta->registrada) {
@@ -59,7 +59,7 @@ class MedicoModelo implements IMedico {
     public function registrarSalida($rfc){
         $registrada = FALSE;
         $cliente = new Client();
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrarsalida/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Personal/registrarsalida/' . $rfc . '/' . $this->session->userdata('token'),[]);
         $respuesta = json_decode($respuesta->getBody());
         if ($respuesta->token) {
             if ($respuesta->registrada) {
@@ -71,7 +71,7 @@ class MedicoModelo implements IMedico {
     public function eliminar($rfc){
         $eliminado = FALSE;
         $cliente = new Client();
-        $respuesta = $cliente->delete('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/estado/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = $cliente->delete('http://localhost:8080/ConsultaExterna_WS/webresources/Personal/estado/' . $rfc . '/' . $this->session->userdata('token'),[]);
         $respuesta = json_decode($respuesta->getBody());
         if ($respuesta->token) {
             if ($respuesta->cambiado) {
@@ -82,8 +82,8 @@ class MedicoModelo implements IMedico {
     }
 
     public function obtenerMedico($rfc){
-        $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
-        $token = $this->session->get_userdata("token");
+        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
+        $token = $this->session->userdata("token");
         $peticion = new Request('GET','/ConsultaExterna_WS/webresources/Personal/obtenerrfc/'.$rfc.'/'.$token,[]);
         $respuesta = $cliente->send($peticion, []);
         $json = json_decode($respuesta->getBody());
@@ -91,20 +91,27 @@ class MedicoModelo implements IMedico {
     }
 
     public function obtenerMedicoId($idUsuario){
-        $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
+        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
         $token = $this->session->userdata('token');
         $peticion = new Request('GET','/ConsultaExterna_WS/webresources/Personal/obteneridusuario/'.$idUsuario.'/'.$token,[]);
         $respuesta = $cliente->send($peticion, []);
         $json = json_decode($respuesta->getBody());
         return $this->getJSONObject($json);
     }
+    public function obtenerMedicos() {
+        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
+        $token = $this->session->userdata('token');
+        $peticion = new Request('GET','/ConsultaExterna_WS/webresources/Personal/obtenerrol/Medico/'.$token,[]);
+        $respuesta = $cliente->send($peticion, []);
+        $json = json_decode($respuesta->getBody());
+        return $this->getMedicos($json);
+    }
 
     private function getJSONObject($JSONObject){
         $medicoJSON = $JSONObject->personal;
         $medico = new Medico();
-        if(!$JSONObject->token){
-            $medico->setNumeroPersonal(0);
-        }else{
+        $medico->setRfc('');
+        if($medicoJSON->prRfc != ''){
             $this->session->set_userdata('rcf', $medicoJSON->prRfc);
             $this->session->set_userdata('nombre', $medicoJSON->perNombres." ".$medicoJSON->perApellidos);
             $medico->setRfc($medicoJSON->prRfc);
@@ -122,5 +129,23 @@ class MedicoModelo implements IMedico {
 
     private function getJSON($medico){
         return array('prRfc'=>$medico->getRfc(),'perApellidos'=>$medico->getApellido(), 'perEstado'=>$medico->getEstado(),'perNombres'=>$medico->getNombre(),'perNumPersonal'=>$medico->getNumeroPersonal(),'perNumTelefono'=>$medico->getNumeroTelefono(),'perSexo'=>$medico->getSexo(),'perTurno'=>$medico->getTurno(),'perFechaNac'=>$medico->getFechaNacimiento());
+    }
+    private function getMedicos($json) {
+        $medicos = array();
+        $arreglo = $json->personales;
+        foreach ($arreglo as $elemento) {
+            $medico = new Medico();
+            $medico->setRfc ($elemento->prRfc);
+            $medico->setNumeroTelefono($elemento->perNumTelefono);
+            $medico->setNumeroPersonal($elemento->perNumPersonal);
+            $medico->setNombre($elemento->perNombres);
+            $medico->setApellido($elemento->perApellidos);
+            $medico->setFechaNacimiento($elemento->perFechaNac);
+            $medico->setSexo($elemento->perSexo);
+            $medico->setTurno($elemento->perTurno);
+            $medico->setEstado($elemento->perEstado);
+            array_push($medicos, $medico);
+        }
+        return $medicos;
     }
 }

@@ -30,8 +30,6 @@ $(function() {
     });
     $("a.panelPaciente").click(function() {
         var numeroSeguro = $(this).attr("id");
-        //$('a.panelPaciente[id='+numeroSeguro+']').attr('class', 'list-group-item list-group-item-action panelPaciente active');
-        //$('a.panelPaciente[class=list-group-item list-group-item-action panelPaciente]').attr('class', 'list-group-item list-group-item-action panelPaciente ');
         $(this).obtenerPaciente(numeroSeguro);
     });
     var numeroSeguro;

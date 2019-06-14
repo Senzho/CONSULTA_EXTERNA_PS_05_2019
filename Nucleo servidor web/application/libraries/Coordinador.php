@@ -89,7 +89,10 @@ class Coordinador extends Personal{
     public function obtenerPersonal($rfc){
         return $this->iCoordinador->obtenerCoordinador($rfc);
     }
-        public function obtenerPersonalId($idUsuario){
+    public function obtenerPersonalId($idUsuario){
         return $this->iCoordinador->obtenerCoordinadorId($idUsuario);
+    }
+    public function obtenerPersonalRol($rol) {
+
     }
 }

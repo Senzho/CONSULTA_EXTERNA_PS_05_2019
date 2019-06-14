@@ -21,6 +21,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?=base_url('scripts/bootstrap-datepicker.min.js');?>"></script>
 	<script src="<?=base_url('scripts/popper.min.js');?>"></script>
 	<script src="<?=base_url('scripts/bootstrap.min.js');?>"></script>
+  <script src="<?=base_url('scripts/crudMedicos.js');?>"></script>
 	<script type="text/javascript">
 		var base_url = "<?php echo site_url(); ?>";
 	</script>
@@ -28,14 +29,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 	<nav id="navbarMain" class="navbar navbar-expand-lg navbar-ligth">
-	    <a id="home" >SCE.mx</a>
-	    <span class="mr-auto navbarText">
-	    	 <?= $nombre?>
-	    </span>
-	    <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="<?php echo site_url('/CoordinadorController/cerrarSesion'); ?>">Cerrar sesión</a>
+    <a id="home" >SCE.mx</a>
+    <span class="mr-auto navbarText">
+        <?= $nombre?>
+    </span>
+    <a id="cerrarSesion" class="nav-link ml-auto navbarText" href="<?php echo site_url('/CoordinadorController/cerrarSesion'); ?>">Cerrar sesión</a>
 	</nav>
-	 <div id="recepContenidorRegistro" class="container m-4 mx-auto">
-	<div class="row">
+  <div id="recepContenidorRegistro" class="container m-4 mx-auto">
+    <div class="row">
       <div class="col d-inline-flex centralizado">
         <div class="d-inline">
           <div class="px-4 center-cont">
@@ -54,22 +55,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </div>
         </div>
         <div class="d-inline">
-          <div class="px-4 center-cont">
-            <a class="d-block" href="<?php echo site_url('/CoordinadorController/registrarRecepcionista'); ?>">
-              <img src="<?=base_url('estilos/imagenes/usuario.svg');?>" alt="" height="70" width="70">
-            </a>
-            <span class="btn d-block">Registrar recepcionista</span>
-          </div>
-        </div>
-        <div class="d-inline">
         <div class="px-4 center-cont">
-        <a class="d-block mx-auto" href="<?php echo site_url('/CoordinadorController/consultarMedicamentos'); ?>">
-          <img src="<?=base_url('estilos/imagenes/pastillas.svg');?>" alt="botón para agendar cita" height="70" width="70">
-        </a>
-        <span class="btn d-block ">Cosultar medicamentos</span>
-      	</div>
-    	</div>
+          <a class="d-block" href="<?php echo site_url('/CoordinadorController/registrarRecepcionista'); ?>">
+            <img src="<?=base_url('estilos/imagenes/usuario.svg');?>" alt="" height="70" width="70">
+          </a>
+          <span class="btn d-block">Registrar recepcionista</span>
+        </div>
       </div>
+      <div class="d-inline">
+        <div class="px-4 center-cont">
+          <a class="d-block mx-auto" href="<?php echo site_url('/CoordinadorController/consultarMedicamentos'); ?>">
+            <img src="<?=base_url('estilos/imagenes/pastillas.svg');?>" alt="botón para agendar cita" height="70" width="70">
+          </a>
+          <span class="btn d-block ">Cosultar medicamentos</span>
+        </div>
+      </div>
+    </div>
     </div>
     <div class="separator"></div>
     <div class="row">
@@ -82,7 +83,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 
     <div class="row">
-    <div class="col-sm">
+      <div class="col-sm">
         <form class="">
           <div class="card-body row no-gutters align-items-center">
             <div class="col-auto">
@@ -90,123 +91,111 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
             <!--end of col-->
             <div class="col">
-              <input type="text" class="form-control" placeholder="Buscar médico">
+              <input type="text" id="campoBusqueda" class="form-control" placeholder="Buscar médico"/>
             </div>
             <!--end of col-->
             <div class="col-auto">
-              <button class="btn btn-primary" type="submit">Buscar</button>
+              <button class="btn btn-primary" id="botonBuscar" type="submit">Buscar</button>
             </div>
             <!--end of col-->
           </div>
         </form>
-  </div>
-  <div class="col-sm">
-        <form class="">
-          <div class="card-body row no-gutters align-items-center">
-          </div>
-        </form>
+      </div>
+    <div class="col-sm">
+    <form class="">
+      <div class="card-body row no-gutters align-items-center">
+      </div>
+    </form>
   </div>
   </div>
     <div class="row">
       <div class="col-sm">
         <div class="scrollable">
             <div id="listaMedicos" class="list-group">
-              <a class="list-group-item list-group-item-action" >Medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >Medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >Medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >Medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >medico nombre - hora</a>
-              <a class="list-group-item list-group-item-action" >medico nombre - hora</a>
+              <?php
+                for ($i = 0; $i < count($medicos); $i ++) {
+                  $medico = $medicos[$i];
+                  echo "<a class='list-group-item list-group-item-action panelMedico' data-toggle='list' id='" . $medico->getRfc() . "'>" . $medico->getNombre() . " " . $medico->getApellido() . "</a>";
+                }
+              ?>
             </div>
       </div>
     </div>
     <div class="col-sm">
-        <div class="">
-            <form id="registroMedico" action="" method="post">
-              <div class="form-group">
-                <div class="row">
-                  <div class="col">
-                    <input class="form-control form-control-borderless" name="pacienteSeguro" type="text" placeholder="Nombre del médico">
-                  </div>
-                </div>
+      <div class="">
+        <form id="formRegistro" action="" method="post">
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <label for="usuario">Usuario</label>
+                <input class="form-control form-control-borderless" name="usuario" id="txtUsuario" type="text" placeholder="Nombre de usuario">
               </div>
-
-              <div class="form-group">
-                <div class="row">
-                  <div class="col">
-                    <input class="form-control form-control-borderless" name="pacienteSeguro" type="text" placeholder="Apellidos">
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <input class="form-control form-control-borderless" name="contrasena" id="txtContrasena" type="password" placeholder="Constraseña">
               </div>
-
-              <div class="form-group">
-                <div class="row">
-                  <div class="col">
-                    <input class="form-control form-control-borderless" name="pacienteSeguro" type="text" placeholder="Telefono">
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+              <label for="nombre">Médico</label>
+                <input class="form-control form-control-borderless" name="nombre" id="txtNombre" type="text" placeholder="Nombre del médico">
               </div>
-
-              <div class="form-group">
-                <div class="row">
-                  <div class="col">
-                    <input class="form-control form-control-borderless" name="pacienteSeguro" type="text" placeholder="RFC">
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <input class="form-control form-control-borderless" name="apellido" id="txtApellido" type="text" placeholder="Apellidos">
               </div>
-
-              <div class="form-group">
-                <div class="row">
-                  <div class="col">
-                    <input class="form-control form-control-borderless" name="pacienteSeguro" type="text" placeholder="Número de personal">
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <input class="form-control form-control-borderless" name="telefono" id="txtTelefono" type="text" placeholder="Telefono">
               </div>
-
-              <div class="form-group">
-                <div class="row">
-                  <div class="col">
-                    <select name="tuno" class="form-control">
-                      <option>Matutino</option>
-                      <option>Vespertino</option>
-                    </select>
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <input class="form-control form-control-borderless" name="rfc" id="txtRfc" type="text" placeholder="RFC">
               </div>
-
-              <div class="form-group">
-                <div class="row">
-                  <div class="col">
-                     <label>Genero</label>
-                    <label class="radio-inline"><input type="radio" name="optradio" checked="">Hombre</label>
-                    <label class="radio-inline"><input type="radio" name="optradio">Mujer</label>
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <input class="form-control form-control-borderless" name="numeroPersonal" id="txtNumeroPersonal" type="text" placeholder="Número de personal">
               </div>
-
-              <div class="card-body row no-gutters align-items-center">
-                <div class="col-auto">
-                  <i class="fas fa-search h4 text-body"></i>
-                </div>
-                <!--end of col-->
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="Fecha de nacimiento">
-                </div>
-                <!--end of col-->
-                <div class="col-auto">
-                  <button class="btn btn-primary" type="submit">Buscar</button>
-                </div>
-                <!--end of col-->
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col">
+                <select name="turno" id="turno" class="form-control">
+                  <option value="Matutino">Matutino</option>
+                  <option value="Vespertino">Vespertino</option>
+                </select>
               </div>
-               <button type="submit" class="btn btn-primary">Guardar</button>
-
-            </form>
+            </div>
+          </div>
+          <div class="form-group">
+            <select class="form-control" id="sexo" name="sexo">
+              <option value="H">Hombre</option>
+              <option value="M">Mujer</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input id="fechaNac" class="form-control" data-date-format="yyyy-mm-dd" name="fecha">
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
       </div>
     </div>
   </div>
@@ -214,5 +203,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   </div>
   <!--este div permite que todo lo que esté adentro se pueda centrar-->
   <!--aqui es donde van todas las demás interfaces-->
+  <div class="container">
+
+    <!-- The Modal -->
+    <div class="modal fade" id="modalMedico">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="tituloModalRegistro">Paciente actualizado</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+
+            <p id="nombreRegistro">Laura Martínez</p>
+            <p id="rfcRegistro">625327635-1</p>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Listo</button>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

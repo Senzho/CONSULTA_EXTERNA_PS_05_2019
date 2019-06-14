@@ -21,7 +21,7 @@ class RecepcionistaModelo implements IRecepcionista {
         $registrado = FALSE;
         $cliente = new Client();
         $recepcionistaJSON = $this->getJSON($recepcionista);
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrar/'.$idUsuario.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $recepcionistaJSON]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Personal/registrar/'.$idUsuario.'/'.$this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $recepcionistaJSON]);
         $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->registrado){
@@ -35,7 +35,7 @@ class RecepcionistaModelo implements IRecepcionista {
         $actualizado = FALSE;
         $cliente = new Client();
         $recepcionistaJSON = $this->getJSON($recepcionista);
-        $respuesta = $cliente->put('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/modificar/' . $this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $recepcionistaJSON]);
+        $respuesta = $cliente->put('http://localhost:8080/ConsultaExterna_WS/webresources/Personal/modificar/' . $this->session->userdata('token'),[GuzzleHttp\RequestOptions::JSON => $recepcionistaJSON]);
         $respuesta = json_decode($respuesta->getBody());
         if($respuesta->token){
             if($respuesta->actualizado){
@@ -47,7 +47,7 @@ class RecepcionistaModelo implements IRecepcionista {
     public function registrarEntrada($numeroConsultorio, $rfc){
         $registrada = FALSE;
         $cliente = new Client();
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrarentrada/' . $numeroConsultorio . '/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Personal/registrarentrada/' . $numeroConsultorio . '/' . $rfc . '/' . $this->session->userdata('token'),[]);
         $respuesta = json_decode($respuesta->getBody());
         if ($respuesta->token) {
             if ($respuesta->registrada) {
@@ -59,7 +59,7 @@ class RecepcionistaModelo implements IRecepcionista {
     public function registrarSalida($rfc){
         $registrada = FALSE;
         $cliente = new Client();
-        $respuesta = $cliente->post('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/registrarsalida/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = $cliente->post('http://localhost:8080/ConsultaExterna_WS/webresources/Personal/registrarsalida/' . $rfc . '/' . $this->session->userdata('token'),[]);
         $respuesta = json_decode($respuesta->getBody());
         if ($respuesta->token) {
             if ($respuesta->registrada) {
@@ -71,7 +71,7 @@ class RecepcionistaModelo implements IRecepcionista {
     public function eliminar($rfc){
         $eliminado = FALSE;
         $cliente = new Client();
-        $respuesta = $cliente->delete('http://192.168.43.126:8080/ConsultaExterna_WS/webresources/Personal/estado/' . $rfc . '/' . $this->session->userdata('token'),[]);
+        $respuesta = $cliente->delete('http://localhost:8080/ConsultaExterna_WS/webresources/Personal/estado/' . $rfc . '/' . $this->session->userdata('token'),[]);
         $respuesta = json_decode($respuesta->getBody());
         if ($respuesta->token) {
             if ($respuesta->cambiado) {
@@ -84,14 +84,14 @@ class RecepcionistaModelo implements IRecepcionista {
 
     }
     public function obtenerCitas($fecha){
-        $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
+        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
         $peticion = new Request('GET','/ConsultaExterna_WS/webresources/Cita/obtener/'.$fecha.'/'.$this->session->userdata('token'),[]);
         $respuesta = $cliente->send($peticion, []);
         $json = json_decode($respuesta->getBody());
         return $this->getCitas($json);
     }
     public function obtenerRecepcionista($rfc){
-        $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
+        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
         $token = $this->session->get_userdata("token");
         $peticion = new Request('GET','/ConsultaExterna_WS/webresources/Personal/obtenerrfc/'.$rfc.'/'.$token,[]);
         $respuesta = $cliente->send($peticion, []);
@@ -99,8 +99,7 @@ class RecepcionistaModelo implements IRecepcionista {
         return $this->getJSONObject($json);
     }
     public function obtenerRecepcionistaId($numeroPersonal){
-        $cliente = new Client(['base_uri'=>'http://192.168.43.126:8080']);
-        //$cliente = new Client(['base_uri'=>'http://localhost:8080']);
+        $cliente = new Client(['base_uri'=>'http://localhost:8080']);
         $token = $this->session->userdata('token');
         $peticion = new Request('GET','/ConsultaExterna_WS/webresources/Personal/obteneridusuario/'.$numeroPersonal.'/'.$token,[]);
         $respuesta = $cliente->send($peticion, []);
